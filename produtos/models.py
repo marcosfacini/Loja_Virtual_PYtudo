@@ -1,0 +1,18 @@
+from django.db import models
+
+class Categoria(models.Model):
+    nome = models.CharField(max_length=40)
+
+
+    def __str__(self):
+        return self.nome
+
+class Produtos(models.Model):
+    nome = models.CharField(max_length=50)
+    descricao = models.TextField()
+    foto = models.ImageField()
+    preco = models.FloatField()
+    categoria = models.ForeignKey(Categoria, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.nome

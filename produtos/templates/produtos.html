@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/listar_produtos.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="row">
+        {% for produto in produtos %} 
+            <div class="col-md">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <a href="{% url 'ver_produto' produto.id %}" class="links">
+                            <img width="100%" src="{{produto.foto.url}}">
+                            <h5 class="card-title">{{produto.nome}}</h5>
+                            <div class="preco"> {{produto.preco}} </div>
+                            <a class="btn btn-danger" href="{% url 'excluir_produto' produto.id %}" role="button">Excluir</a>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

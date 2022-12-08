@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/listar_categorias.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+        
+        <h2 class="titulo">Categorias</h2>
+        <a href="#" class="btn-btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Nova Categoria</a>
+    
+
+        <div class="row">
+            {% for categoria in categorias %} 
+                <div class="col-md">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                                <h5 class="card-title">{{categoria.nome}}</h5>
+                                <a class="btn btn-danger" href="{% url 'excluir_categoria' categoria.id %}" role="button">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+
+
+
+    <div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form action="{% url 'cadastrar_categoria' %}" method="POST">{% csrf_token %}
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Cadastrar nova Categoria</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" name="nome" placeholder="Digite a categoria">
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn-nova-empresa" value="Salvar">
+            </div>
+          </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

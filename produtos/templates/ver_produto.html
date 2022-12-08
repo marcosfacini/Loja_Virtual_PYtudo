@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/ver_produto.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <img width="100%" src="{{produto.foto.url}}">
+        </div>
+
+        <div class="col-md">
+            <h1 class="titulo">{{produto.nome}}</h1>
+            <p class="paragrafo">{{produto.descricao}}</p>
+            <p class="paragrafo">{{produto.preco}}</p>
+        </div>
+
+
+
+    </div>
+
+{% endblock %}
