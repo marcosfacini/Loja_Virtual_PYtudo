@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'usuarios/css/ver_usuario.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md">
+            <h1 class="titulo">{{usuario.nome}}</h1>
+            <p class="paragrafo">{{usuario.email}}</p>
+            <p class="paragrafo">{{usuario.senha}}</p>
+            <p class="paragrafo">{{produto.celular}}</p>
+            <p class="paragrafo">{{usuario.endereco}}</p>
+            <p class="paragrafo">{{usuario.numero_endereco}}</p>
+            <p class="paragrafo">{{usuario.bairro}}</p>
+            <p class="paragrafo">{{usuario.cidade}}</p>
+            <p class="paragrafo">{{usuario.estado}}</p>
+        </div>
+    </div>
+
+{% endblock %}

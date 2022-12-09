@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'usuarios/css/listar_usuarios.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+        
+        <h2 class="titulo">Usuarios</h2>
+
+        <div class="row">
+            {% for usuario in usuarios %} 
+                <div class="col-md">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                                <a href="{% url 'ver_usuario' usuario.id %}" > <h5 class="card-title">{{usuario.nome}}</h5> </a>
+                                <a class="btn btn-danger" href="{% url 'excluir_usuario' usuario.id %}" role="button">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+{% endblock %}

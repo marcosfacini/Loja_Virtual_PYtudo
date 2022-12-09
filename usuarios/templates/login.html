@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'usuarios/css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+    <div class="wrapper">
+        <form action="{% url 'cadastrar_usuario' %}" method="POST">{% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+        <input class="btn btn-success" type="submit" value="Enviar">
+        </form>
+    </div>
+
+{% endblock %}
