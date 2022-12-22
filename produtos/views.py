@@ -3,11 +3,14 @@ from .models import Produtos, Categoria
 from .forms import CadastroProduto
 from django.contrib import messages
 from django.contrib.messages import constants 
+from rolepermissions.decorators import has_permission_decorator
+
 
 def listar_produtos(request):
     produtos = Produtos.objects.all()
     return render(request, 'produtos.html', {'produtos': produtos})
 
+@has_permission_decorator('cadastrar_produto')
 def cadastrar_produto(request):
     if request.method == 'POST':
         formulario = CadastroProduto(request.POST, request.FILES)
@@ -47,3 +50,4 @@ def excluir_categoria(request, id):
     categoria.delete()
     messages.add_message(request, constants.SUCCESS, 'Categoria excluída com sucesso.')
     return redirect('/produtos/listar_categorias')
+

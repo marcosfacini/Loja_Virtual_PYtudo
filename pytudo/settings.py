@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'rolepermissions',
 ]
 
 SITE_ID = 1
@@ -140,3 +141,6 @@ MESSAGE_TAGS = {
     constants.INFO: 'alert-info',
     constants.WARNING: 'alert-warning',
 }
+
+
+ROLEPERMISSIONS_MODULE = 'pytudo.roles'
