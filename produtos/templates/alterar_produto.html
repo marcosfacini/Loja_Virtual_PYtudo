@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/alterar_produto.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <img width="100%" src="{{produto.foto.url}}">
+        </div>
+    </div>
+
+    <div class="container">
+        <br>
+      <form action="{% url 'alterar_produto' produto.id %}" method="POST">
+          {% csrf_token %}
+
+            <label>Nome do produto:</label>
+            <input style="width: 40%;" class="form-control" type="texte" value="{{produto.nome}}" name="nome">
+          </p>
+
+          <label for="campo_descricao">Descricao:</label>
+          <textarea id="campo_descricao" name="descricao" rows="4" cols="50">
+            {{produto.descricao}}
+          </textarea>
+  
+          <p> 
+            <label>Preço:</label>
+            <input style="width: 40%;" class="form-control" type="texte"  value="{{produto.preco}}" name="preco">
+          </p>
+  
+          <label>Categoria:</label>
+          <select style="width: 20%;" class="form-control" name="categoria">
+            {% for categoria in categorias %}
+            
+              {% if produto.categoria.nome == categoria.nome %}
+                <option value="{{categoria.id}}" selected>{{categoria}}</option>
+              {% else %}
+  
+                <option value="{{categoria.id}}">{{categoria}}</option>
+              {% endif%}
+            {% endfor %}
+            
+          </select>
+        <br>
+          <input type="submit" class="btn btn-success btn-lg" value="Alterar">
+
+        </form>
+    </div>
+
+{% endblock %}

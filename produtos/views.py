@@ -1,14 +1,27 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.urls import reverse
 from .models import Produtos, Categoria
 from .forms import CadastroProduto
 from django.contrib import messages
 from django.contrib.messages import constants 
-from rolepermissions.decorators import has_permission_decorator
+from rolepermissions.decorators import has_permission_decorator, has_role_decorator
+from django.db.models import Q
+from decimal import Decimal
+
 
 
 def listar_produtos(request):
     produtos = Produtos.objects.all()
-    return render(request, 'produtos.html', {'produtos': produtos})
+    categorias = Categoria.objects.all()
+    nome_filtrar = request.GET.get('nome')
+    categoria_filtrar = request.GET.get('categoria')
+    if nome_filtrar or categoria_filtrar:
+        if categoria_filtrar == None:
+            produtos = produtos.filter(nome__icontains=nome_filtrar)
+        else:
+            produtos = produtos.filter(nome__icontains=nome_filtrar).filter(categoria_id=categoria_filtrar)
+    return render(request, 'produtos.html', {'produtos': produtos, 
+                                            'categorias': categorias})
 
 @has_permission_decorator('cadastrar_produto')
 def cadastrar_produto(request):
@@ -29,6 +42,7 @@ def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)
     return render(request, 'ver_produto.html', {'produto': produto})
 
+@has_role_decorator('gerente')
 def excluir_produto(request, id):
     produto = Produtos.objects.get(id=id)
     produto.delete()
@@ -38,6 +52,7 @@ def listar_categorias(request):
     categorias = Categoria.objects.all()
     return render(request, 'listar_categorias.html', {'categorias': categorias})
 
+@has_role_decorator('gerente')
 def cadastrar_categoria(request):
     nome = request.POST.get('nome')
     categoria = Categoria(nome=nome)
@@ -45,9 +60,33 @@ def cadastrar_categoria(request):
     messages.add_message(request, constants.SUCCESS, 'Categoria salva com sucesso.')
     return redirect('/produtos/listar_categorias')
 
+@has_role_decorator('gerente')
 def excluir_categoria(request, id):
     categoria = Categoria.objects.get(id=id)
     categoria.delete()
     messages.add_message(request, constants.SUCCESS, 'Categoria excluída com sucesso.')
     return redirect('/produtos/listar_categorias')
+
+@has_role_decorator('gerente')
+def alterar_produto(request, id):
+    if request.method == 'GET':
+        produto = Produtos.objects.get(id=id)
+        categorias = Categoria.objects.all()
+        return render(request, 'alterar_produto.html', {'produto': produto,
+                                                        'categorias': categorias})
+    elif request.method == 'POST':
+        nome = request.POST.get('nome')
+        descricao = request.POST.get('descricao')
+        preco = request.POST.get('preco')
+        categoria = request.POST.get('categoria')
+        produto = Produtos.objects.get(id=id)
+        categoria_by_id = Categoria.objects.get(id=categoria)
+        produto.nome = nome
+        produto.descricao = descricao
+        preco_in_decimal = Decimal(preco.replace(',','.'))
+        produto.preco = preco_in_decimal
+        produto.categoria = categoria_by_id
+        produto.save()
+        messages.add_message(request, constants.SUCCESS, 'Produto atualizado com sucesso.')
+        return redirect(f'/produtos/alterar_produto/{id}')
 

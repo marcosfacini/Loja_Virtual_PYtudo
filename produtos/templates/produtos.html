@@ -18,6 +18,35 @@
     {% endif %}
 
 
+
+
+            
+        <form action="#" method="GET"> {% csrf_token %}
+            <div class="row">
+                
+                    <div class="col-md-5">
+                        <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+                    </div>
+
+                    <div class="col-md-4">
+                        <select class="form-select" name="categoria">
+                            <option value="" disabled selected hidden>Escolha uma categoria</option>
+                            {% for categoria in categorias %}
+                                <option value="{{categoria.id}}">{{categoria}} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                
+                <div class="col-md-3">
+                    <input type="submit" value="FILTRAR" class="btn btn-primary">
+                </div>
+            </div>
+        </form>
+
+
+
+
+
     <div class="row">
         {% for produto in produtos %} 
             <div class="col-md">
@@ -28,6 +57,7 @@
                             <h5 class="card-title">{{produto.nome}}</h5>
                             <div class="preco"> {{produto.preco}} </div>
                             <a class="btn btn-danger" href="{% url 'excluir_produto' produto.id %}" role="button">Excluir</a>
+                            <a class="btn btn-warning" href="{% url 'alterar_produto' produto.id %}" role="button">Alterar</a>
                         </a>
                     </div>
                 </div>

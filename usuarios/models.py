@@ -1,9 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.conf import settings
 
 class Usuarios(models.Model):
-    nome = models.CharField(max_length=50)
-    email = models.EmailField(max_length=35)
-    senha = models.CharField(max_length=64)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     celular = models.CharField(max_length=15)
     endereco = models.CharField(max_length=50)
     numero_endereco = models.CharField(max_length=10)
@@ -12,6 +12,6 @@ class Usuarios(models.Model):
     estado = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.nome
+        return self.usuario
 
 
