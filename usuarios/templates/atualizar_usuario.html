@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'usuarios/css/atualizar_usuario.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+    
+            <form action="{% url 'atualizar_usuario' usuario.id %}" method="POST"> {% csrf_token %}
+                <label>Nome:</label>
+                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.nome}}" name="nome">
+                <br>
+
+                <label>celular:</label>
+                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.celular}}" name="celular">
+                <br>
+
+                <label>endereco:</label>
+                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.endereco}}" name="endereco">
+                <br>
+
+                <label>numero_endereco:</label>
+                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.numero_endereco}}" name="numero_endereco">
+                <br>
+
+                <label>bairro:</label>
+                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.bairro}}" name="bairro">
+                <br>
+
+                <label>cidade:</label>
+                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.cidade}}" name="cidade">
+                <br>
+
+                <label>estado:</label>
+                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.estado}}" name="estado">
+                <br>
+
+                <input type="submit" class="btn btn-success btn-lg" value="Alterar">
+            </form>
+    
+
+{% endblock %}

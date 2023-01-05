@@ -49,6 +49,29 @@ def conceder_permissao(request):
     print (has_permission(user, 'atualizar_cadastro'))
     return redirect(reverse('login'))
 
+def atualizar_usuario(request, id):
+    if request.method == 'GET':    
+        usuario = Usuarios.objects.get(id=id)
+        return render(request, 'atualizar_usuario.html', {'usuario': usuario})
+    elif request.method == 'POST':
+        nome = request.POST.get('nome')
+        celular = request.POST.get('celular')
+        endereco = request.POST.get('endereco')
+        numero_endereco = request.POST.get('numero_endereco')
+        bairro = request.POST.get('bairro')
+        cidade = request.POST.get('cidade')
+        estado = request.POST.get('estado')
+        usuario = Usuarios.objects.get(id=id)
+        usuario.nome = nome
+        usuario.celular = celular
+        usuario.endereco = endereco
+        usuario.numero_endereco = numero_endereco
+        usuario.bairro = bairro
+        usuario.estado = estado
+        usuario.save()
+        messages.add_message(request, constants.SUCCESS, 'Usuario atualizado com sucesso.')
+        return redirect(f'/usuarios/ver_usuario/{id}')
+
 
 
 

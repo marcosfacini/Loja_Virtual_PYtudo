@@ -25,8 +25,9 @@
                 <div class="col-md">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
-                                <a href="{% url 'ver_usuario' usuario.id %}" > <h5 class="card-title">{{usuario.usuario}}</h5> </a>
+                                <a href="{% url 'ver_usuario' usuario.id %}" > <h5 class="card-title">{{usuario.nome}}</h5> </a>
                                 <a class="btn btn-danger" href="{% url 'excluir_usuario' usuario.id %}" role="button">Excluir</a>
+                                <a class="btn btn-warning" href="{% url 'atualizar_usuario' usuario.id %}" role="button">Atualizar</a>
                         </div>
                     </div>
                 </div> 
