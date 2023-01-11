@@ -39,16 +39,6 @@ def ver_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
     return render(request, 'ver_usuario.html', {'usuario': usuario})
 
-
-# TODO colocar essa função dentro de um template interativo
-def conceder_permissao(request):
-    user = User.objects.get(id=4)
-    # assign_role(user, 'gerente')
-    # revoke_permission(user, 'cadastrar_produto')
-    grant_permission(user, 'atualizar_cadastro')
-    print (has_permission(user, 'atualizar_cadastro'))
-    return redirect(reverse('login'))
-
 def atualizar_usuario(request, id):
     if request.method == 'GET':    
         usuario = Usuarios.objects.get(id=id)

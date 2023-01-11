@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rolepermissions',
+    'gestao',
 ]
 
 SITE_ID = 1
@@ -147,6 +148,7 @@ ROLEPERMISSIONS_MODULE = 'pytudo.roles'
 
 LOGIN_REDIRECT_URL = '/produtos/listar_produtos'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+ACCOUNT_LOGOUT_ON_GET = True 
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True

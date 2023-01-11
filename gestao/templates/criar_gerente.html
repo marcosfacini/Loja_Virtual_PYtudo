@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'usuarios/css/criar_gerente.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+        
+    <form action="{%url 'salvar_gerente'%}" method="POST" > {%csrf_token%}
+        <label>Email:</label>
+        <input type="email" class="form-control" name="email">
+
+        <label>Senha provisória:</label>
+        <input type="texte" class="form-control" name="senha_provisoria" placeholder="Digite a senha provisória">
+
+        <input type="submit" value="CADASTRAR" class="btn btn-success">
+
+    </form>
+
+
+
+{% endblock %}
