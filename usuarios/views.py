@@ -6,13 +6,12 @@ from django.contrib.messages import constants
 from django.urls import reverse
 from rolepermissions.checkers import has_permission
 from rolepermissions.roles import assign_role
-from rolepermissions.permissions import grant_permission, revoke_permission
 from django.contrib.auth.models import User
-from rolepermissions.decorators import has_role_decorator
+from rolepermissions.decorators import has_role_decorator, has_permission_decorator
 
-def login(request):
+def info_adicional_usuario(request):
     form = CadastroUsuario()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'info_adicional_usuario.html', {'form': form})
 
 def cadastrar_usuario(request):
     cadastro = CadastroUsuario(request.POST)
@@ -22,13 +21,14 @@ def cadastrar_usuario(request):
         return redirect('/produtos/listar_produtos')
     else:
         messages.add_message(request, constants.ERROR, 'Não foi possível cadastrar o usuário.')
-    return redirect('/usuarios/login')
+    return redirect('/usuarios/info_adicional_usuario')
 
-@has_role_decorator('gerente')
+@has_permission_decorator('gerenciar_usuarios')
 def listar_usuarios(request):
     usuarios = Usuarios.objects.all()
     return render(request, 'listar_usuarios.html', {'usuarios': usuarios})
 
+@has_permission_decorator('gerenciar_usuarios')
 def excluir_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
     usuario.delete()

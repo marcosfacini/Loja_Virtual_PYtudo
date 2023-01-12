@@ -34,7 +34,7 @@ def salvar_gestor(request):
                                  password=senha_provisoria)
     assign_role(gestor, 'gestor')
     messages.add_message(request, constants.SUCCESS, 'Gestor cadastrado com sucesso')
-    return redirect('/gestao/criar_gerente')
+    return redirect('/produtos/listar_produtos')
 
 
 

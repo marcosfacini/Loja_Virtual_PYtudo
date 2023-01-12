@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
-from .models import Produtos, Categoria
+from .models import Produtos, Categoria 
 from .forms import CadastroProduto
 from django.contrib import messages
 from django.contrib.messages import constants 
@@ -23,7 +23,7 @@ def listar_produtos(request):
     return render(request, 'produtos.html', {'produtos': produtos, 
                                             'categorias': categorias})
 
-@has_permission_decorator('cadastrar_produto')
+@has_permission_decorator('alterar_produto')
 def cadastrar_produto(request):
     if request.method == 'POST':
         formulario = CadastroProduto(request.POST, request.FILES)
@@ -42,7 +42,7 @@ def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)
     return render(request, 'ver_produto.html', {'produto': produto})
 
-@has_role_decorator('gerente')
+@has_permission_decorator('alterar_produto')
 def excluir_produto(request, id):
     produto = Produtos.objects.get(id=id)
     produto.delete()
@@ -52,7 +52,7 @@ def listar_categorias(request):
     categorias = Categoria.objects.all()
     return render(request, 'listar_categorias.html', {'categorias': categorias})
 
-@has_role_decorator('gerente')
+@has_permission_decorator('alterar_produto')
 def cadastrar_categoria(request):
     nome = request.POST.get('nome')
     categoria = Categoria(nome=nome)
@@ -60,14 +60,14 @@ def cadastrar_categoria(request):
     messages.add_message(request, constants.SUCCESS, 'Categoria salva com sucesso.')
     return redirect('/produtos/listar_categorias')
 
-@has_role_decorator('gerente')
+@has_permission_decorator('alterar_produto')
 def excluir_categoria(request, id):
     categoria = Categoria.objects.get(id=id)
     categoria.delete()
     messages.add_message(request, constants.SUCCESS, 'Categoria excluída com sucesso.')
     return redirect('/produtos/listar_categorias')
 
-@has_role_decorator('gerente')
+@has_permission_decorator('alterar_produto')
 def alterar_produto(request, id):
     if request.method == 'GET':
         produto = Produtos.objects.get(id=id)
