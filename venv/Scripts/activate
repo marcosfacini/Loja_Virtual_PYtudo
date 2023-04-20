@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\marco\OneDrive\Área de Trabalho\Loja_Virtual_PYtudo\venv"
+VIRTUAL_ENV="C:\Users\ASUS\Desktop\Projetos\Loja_Virtual_PYtudo\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

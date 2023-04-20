@@ -29,6 +29,13 @@
             <p class="paragrafo">{{produto.categoria}}</p>
         </div>
 
+        <form action="{% url 'vender_produto' produto.id %}" method="POST"> {% csrf_token %}
+            <label>Quantidade</label>
+            <input class="form-control" type="number"  value="{{produto.quantidade}}" name="quantidade">
+            <br>
+            <input class="btn btn-success" type="submit" value="Comprar">
+        </form>
+
 
 
     </div>

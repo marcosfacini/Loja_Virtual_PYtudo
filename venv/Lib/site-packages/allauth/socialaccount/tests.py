@@ -1,8 +1,12 @@
+import base64
+import hashlib
 import json
 import random
+import requests
 import warnings
 from urllib.parse import parse_qs, urlparse
 
+import django
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.middleware import MessageMiddleware
@@ -17,7 +21,7 @@ import allauth.app_settings
 from ..account import app_settings as account_settings
 from ..account.models import EmailAddress
 from ..account.utils import user_email, user_username
-from ..tests import MockedResponse, TestCase, mocked_response
+from ..tests import Mock, MockedResponse, TestCase, mocked_response, patch
 from ..utils import get_user_model
 from . import app_settings, providers
 from .helpers import complete_social_login
@@ -165,6 +169,36 @@ class OAuth2TestsMixin(object):
         self.provider = providers.registry.by_id(self.provider_id)
         self.app = setup_app(self.provider)
 
+    def test_provider_has_no_pkce_params(self):
+        provider_settings = app_settings.PROVIDERS.get(self.provider_id, {})
+        provider_settings_with_pkce_set = provider_settings.copy()
+        provider_settings_with_pkce_set["OAUTH_PKCE_ENABLED"] = False
+
+        with self.settings(
+            SOCIALACCOUNT_PROVIDERS={self.provider_id: provider_settings_with_pkce_set}
+        ):
+            self.assertEqual(self.provider.get_pkce_params(), {})
+
+    def test_provider_has_pkce_params(self):
+        provider_settings = app_settings.PROVIDERS.get(self.provider_id, {})
+        provider_settings_with_pkce_set = provider_settings.copy()
+        provider_settings_with_pkce_set["OAUTH_PKCE_ENABLED"] = True
+
+        with self.settings(
+            SOCIALACCOUNT_PROVIDERS={self.provider_id: provider_settings_with_pkce_set}
+        ):
+            pkce_params = self.provider.get_pkce_params()
+            self.assertEqual(
+                set(pkce_params.keys()),
+                {"code_challenge", "code_challenge_method", "code_verifier"},
+            )
+            hashed_verifier = hashlib.sha256(
+                pkce_params["code_verifier"].encode("ascii")
+            )
+            code_challenge = base64.urlsafe_b64encode(hashed_verifier.digest())
+            code_challenge_without_padding = code_challenge.rstrip(b"=")
+            assert pkce_params["code_challenge"] == code_challenge_without_padding
+
     @override_settings(SOCIALACCOUNT_AUTO_SIGNUP=False)
     def test_login(self):
         resp_mock = self.get_mocked_response()
@@ -175,6 +209,50 @@ class OAuth2TestsMixin(object):
             resp_mock,
         )
         self.assertRedirects(resp, reverse("socialaccount_signup"))
+
+    @override_settings(SOCIALACCOUNT_AUTO_SIGNUP=False)
+    def test_login_with_pkce_disabled(self):
+        provider_settings = app_settings.PROVIDERS.get(self.provider_id, {})
+        provider_settings_with_pkce_disabled = provider_settings.copy()
+        provider_settings_with_pkce_disabled["OAUTH_PKCE_ENABLED"] = False
+
+        with self.settings(
+            SOCIALACCOUNT_PROVIDERS={
+                self.provider_id: provider_settings_with_pkce_disabled
+            }
+        ):
+            resp_mock = self.get_mocked_response()
+            if not resp_mock:
+                warnings.warn(
+                    "Cannot test provider %s, no oauth mock" % self.provider.id
+                )
+                return
+            resp = self.login(
+                resp_mock,
+            )
+            self.assertRedirects(resp, reverse("socialaccount_signup"))
+
+    @override_settings(SOCIALACCOUNT_AUTO_SIGNUP=False)
+    def test_login_with_pkce_enabled(self):
+        provider_settings = app_settings.PROVIDERS.get(self.provider_id, {})
+        provider_settings_with_pkce_enabled = provider_settings.copy()
+        provider_settings_with_pkce_enabled["OAUTH_PKCE_ENABLED"] = True
+        with self.settings(
+            SOCIALACCOUNT_PROVIDERS={
+                self.provider_id: provider_settings_with_pkce_enabled
+            }
+        ):
+            resp_mock = self.get_mocked_response()
+            if not resp_mock:
+                warnings.warn(
+                    "Cannot test provider %s, no oauth mock" % self.provider.id
+                )
+                return
+
+            resp = self.login(
+                resp_mock,
+            )
+            self.assertRedirects(resp, reverse("socialaccount_signup"))
 
     def test_account_tokens(self, multiple_login=False):
         if not app_settings.STORE_TOKENS:
@@ -223,21 +301,36 @@ class OAuth2TestsMixin(object):
         """
         self.test_account_tokens(multiple_login=True)
 
-    def login(self, resp_mock, process="login", with_refresh_token=True):
+    def login(self, resp_mock=None, process="login", with_refresh_token=True):
         resp = self.client.post(
             reverse(self.provider.id + "_login")
             + "?"
             + urlencode(dict(process=process))
         )
+
         p = urlparse(resp["location"])
         q = parse_qs(p.query)
+
+        pkce_enabled = app_settings.PROVIDERS.get(self.provider_id, {}).get(
+            "OAUTH_PKCE_ENABLED", self.provider.pkce_enabled_default
+        )
+
+        self.assertEqual("code_challenge" in q, pkce_enabled)
+        self.assertEqual("code_challenge_method" in q, pkce_enabled)
+        if pkce_enabled:
+            code_challenge = q["code_challenge"][0]
+            self.assertEqual(q["code_challenge_method"][0], "S256")
+
         complete_url = reverse(self.provider.id + "_callback")
         self.assertGreater(q["redirect_uri"][0].find(complete_url), 0)
         response_json = self.get_login_response_json(
             with_refresh_token=with_refresh_token
         )
+
         if isinstance(resp_mock, list):
             resp_mocks = resp_mock
+        elif resp_mock is None:
+            resp_mocks = []
         else:
             resp_mocks = [resp_mock]
 
@@ -246,6 +339,30 @@ class OAuth2TestsMixin(object):
             *resp_mocks,
         ):
             resp = self.client.get(complete_url, self.get_complete_parameters(q))
+
+            # Find the access token POST request, and assert that it contains
+            # the correct code_verifier if and only if PKCE is enabled
+            request_calls = requests.request.call_args_list
+            for args, kwargs in request_calls:
+                data = kwargs.get("data", {})
+                if (
+                    args[0] == "POST"
+                    and isinstance(data, dict)
+                    and data.get("redirect_uri", "").endswith(complete_url)
+                ):
+                    self.assertEqual("code_verifier" in data, pkce_enabled)
+
+                    if pkce_enabled:
+                        hashed_code_verifier = hashlib.sha256(
+                            data["code_verifier"].encode("ascii")
+                        )
+                        expected_code_challenge = (
+                            base64.urlsafe_b64encode(hashed_code_verifier.digest())
+                            .rstrip(b"=")
+                            .decode()
+                        )
+                        self.assertEqual(code_challenge, expected_code_challenge)
+
         return resp
 
     def get_complete_parameters(self, q):
@@ -268,6 +385,54 @@ def create_oauth2_tests(provider):
 
     Class.__name__ = "OAuth2Tests_" + provider.id
     return Class
+
+
+class OpenIDConnectTests(OAuth2TestsMixin):
+    oidc_info_content = {
+        "authorization_endpoint": "/login",
+        "userinfo_endpoint": "/userinfo",
+        "token_endpoint": "/token",
+    }
+    userinfo_content = {
+        "picture": "https://secure.gravatar.com/avatar/123",
+        "email": "ness@some.oidc.server.onett.example",
+        "sub": 2187,
+        "identities": [],
+        "name": "Ness",
+    }
+    extra_data = {
+        "picture": "https://secure.gravatar.com/avatar/123",
+        "email": "ness@some.oidc.server.onett.example",
+        "sub": 2187,
+        "identities": [],
+        "name": "Ness",
+    }
+
+    def setUp(self):
+        super(OpenIDConnectTests, self).setUp()
+        patcher = patch(
+            "allauth.socialaccount.providers.openid_connect.views.requests",
+            get=Mock(side_effect=self._mocked_responses),
+        )
+        self.mock_requests = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def get_mocked_response(self):
+        # Enable test_login in OAuth2TestsMixin, but this response mock is unused
+        return True
+
+    def _mocked_responses(self, url, *args, **kwargs):
+        if url.endswith("/.well-known/openid-configuration"):
+            return MockedResponse(200, json.dumps(self.oidc_info_content))
+        elif url.endswith("/userinfo"):
+            return MockedResponse(200, json.dumps(self.userinfo_content))
+
+    @override_settings(SOCIALACCOUNT_AUTO_SIGNUP=True)
+    def test_login_auto_signup(self):
+        resp = self.login()
+        self.assertRedirects(resp, "/accounts/profile/", fetch_redirect_response=False)
+        sa = SocialAccount.objects.get(provider=self.provider.id)
+        self.assertDictEqual(sa.extra_data, self.extra_data)
 
 
 class SocialAccountTests(TestCase):
@@ -560,6 +725,7 @@ class SocialAccountTests(TestCase):
         )
 
     @override_settings(
+        ACCOUNT_PREVENT_ENUMERATION=False,
         ACCOUNT_EMAIL_REQUIRED=True,
         ACCOUNT_EMAIL_VERIFICATION="mandatory",
         ACCOUNT_UNIQUE_EMAIL=True,
@@ -586,14 +752,23 @@ class SocialAccountTests(TestCase):
         resp = self.client.post(
             reverse("socialaccount_signup"), data={"email": "me@example.com"}
         )
-        self.assertFormError(
-            resp,
-            "form",
-            "email",
-            "An account already exists with this e-mail address."
-            " Please sign in to that account first, then connect"
-            " your Google account.",
-        )
+        if django.VERSION >= (4, 1):
+            self.assertFormError(
+                resp.context["form"],
+                "email",
+                "An account already exists with this e-mail address."
+                " Please sign in to that account first, then connect"
+                " your Google account.",
+            )
+        else:
+            self.assertFormError(
+                resp,
+                "form",
+                "email",
+                "An account already exists with this e-mail address."
+                " Please sign in to that account first, then connect"
+                " your Google account.",
+            )
 
     @override_settings(
         ACCOUNT_EMAIL_REQUIRED=True,

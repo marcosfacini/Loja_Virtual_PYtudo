@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'rolepermissions',
     'gestao',
+    'vendas',
 ]
 
 SITE_ID = 1

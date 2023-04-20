@@ -79,6 +79,7 @@ def alterar_produto(request, id):
         descricao = request.POST.get('descricao')
         preco = request.POST.get('preco')
         categoria = request.POST.get('categoria')
+        quantidade = request.POST.get('quantidade')
         produto = Produtos.objects.get(id=id)
         categoria_by_id = Categoria.objects.get(id=categoria)
         produto.nome = nome
@@ -86,6 +87,7 @@ def alterar_produto(request, id):
         preco_in_decimal = Decimal(preco.replace(',','.'))
         produto.preco = preco_in_decimal
         produto.categoria = categoria_by_id
+        produto.quantidade = quantidade
         produto.save()
         messages.add_message(request, constants.SUCCESS, 'Produto atualizado com sucesso.')
         return redirect(f'/produtos/alterar_produto/{id}')

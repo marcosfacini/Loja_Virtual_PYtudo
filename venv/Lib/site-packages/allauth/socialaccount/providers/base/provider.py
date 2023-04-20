@@ -25,9 +25,9 @@ class Provider(object):
         """
         raise NotImplementedError("get_login_url() for " + self.name)
 
-    def get_app(self, request):
+    def get_app(self, request, config=None):
         adapter = get_adapter(request)
-        return adapter.get_app(request, self.id)
+        return adapter.get_app(request, self.id, config=config)
 
     def media_js(self, request):
         """
@@ -170,7 +170,7 @@ class ProviderAccount(object):
                     dflt = super(GoogleAccount, self).__str__()
                     return self.account.extra_data.get('name', dflt)
 
-        So we have this method `to_str` that can be overriden in a conventional
+        So we have this method `to_str` that can be overridden in a conventional
         fashion, without having to worry about it.
         """
         return self.get_brand()["name"]

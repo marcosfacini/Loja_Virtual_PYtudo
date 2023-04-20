@@ -8,3 +8,11 @@ urlpatterns = [
     path('salvar_gestor', views.salvar_gestor, name='salvar_gestor'),
    
 ]
+
+# admin:
+# marcola@gmail.com 
+# marcola
+
+# gestor:
+# gestor@gmail.com
+# mr.m1880
