@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/listar_produtos.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="row">
+        {% for produto in carrinho.produtos.all %}
+            {{produto}}
+        {% endfor %}
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <a class="btn btn-primary" href="{% url 'esvaziar_carrinho' %}" role="button">Esvaziar Carrinho</a>
+
+{% endblock %}
