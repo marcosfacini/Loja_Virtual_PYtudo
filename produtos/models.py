@@ -34,4 +34,4 @@ class Avaliacao(models.Model):
     comentario = models.TextField()
 
     def __str__(self):
-        return self.usuario
+        return self.estrelas

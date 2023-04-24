@@ -40,7 +40,10 @@ def cadastrar_produto(request):
 
 def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)
-    return render(request, 'ver_produto.html', {'produto': produto})
+    avaliacoes = Avaliacao.objects.filter(produto=id)
+    print (avaliacoes)
+    return render(request, 'ver_produto.html', {'produto': produto,
+                                                'avaliacoes': avaliacoes})
 
 @has_permission_decorator('alterar_produto')
 def excluir_produto(request, id):
