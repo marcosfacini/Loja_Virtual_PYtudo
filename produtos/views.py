@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
-from .models import Produtos, Categoria 
+from .models import Produtos, Categoria, Avaliacao
 from .forms import CadastroProduto
 from django.contrib import messages
 from django.contrib.messages import constants 
@@ -91,4 +91,11 @@ def alterar_produto(request, id):
         produto.save()
         messages.add_message(request, constants.SUCCESS, 'Produto atualizado com sucesso.')
         return redirect(f'/produtos/alterar_produto/{id}')
+    
+def salvar_avaliacao(request, id_produto):
+    estrelas = request.POST.get('estrelas')
+    comentario = request.POST.get('comentario')
+    avalicao = Avaliacao(usuario=request.user, produto_id=id_produto, estrelas=estrelas, comentario=comentario)
+    avalicao.save()
+    return redirect(f'/produtos/ver_produto/{id_produto}')
 
