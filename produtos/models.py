@@ -15,6 +15,7 @@ class Produtos(models.Model):
     preco = models.DecimalField(max_digits=6, decimal_places=2)
     categoria = models.ForeignKey(Categoria, blank=True, null=True, on_delete=models.SET_NULL)
     marca = models.CharField(max_length=50)
+    cor = models.CharField(max_length=30)
     quantidade = models.IntegerField()
 
     def __str__(self):

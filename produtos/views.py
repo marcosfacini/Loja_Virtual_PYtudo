@@ -36,7 +36,9 @@ def listar_produtos(request):
     if marca_filtar:
         produtos = produtos.filter(marca__icontains=marca_filtar)
 
-    # cor
+    cor_filtar = request.GET.get('cor')
+    if cor_filtar:
+        produtos = produtos.filter(cor__icontains=cor_filtar)
     
     return render(request, 'produtos.html', {'produtos': produtos, 
                                             'categorias': categorias})
