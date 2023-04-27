@@ -13,13 +13,29 @@ from decimal import Decimal
 def listar_produtos(request):
     produtos = Produtos.objects.all()
     categorias = Categoria.objects.all()
+    
     nome_filtrar = request.GET.get('nome')
+    if nome_filtrar:
+        produtos = produtos.filter(nome__icontains=nome_filtrar)
+    
     categoria_filtrar = request.GET.get('categoria')
-    if nome_filtrar or categoria_filtrar:
-        if categoria_filtrar == None:
-            produtos = produtos.filter(nome__icontains=nome_filtrar)
-        else:
-            produtos = produtos.filter(nome__icontains=nome_filtrar).filter(categoria_id=categoria_filtrar)
+    if categoria_filtrar: 
+        produtos = produtos.filter(categoria_id=categoria_filtrar)
+    
+    preco_menor_filtrar = request.GET.get('preco_menor_filtrar')
+    if preco_menor_filtrar:
+        preco_menor_filtrar_decimal = Decimal(preco_menor_filtrar.replace(',','.'))
+        produtos = produtos.filter(preco__lt=preco_menor_filtrar_decimal)
+    
+    preco_maior_filtrar = request.GET.get('preco_maior_filtrar')
+    if preco_maior_filtrar:
+        preco_maior_filtrar_decimal = Decimal(preco_maior_filtrar.replace(',','.'))
+        produtos = produtos.filter(preco__gt=preco_maior_filtrar_decimal)
+
+
+    # marca
+    # cor
+    
     return render(request, 'produtos.html', {'produtos': produtos, 
                                             'categorias': categorias})
 

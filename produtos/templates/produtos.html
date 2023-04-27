@@ -21,7 +21,7 @@
 
 
             
-        <form action="#" method="GET"> {% csrf_token %}
+        <form action="#" method="GET"> {% csrf_token %} 
             <div class="row">
                 
                     <div class="col-md-5">
@@ -35,6 +35,14 @@
                                 <option value="{{categoria.id}}">{{categoria}} </option>
                             {% endfor %}
                         </select>
+                    </div>
+
+                    <div>
+                        <label>Menor que:</label>
+                        <input type="text" name="preco_menor_filtrar">
+
+                        <label> Maior que:</label>
+                        <input type="text" name="preco_maior_filtrar">
                     </div>
                 
                 <div class="col-md-3">
