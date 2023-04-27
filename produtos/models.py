@@ -5,7 +5,6 @@ from django.conf import settings
 class Categoria(models.Model):
     nome = models.CharField(max_length=40)
 
-
     def __str__(self):
         return self.nome
 
@@ -14,8 +13,9 @@ class Produtos(models.Model):
     descricao = models.TextField()
     foto = models.ImageField()
     preco = models.DecimalField(max_digits=6, decimal_places=2)
-    categoria = models.ForeignKey(Categoria, null=True, on_delete=models.SET_NULL)
-    quantidade = models.IntegerField(default=0)
+    categoria = models.ForeignKey(Categoria, blank=True, null=True, on_delete=models.SET_NULL)
+    marca = models.CharField(max_length=50)
+    quantidade = models.IntegerField()
 
     def __str__(self):
         return self.nome

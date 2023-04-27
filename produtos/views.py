@@ -32,8 +32,10 @@ def listar_produtos(request):
         preco_maior_filtrar_decimal = Decimal(preco_maior_filtrar.replace(',','.'))
         produtos = produtos.filter(preco__gt=preco_maior_filtrar_decimal)
 
+    marca_filtar = request.GET.get('marca')
+    if marca_filtar:
+        produtos = produtos.filter(marca__icontains=marca_filtar)
 
-    # marca
     # cor
     
     return render(request, 'produtos.html', {'produtos': produtos, 
