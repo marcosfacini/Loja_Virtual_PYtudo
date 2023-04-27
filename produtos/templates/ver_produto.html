@@ -7,7 +7,7 @@
     <link href="{% static 'produtos/css/ver_produto.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block 'body' %}
+{% block 'body' %} 
 
     {% if messages %}
         {% for message in messages %}
@@ -27,6 +27,8 @@
             <p class="paragrafo">{{produto.descricao}}</p>
             <p class="paragrafo">{{produto.preco}}</p>
             <p class="paragrafo">{{produto.categoria}}</p>
+            <p class="paragrafo">{{produto.marca}}</p>
+            <p class="paragrafo">{{produto.cor}}</p>
         </div>
     </div>
 
