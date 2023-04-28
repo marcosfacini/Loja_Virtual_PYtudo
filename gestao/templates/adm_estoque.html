@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="#" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Foto</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Categoria</th>
+        <th scope="col"> Quantidade</th>
+        <th scope="col">Editar</th>
+        <th scope="col">Remover</th>
+      </tr>
+    </thead>
+
+    <tbody>
+        {% for produto in produtos %}
+            <tr>
+                <th scope="row">{{ produto.id }}</th>
+                <td><a href="{% url 'ver_produto' produto.id %}">
+                        <img src="{{ produto.foto.url }}" width="80" height="80"></td>
+                    </a>
+                <td>{{ produto.nome }}</td>
+                <td>{{ produto.categoria }}</td>
+                <td>{{ produto.quantidade }}</td>
+                <td><a href="{% url 'alterar_produto' produto.id %}">Alterar</a></td>
+                <td><a href="{% url 'excluir_produto' produto.id %}">Remover</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

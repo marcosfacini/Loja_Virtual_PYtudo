@@ -69,7 +69,7 @@ def ver_produto(request, id):
 def excluir_produto(request, id):
     produto = Produtos.objects.get(id=id)
     produto.delete()
-    return redirect('/produtos/listar_produtos')
+    return redirect('/gestao/adm_estoque')
 
 def listar_categorias(request):
     categorias = Categoria.objects.all()

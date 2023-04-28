@@ -5,6 +5,7 @@ from rolepermissions.roles import assign_role
 from rolepermissions.permissions import grant_permission, revoke_permission
 from django.contrib.auth.models import User
 from rolepermissions.decorators import has_role_decorator
+from produtos.models import Produtos
 
 @has_role_decorator('gestor')
 def criar_gerente(request):
@@ -35,6 +36,10 @@ def salvar_gestor(request):
     assign_role(gestor, 'gestor')
     messages.add_message(request, constants.SUCCESS, 'Gestor cadastrado com sucesso')
     return redirect('/produtos/listar_produtos')
+
+def adm_estoque(request):
+    produtos = Produtos.objects.all()
+    return render(request, 'adm_estoque.html', {'produtos': produtos})
 
 
 
