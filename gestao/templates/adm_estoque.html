@@ -31,7 +31,7 @@
     </thead>
 
     <tbody>
-        {% for produto in produtos %}
+        {% for produto in produtos_paginados %}
             <tr>
                 <th scope="row">{{ produto.id }}</th>
                 <td><a href="{% url 'ver_produto' produto.id %}">
@@ -45,6 +45,22 @@
             </tr>
         {% endfor %}
     </tbody>
-  </table>
+</table>
+
+  <div class="pagination">
+    <span class="step-links">
+        {% if produtos_paginados.has_previous %}
+            <a href="?page={{ produtos_paginados.previous_page_number }}">anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ produtos_paginados.number }} of {{ produtos_paginados.paginator.num_pages }}.
+        </span>
+
+        {% if produtos_paginados.has_next %}
+            <a href="?page={{ produtos_paginados.next_page_number }}">próxima</a>
+        {% endif %}
+    </span>
+    </div>
 
 {% endblock %}

@@ -7,6 +7,7 @@ from django.contrib.messages import constants
 from rolepermissions.decorators import has_permission_decorator, has_role_decorator
 from django.db.models import Q
 from decimal import Decimal
+from django.core.paginator import Paginator
 
 
 
@@ -39,8 +40,12 @@ def listar_produtos(request):
     cor_filtar = request.GET.get('cor')
     if cor_filtar:
         produtos = produtos.filter(cor__icontains=cor_filtar)
+
+    paginacao = Paginator(produtos, 3)
+    page = request.GET.get('page')
+    produtos_paginados = paginacao.get_page(page)
     
-    return render(request, 'produtos.html', {'produtos': produtos, 
+    return render(request, 'produtos.html', {'produtos_paginados': produtos_paginados, 
                                             'categorias': categorias})
 
 @has_permission_decorator('alterar_produto')

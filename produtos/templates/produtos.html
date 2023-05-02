@@ -60,7 +60,7 @@
 
 
     <div class="row">
-        {% for produto in produtos %} 
+        {% for produto in produtos_paginados %} 
             <div class="col-md">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
@@ -78,5 +78,21 @@
         {% endfor %}
 
     </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if produtos_paginados.has_previous %}
+                <a href="?page={{ produtos_paginados.previous_page_number }}">anterior</a>
+            {% endif %}
+    
+            <span class="current">
+                Página {{ produtos_paginados.number }} of {{ produtos_paginados.paginator.num_pages }}.
+            </span>
+    
+            {% if produtos_paginados.has_next %}
+                <a href="?page={{ produtos_paginados.next_page_number }}">próxima</a>
+            {% endif %}
+        </span>
+        </div>
 
 {% endblock %}

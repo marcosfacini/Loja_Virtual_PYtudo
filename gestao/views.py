@@ -6,6 +6,7 @@ from rolepermissions.permissions import grant_permission, revoke_permission
 from django.contrib.auth.models import User
 from rolepermissions.decorators import has_role_decorator
 from produtos.models import Produtos
+from django.core.paginator import Paginator
 
 @has_role_decorator('gestor')
 def criar_gerente(request):
@@ -39,7 +40,10 @@ def salvar_gestor(request):
 
 def adm_estoque(request):
     produtos = Produtos.objects.all()
-    return render(request, 'adm_estoque.html', {'produtos': produtos})
+    paginacao = Paginator(produtos, 3)
+    page = request.GET.get('page')
+    produtos_paginados = paginacao.get_page(page)
+    return render(request, 'adm_estoque.html', {'produtos_paginados': produtos_paginados})
 
 
 
