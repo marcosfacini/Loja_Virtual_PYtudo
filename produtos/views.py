@@ -41,7 +41,19 @@ def listar_produtos(request):
     if cor_filtar:
         produtos = produtos.filter(cor__icontains=cor_filtar)
 
-    paginacao = Paginator(produtos, 3)
+    ordem_aleatoria = produtos.order_by('?')
+    paginacao = Paginator(ordem_aleatoria, 3)
+
+    ordenacao = request.GET.get('ordenacao')
+    if ordenacao == 'maior':
+        produtos_ordenados = produtos.order_by('-preco')
+        paginacao = Paginator(produtos_ordenados, 3)
+
+    elif ordenacao == 'menor':
+        produtos_ordenados = produtos.order_by('preco')
+        paginacao = Paginator(produtos_ordenados, 3)
+
+    
     page = request.GET.get('page')
     produtos_paginados = paginacao.get_page(page)
     

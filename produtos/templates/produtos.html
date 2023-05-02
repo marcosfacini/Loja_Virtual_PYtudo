@@ -55,6 +55,20 @@
             </div>
         </form>
 
+        <br>
+        <br>
+        <form action="#" method="GET"> {% csrf_token %} 
+            <select class="form-select" aria-label="Default select example" name="ordenacao">
+                <option value="" disabled selected hidden>Ordenar por:</option>
+                <option value="maior">Maior preço</option>
+                <option value="menor">Menor preço</option>
+            </select>
+            <input type="submit" value="Ordenar" class="btn btn-primary">
+        </form>
+
+        <br>
+        <br>
+
 
 
 
