@@ -41,8 +41,7 @@ def listar_produtos(request):
     if cor_filtar:
         produtos = produtos.filter(cor__icontains=cor_filtar)
 
-    ordem_aleatoria = produtos.order_by('?')
-    paginacao = Paginator(ordem_aleatoria, 3)
+    paginacao = Paginator(produtos, 3)
 
     ordenacao = request.GET.get('ordenacao')
     if ordenacao == 'maior':
@@ -53,12 +52,18 @@ def listar_produtos(request):
         produtos_ordenados = produtos.order_by('preco')
         paginacao = Paginator(produtos_ordenados, 3)
 
+    # TODO ordenação padrão por data de cadastro mais recente 
+
+    # form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos
     
+    # fazer query unica de filtro com o metodo importado Q
+
     page = request.GET.get('page')
     produtos_paginados = paginacao.get_page(page)
+
     
     return render(request, 'produtos.html', {'produtos_paginados': produtos_paginados, 
-                                            'categorias': categorias})
+                                             'categorias': categorias,})
 
 @has_permission_decorator('alterar_produto')
 def cadastrar_produto(request):

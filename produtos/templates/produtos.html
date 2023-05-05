@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filtros %}
 
 {% block 'title' %}PYTudo{% endblock %}
 
@@ -57,7 +58,7 @@
 
         <br>
         <br>
-        <form action="#" method="GET"> {% csrf_token %} 
+        <form action="" method="GET"> {% csrf_token %} 
             <select class="form-select" aria-label="Default select example" name="ordenacao">
                 <option value="" disabled selected hidden>Ordenar por:</option>
                 <option value="maior">Maior preço</option>
@@ -94,19 +95,24 @@
     </div>
 
     <div class="pagination">
-        <span class="step-links">
             {% if produtos_paginados.has_previous %}
-                <a href="?page={{ produtos_paginados.previous_page_number }}">anterior</a>
+                <a href="?{% param_replace page=1 %}">First</a>
+                {% if produtos_paginados.previous_page_number != 1 %}
+                    <a href="?{% param_replace page=produtos_paginados.previous_page_number %}">Previous</a>
+                {% endif %}
             {% endif %}
-    
-            <span class="current">
-                Página {{ produtos_paginados.number }} of {{ produtos_paginados.paginator.num_pages }}.
-            </span>
-    
+
+            Page {{ produtos_paginados.number }} of {{ paginator.num_pages }}
+
             {% if produtos_paginados.has_next %}
-                <a href="?page={{ produtos_paginados.next_page_number }}">próxima</a>
+                {% if produtos_paginados.next_page_number != paginator.num_pages %}
+                    <a href="?{% param_replace page=produtos_paginados.next_page_number %}">Next</a>
+                {% endif %}
+                <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
             {% endif %}
-        </span>
-        </div>
+
+            <p>Objects {{ produtos_paginados.start_index }}—{{ produtos_paginados.end_index }}</p>
+        
+    </div>
 
 {% endblock %}
