@@ -49,30 +49,21 @@
                     <input type="text" placeholder="Busque pela marca"  name="marca">
 
                     <input type="text" placeholder="Busque pela cor"  name="cor">
+
+                    <select class="form-select" aria-label="Default select example" name="ordenacao">
+                        <option value="" disabled selected hidden>Ordenar por:</option>
+                        <option value="maior">Maior preço</option>
+                        <option value="menor">Menor preço</option>
+                    </select>
                 
                 <div class="col-md-3">
                     <input type="submit" value="FILTRAR" class="btn btn-primary">
                 </div>
             </div>
         </form>
-
+        
         <br>
         <br>
-        <form action="" method="GET"> {% csrf_token %} 
-            <select class="form-select" aria-label="Default select example" name="ordenacao">
-                <option value="" disabled selected hidden>Ordenar por:</option>
-                <option value="maior">Maior preço</option>
-                <option value="menor">Menor preço</option>
-            </select>
-            <input type="submit" value="Ordenar" class="btn btn-primary">
-        </form>
-
-        <br>
-        <br>
-
-
-
-
 
     <div class="row">
         {% for produto in produtos_paginados %} 
@@ -95,24 +86,25 @@
     </div>
 
     <div class="pagination">
-            {% if produtos_paginados.has_previous %}
-                <a href="?{% param_replace page=1 %}">First</a>
-                {% if produtos_paginados.previous_page_number != 1 %}
-                    <a href="?{% param_replace page=produtos_paginados.previous_page_number %}">Previous</a>
-                {% endif %}
+        {% if produtos_paginados.has_previous %}
+            <a href="?{% param_replace page=1 %}">First</a>
+            {% if produtos_paginados.previous_page_number != 1 %}
+                <a href="?{% param_replace page=produtos_paginados.previous_page_number %}">Previous</a>
             {% endif %}
+        {% endif %}
 
-            Page {{ produtos_paginados.number }} of {{ paginator.num_pages }}
+        Page {{ produtos_paginados.number }} of {{ paginator.num_pages }} 
 
-            {% if produtos_paginados.has_next %}
-                {% if produtos_paginados.next_page_number != paginator.num_pages %}
-                    <a href="?{% param_replace page=produtos_paginados.next_page_number %}">Next</a>
-                {% endif %}
-                <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+        {% if produtos_paginados.has_next %}
+            {% if produtos_paginados.next_page_number != paginator.num_pages %}
+                <a href="?{% param_replace page=produtos_paginados.next_page_number %}">Next</a>
             {% endif %}
+            <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+        {% endif %}
 
-            <p>Objects {{ produtos_paginados.start_index }}—{{ produtos_paginados.end_index }}</p>
+        <p>Objects {{ produtos_paginados.start_index }}—{{ produtos_paginados.end_index }}</p>
         
-    </div>
+    </div> 
 
+    
 {% endblock %}

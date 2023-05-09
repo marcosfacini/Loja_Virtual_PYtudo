@@ -41,7 +41,8 @@ def listar_produtos(request):
     if cor_filtar:
         produtos = produtos.filter(cor__icontains=cor_filtar)
 
-    paginacao = Paginator(produtos, 3)
+    produtos_ordenados = produtos.order_by('-id')
+    paginacao = Paginator(produtos_ordenados, 3)
 
     ordenacao = request.GET.get('ordenacao')
     if ordenacao == 'maior':
@@ -52,9 +53,8 @@ def listar_produtos(request):
         produtos_ordenados = produtos.order_by('preco')
         paginacao = Paginator(produtos_ordenados, 3)
 
-    # TODO ordenação padrão por data de cadastro mais recente 
-
-    # form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos
+    # form nao apaga a pesquisa quando a pagina e recarregada, 
+    # mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
     
     # fazer query unica de filtro com o metodo importado Q
 
