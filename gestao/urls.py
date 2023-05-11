@@ -17,3 +17,56 @@ urlpatterns = [
 # gestor:
 # gestor@gmail.com
 # mr.m1880
+
+# TODO 
+
+""" Lista de desejos
+
+Capturar registro do que foi atualizado usuario/produtos
+
+Emails
+
+Historico de compras do usuario
+
+Controle de estoque do gerente quant/sub/add
+
+Cupom de desconto 
+
+Validação dos campos
+
+Testes automatizados
+
+Metodo de pagamento
+
+Calculo de frete api
+
+Tratamento de erros try/except
+
+Soma dos produtos no carrinho
+
+Processo de venda
+
+Mais de uma imagem por produto 
+
+Usuario seleciona quais produtos ficarao na home
+
+Produtos em destaque/promoção num banner
+
+Segurança/repassar permissões em todas as views visando possiveis ataques 
+
+Pagina de perfil e botão atualizar só o usuario do perfil tem acesso  
+If com request.user na view?
+If dentro do template html?
+
+Gestao desabilita/habilita contas de  usuarios e gerentes
+
+Desabilitar urls do accounts que não vou usar
+
+# form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
+
+
+Front:
+Templates do accounts/404
+Form de avaliação em estrelas
+Navbar/menu
+Css das paginas """

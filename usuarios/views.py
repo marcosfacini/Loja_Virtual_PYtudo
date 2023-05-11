@@ -37,7 +37,7 @@ def excluir_usuario(request, id):
 
 def ver_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
-    return render(request, 'ver_usuario.html', {'usuario': usuario})
+    return render(request, 'ver_usuario.html', {'usuario': usuario,})
 
 def atualizar_usuario(request, id):
     if request.method == 'GET':    

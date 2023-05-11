@@ -5,7 +5,6 @@ from .forms import CadastroProduto
 from django.contrib import messages
 from django.contrib.messages import constants 
 from rolepermissions.decorators import has_permission_decorator, has_role_decorator
-from django.db.models import Q
 from decimal import Decimal
 from django.core.paginator import Paginator
 
@@ -52,16 +51,10 @@ def listar_produtos(request):
     elif ordenacao == 'menor':
         produtos_ordenados = produtos.order_by('preco')
         paginacao = Paginator(produtos_ordenados, 3)
-
-    # form nao apaga a pesquisa quando a pagina e recarregada, 
-    # mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
     
-    # fazer query unica de filtro com o metodo importado Q
-
     page = request.GET.get('page')
     produtos_paginados = paginacao.get_page(page)
 
-    
     return render(request, 'produtos.html', {'produtos_paginados': produtos_paginados, 
                                              'categorias': categorias,})
 

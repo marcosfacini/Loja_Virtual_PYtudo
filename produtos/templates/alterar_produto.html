@@ -23,6 +23,11 @@
         </div>
     </div>
 
+    <br>
+    {{produto.data_cadastro}}
+    <br>
+    {{produto.data_atualizacao}}
+
     <div class="container">
         <br>
       <form action="{% url 'alterar_produto' produto.id %}" method="POST">

@@ -17,6 +17,9 @@ class Produtos(models.Model):
     marca = models.CharField(max_length=50)
     cor = models.CharField(max_length=30)
     quantidade = models.IntegerField()
+    data_cadastro = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True, null=True)
+
 
     def __str__(self):
         return self.nome

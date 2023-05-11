@@ -45,5 +45,9 @@ def adm_estoque(request):
     produtos_paginados = paginacao.get_page(page)
     return render(request, 'adm_estoque.html', {'produtos_paginados': produtos_paginados})
 
+    # fazer query unica de filtros combinados com o metodo importado Q
+    # from django.db.models import Q
 
 
+usuario = User.objects.get(id=24)
+print (usuario.last_login)
