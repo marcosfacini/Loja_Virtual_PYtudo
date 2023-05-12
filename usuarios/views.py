@@ -34,7 +34,7 @@ def listar_usuarios(request):
 
     email_filtrar = request.GET.get('email')
     if email_filtrar:
-        usuarios = usuarios.filter(email=email_filtrar)
+        usuarios = usuarios.filter(usuario__email__icontains=email_filtrar)
 
     endereco_filtrar = request.GET.get('endereco')
     if endereco_filtrar:
@@ -48,7 +48,6 @@ def listar_usuarios(request):
     if estado_filtrar:
         usuarios = usuarios.filter(estado__icontains=estado_filtrar)
 
-    # arrumar filtro de email
     # criar filtro de telefone e cpf
 
     usuarios_ordenados = usuarios.order_by('-id')
