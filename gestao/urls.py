@@ -24,11 +24,14 @@ urlpatterns = [
 
 Capturar registro do que foi atualizado usuario/produtos
 
-Emails
-
-Historico de compras do usuario
+Historico de compras do usuario e de vendas do produto
 
 Controle de estoque do gerente quant/sub/add
+quantidade inicial/atual
+preco de custo/preco pro consumirdor/lucro
+relatorio de balanço de lucro
+
+ordenacao por tabela na lista de produtos e de usuarios do gestor
 
 Cupom de desconto 
 
@@ -69,4 +72,10 @@ Front:
 Templates do accounts/404
 Form de avaliação em estrelas
 Navbar/menu
-Css das paginas """
+Css das paginas 
+footer 
+modal em botoes excluir
+
+
+deploy/servidor e integracao com bd
+emails """

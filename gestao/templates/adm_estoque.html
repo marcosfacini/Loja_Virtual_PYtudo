@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filtros %}
 
 {% block 'title' %}PYTudo{% endblock %}
 
@@ -17,6 +18,49 @@
         {% endfor %}
     {% endif %}
 
+
+    <form action="#" method="GET"> {% csrf_token %} 
+        <div class="row">
+            
+                <div class="col-md-5">
+                    <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+                </div>
+
+                <div class="col-md-4">
+                    <select class="form-select" name="categoria">
+                        <option value="" disabled selected hidden>Escolha uma categoria</option>
+                        {% for categoria in categorias %}
+                            <option value="{{categoria.id}}">{{categoria}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label>Preço menor que:</label>
+                    <input type="text" name="preco_menor_filtrar">
+
+                    <label> Preço maior que:</label>
+                    <input type="text" name="preco_maior_filtrar">
+                </div>
+
+                <input type="text" placeholder="Busque pela marca"  name="marca">
+
+                <input type="text" placeholder="Busque pela cor"  name="cor">
+
+                <div>
+                    <label> Quantidade menor que:</label>
+                    <input type="text" name="quantidade_menor_filtrar">
+
+                    <label> Quantidade maior que:</label>
+                    <input type="text" name="quantidade_maior_filtrar">
+                </div>
+            
+            <div class="col-md-3">
+                <input type="submit" value="FILTRAR" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+
 <table class="table table-striped">
     <thead>
       <tr>
@@ -25,6 +69,9 @@
         <th scope="col">Nome</th>
         <th scope="col">Categoria</th>
         <th scope="col"> Quantidade</th>
+        <th scope="col"> Marca</th>
+        <th scope="col"> Cor</th>
+        <th scope="col"> Preço</th>
         <th scope="col">Editar</th>
         <th scope="col">Remover</th>
       </tr>
@@ -37,9 +84,12 @@
                 <td><a href="{% url 'ver_produto' produto.id %}">
                         <img src="{{ produto.foto.url }}" width="80" height="80"></td>
                     </a>
-                <td>{{ produto.nome }}</td>
-                <td>{{ produto.categoria }}</td>
-                <td>{{ produto.quantidade }}</td>
+                <td>{{ produto.nome}}</td>
+                <td>{{ produto.categoria}}</td>
+                <td>{{ produto.quantidade}}</td>
+                <td>{{ produto.marca}}</td>
+                <td>{{ produto.cor}}</td>
+                <td>{{ produto.preco}}</td>
                 <td><a href="{% url 'alterar_produto' produto.id %}">Alterar</a></td>
                 <td><a href="{% url 'excluir_produto' produto.id %}">Remover</a></td>
             </tr>
@@ -47,20 +97,25 @@
     </tbody>
 </table>
 
-  <div class="pagination">
-    <span class="step-links">
-        {% if produtos_paginados.has_previous %}
-            <a href="?page={{ produtos_paginados.previous_page_number }}">anterior</a>
+<div class="pagination">
+    {% if produtos_paginados.has_previous %}
+        <a href="?{% param_replace page=1 %}">First</a>
+        {% if produtos_paginados.previous_page_number != 1 %}
+            <a href="?{% param_replace page=produtos_paginados.previous_page_number %}">Previous</a>
         {% endif %}
+    {% endif %}
 
-        <span class="current">
-            Página {{ produtos_paginados.number }} of {{ produtos_paginados.paginator.num_pages }}.
-        </span>
+    Page {{ produtos_paginados.number }} of {{ paginator.num_pages }} 
 
-        {% if produtos_paginados.has_next %}
-            <a href="?page={{ produtos_paginados.next_page_number }}">próxima</a>
+    {% if produtos_paginados.has_next %}
+        {% if produtos_paginados.next_page_number != paginator.num_pages %}
+            <a href="?{% param_replace page=produtos_paginados.next_page_number %}">Next</a>
         {% endif %}
-    </span>
-    </div>
+        <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+    {% endif %}
+
+    <p>Objects {{ produtos_paginados.start_index }}—{{ produtos_paginados.end_index }}</p>
+    
+</div> 
 
 {% endblock %}

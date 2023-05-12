@@ -5,8 +5,9 @@ from rolepermissions.roles import assign_role
 from rolepermissions.permissions import grant_permission, revoke_permission
 from django.contrib.auth.models import User
 from rolepermissions.decorators import has_role_decorator
-from produtos.models import Produtos
+from produtos.models import Produtos, Categoria
 from django.core.paginator import Paginator
+from decimal import Decimal
 
 @has_role_decorator('gestor')
 def criar_gerente(request):
@@ -40,14 +41,50 @@ def salvar_gestor(request):
 
 def adm_estoque(request):
     produtos = Produtos.objects.all()
-    paginacao = Paginator(produtos, 3)
+    categorias = Categoria.objects.all()
+
+    nome_filtrar = request.GET.get('nome')
+    if nome_filtrar:
+        produtos = produtos.filter(nome__icontains=nome_filtrar)
+    
+    categoria_filtrar = request.GET.get('categoria')
+    if categoria_filtrar: 
+        produtos = produtos.filter(categoria_id=categoria_filtrar)
+    
+    preco_menor_filtrar = request.GET.get('preco_menor_filtrar')
+    if preco_menor_filtrar:
+        preco_menor_filtrar_decimal = Decimal(preco_menor_filtrar.replace(',','.'))
+        produtos = produtos.filter(preco__lt=preco_menor_filtrar_decimal)
+    
+    preco_maior_filtrar = request.GET.get('preco_maior_filtrar')
+    if preco_maior_filtrar:
+        preco_maior_filtrar_decimal = Decimal(preco_maior_filtrar.replace(',','.'))
+        produtos = produtos.filter(preco__gt=preco_maior_filtrar_decimal)
+
+    marca_filtar = request.GET.get('marca')
+    if marca_filtar:
+        produtos = produtos.filter(marca__icontains=marca_filtar)
+
+    cor_filtar = request.GET.get('cor')
+    if cor_filtar:
+        produtos = produtos.filter(cor__icontains=cor_filtar)
+
+    quantidade_menor_filtrar = request.GET.get('quantidade_menor_filtrar')
+    if quantidade_menor_filtrar:
+        produtos = produtos.filter(quantidade__lt=quantidade_menor_filtrar)
+
+    quantidade_maior_filtrar = request.GET.get('quantidade_maior_filtrar')
+    if quantidade_maior_filtrar:
+        produtos = produtos.filter(quantidade__gt=quantidade_maior_filtrar)
+
+
+    produtos_ordenados = produtos.order_by('-id')
+    paginacao = Paginator(produtos_ordenados, 8)
     page = request.GET.get('page')
     produtos_paginados = paginacao.get_page(page)
-    return render(request, 'adm_estoque.html', {'produtos_paginados': produtos_paginados})
 
-    # fazer query unica de filtros combinados com o metodo importado Q
-    # from django.db.models import Q
+    return render(request, 'adm_estoque.html', {'produtos_paginados': produtos_paginados,
+                                                'categorias': categorias})
 
 
-usuario = User.objects.get(id=24)
-print (usuario.last_login)
+

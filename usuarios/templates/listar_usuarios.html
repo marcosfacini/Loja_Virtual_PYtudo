@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filtros %}
 
 {% block 'title' %}PYTudo{% endblock %}
 
@@ -7,7 +8,7 @@
     <link href="{% static 'usuarios/css/listar_usuarios.css' %}" rel="stylesheet">
 {% endblock %}
 
-{% block 'body' %}
+{% block 'body' %} 
 
     {% if messages %}
         {% for message in messages %}
@@ -17,23 +18,82 @@
         {% endfor %}
     {% endif %}
 
-        
-        <h2 class="titulo">Usuarios</h2>
-
+    <form action="#" method="GET"> {% csrf_token %} 
         <div class="row">
-            {% for usuario in usuarios %} 
-                <div class="col-md">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                                <a href="{% url 'ver_usuario' usuario.id %}" > <h5 class="card-title">{{usuario.nome}}</h5> </a>
-                                <a class="btn btn-danger" href="{% url 'excluir_usuario' usuario.id %}" role="button">Excluir</a>
-                                <a class="btn btn-warning" href="{% url 'atualizar_usuario' usuario.id %}" role="button">Atualizar</a>
-                        </div>
-                    </div>
-                </div> 
-            {% endfor %}
+
+            <div class="col-md-5">
+                <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+            </div>
+
+            <div class="col-md-5">
+                <input type="text" placeholder="Busque pelo email" class="form-control" name="email">
+            </div>
+
+            <div class="col-md-5">
+                <input type="text" placeholder="Busque pelo endereço" class="form-control" name="endereco">
+            </div>
+
+            <div class="col-md-5">
+                <input type="text" placeholder="Busque pelo cidade" class="form-control" name="cidade">
+            </div>
+
+            <div class="col-md-5">
+                <input type="text" placeholder="Busque pelo estado" class="form-control" name="estado">
+            </div>
+
+            <div class="col-md-3">
+                <input type="submit" value="FILTRAR" class="btn btn-primary">
+            </div>
         </div>
+    </form>
+        
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Cidade</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Editar</th>
+            <th scope="col">Remover</th>
+          </tr>
+        </thead>
 
+        <tbody>
+            {% for usuario in usuarios_paginados %}
+                <tr>
+                    <td><a href="{% url 'ver_usuario' usuario.id %}">{{ usuario.nome}}</a></td>
+                    <td>{{ usuario.usuario}}</td>
+                    <td>{{ usuario.cidade}}</td>
+                    <td>{{ usuario.estado}}</td>
+                    <td><a href="{% url 'atualizar_usuario' usuario.id %}">Alterar</a></td>
+                    <td><a href="{% url 'excluir_usuario' usuario.id %}">Remover</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
+        
+
+        <div class="pagination">
+            {% if usuarios_paginados.has_previous %}
+                <a href="?{% param_replace page=1 %}">First</a>
+                {% if usuarios_paginados.previous_page_number != 1 %}
+                    <a href="?{% param_replace page=usuarios_paginados.previous_page_number %}">Previous</a>
+                {% endif %}
+            {% endif %}
+        
+            Page {{ usuarios_paginados.number }} of {{ paginator.num_pages }} 
+        
+            {% if usuarios_paginados.has_next %}
+                {% if usuarios_paginados.next_page_number != paginator.num_pages %}
+                    <a href="?{% param_replace page=usuarios_paginados.next_page_number %}">Next</a>
+                {% endif %}
+                <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+            {% endif %}
+        
+            <p>Objects {{ usuarios_paginados.start_index }}—{{ usuarios_paginados.end_index }}</p>
+            
+        </div> 
 
 {% endblock %}

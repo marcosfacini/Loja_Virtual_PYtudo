@@ -12,6 +12,7 @@ class Produtos(models.Model):
     nome = models.CharField(max_length=50)
     descricao = models.TextField()
     foto = models.ImageField()
+    # preco_de_custo = models.DecimalField(max_digits=6, decimal_places=2)
     preco = models.DecimalField(max_digits=6, decimal_places=2)
     categoria = models.ForeignKey(Categoria, blank=True, null=True, on_delete=models.SET_NULL)
     marca = models.CharField(max_length=50)
