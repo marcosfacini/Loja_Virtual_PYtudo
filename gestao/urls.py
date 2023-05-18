@@ -20,7 +20,7 @@ urlpatterns = [
 
 # TODO 
 
-""" Lista de desejos
+""" Lista de desejos - igual model carrinho? - mudar model carrinho para armazenar dados numa session?
 
 Capturar registro do que foi atualizado usuario/produtos
 
@@ -35,7 +35,9 @@ ordenacao por tabela na lista de produtos e de usuarios do gestor
 
 Cupom de desconto 
 
-Validação dos campos
+Validação dos campos - regex?
+mensagem de erro
+mascaras no forms
 
 Testes automatizados
 
@@ -75,7 +77,13 @@ Navbar/menu
 Css das paginas 
 footer 
 modal em botoes excluir
+filtrar forma como usuario ve o celular (sem o +55)
 
+precisa importar essa versao do bootstrap?
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+menu da nav so funciona na versao 4
+
+tentar importar arquivos estaticos jquery pelo static
 
 deploy/servidor e integracao com bd
 emails """

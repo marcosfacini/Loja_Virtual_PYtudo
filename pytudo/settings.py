@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'rolepermissions',
     'gestao',
     'vendas',
+    "phonenumber_field",
+    'cpf_field',
 ]
 
 SITE_ID = 1
@@ -158,3 +160,6 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_UNIQUE_EMAIL = True
+
+
+PHONENUMBER_DEFAULT_REGION = 'BR'
