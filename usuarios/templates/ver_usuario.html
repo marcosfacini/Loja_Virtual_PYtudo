@@ -21,15 +21,17 @@
         <div class="col-md">
             <h1 class="titulo">{{usuario.nome}}</h1>
             <p class="paragrafo">{{usuario.usuario}}</p>
-            <p class="paragrafo">{{usuario.celular}}</p>
+            <p class="paragrafo">{{usuario.celular.as_national}}</p>
+            <p class="paragrafo">{{usuario.data_de_nascimento|date:"d/m/Y"}}</p>
             <p class="paragrafo">{{usuario.endereco}}</p>
             <p class="paragrafo">{{usuario.numero_endereco}}</p>
             <p class="paragrafo">{{usuario.bairro}}</p>
             <p class="paragrafo">{{usuario.cidade}}</p>
             <p class="paragrafo">{{usuario.estado}}</p>
-            <p class="paragrafo">DATA DE CADASTRO: {{usuario.usuario.date_joined}}</p>
-            <p class="paragrafo">DATA DO ULTIMO LOGIN: {{usuario.usuario.last_login}}: </p>
-            <p class="paragrafo">ATUALIZADO EM: {{usuario.data_atualizacao}}</p>
+            <p class="paragrafo">DATA DE CADASTRO: {{usuario.usuario.date_joined|date:"d/m/Y" }} às {{ usuario.usuario.date_joined|time:"H:i" }}</p>
+            <p class="paragrafo">DATA DO ULTIMO LOGIN: {{usuario.usuario.last_login|date:"d/m/Y" }} às {{ usuario.usuario.last_login|time:"H:i" }} </p>
+            
+            <p class="paragrafo">ATUALIZADO EM: {{usuario.data_atualizacao|date:"d/m/Y" }} às {{usuario.data_atualizacao|time:"H:i" }}</p>
         </div>
     </div>
 

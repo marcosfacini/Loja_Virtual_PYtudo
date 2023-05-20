@@ -24,9 +24,9 @@
     </div>
 
     <br>
-    {{produto.data_cadastro}}
+    {{produto.data_cadastro|date:"d/m/Y" }} às {{ produto.data_cadastro|time:"H:i" }}
     <br>
-    {{produto.data_atualizacao}}
+    {{produto.data_atualizacao|date:"d/m/Y" }} às {{ produto.data_atualizacao|time:"H:i" }}
 
     <div class="container">
         <br>

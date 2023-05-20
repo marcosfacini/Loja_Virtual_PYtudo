@@ -35,9 +35,7 @@ ordenacao por tabela na lista de produtos e de usuarios do gestor
 
 Cupom de desconto 
 
-Validação dos campos - regex?
-mensagem de erro
-mascaras no forms
+Validação dos campos - mensagem de erro personalizada
 
 Testes automatizados
 
@@ -77,7 +75,6 @@ Navbar/menu
 Css das paginas 
 footer 
 modal em botoes excluir
-filtrar forma como usuario ve o celular (sem o +55)
 
 precisa importar essa versao do bootstrap?
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
