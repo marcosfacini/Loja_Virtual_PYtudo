@@ -61,17 +61,16 @@ def listar_produtos(request):
 @has_permission_decorator('alterar_produto')
 def cadastrar_produto(request):
     if request.method == 'POST':
-        formulario = CadastroProduto(request.POST, request.FILES)
-        if formulario.is_valid():
-            formulario.save()
+        form = CadastroProduto(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
             messages.add_message(request, constants.SUCCESS, 'Produto salvo com sucesso.')
             return redirect('/produtos/listar_produtos')
         else:
             messages.add_message(request, constants.ERROR, 'Erro ao salvar formulário. Tente novamente.')
-            return redirect('/produtos/cadastrar_produto')
     else:
         form = CadastroProduto()
-        return render(request, 'cadastrar_produto.html', {'form': form})
+    return render(request, 'cadastrar_produto.html', {'form': form})
 
 def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)

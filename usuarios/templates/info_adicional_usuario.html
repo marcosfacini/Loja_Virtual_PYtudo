@@ -18,10 +18,11 @@
     {% endif %}
 
     <div class="wrapper">
-        <form action="{% url 'cadastrar_usuario' %}" method="POST">{% csrf_token %}
-        <table>
-            {{form.as_table}}
-        </table>
+        <form action="{% url 'info_adicional_usuario' %}" method="POST">{% csrf_token %}
+            <table>
+                {{form.as_table}}
+                {{ form.non_field_errors }}
+            </table>
         <input class="btn btn-success" type="submit" value="Enviar">
         </form>
     </div>

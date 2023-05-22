@@ -35,13 +35,18 @@ ordenacao por tabela na lista de produtos e de usuarios do gestor
 
 Cupom de desconto 
 
-Validação dos campos - mensagem de erro personalizada
+model data_de_nascimento tirar null=True
+campo de forein key de usuario do allauth nao pode aparecer no forms, tem q ser preenchido automaticamente
+campo preco_de_custo na model produtos
+
+atualizar paginas de atualizar produto e de usuarios para ter todos os campos da model
 
 Testes automatizados
 
 Metodo de pagamento
 
 Calculo de frete api
+inserir campo cep na model do usuario?
 
 Tratamento de erros try/except
 
@@ -75,6 +80,7 @@ Navbar/menu
 Css das paginas 
 footer 
 modal em botoes excluir
+posicao da mensagem de erro nos forms
 
 precisa importar essa versao do bootstrap?
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -11,18 +11,20 @@ from rolepermissions.decorators import has_role_decorator, has_permission_decora
 from django.core.paginator import Paginator
 
 def info_adicional_usuario(request):
-    form = CadastroUsuario()
-    return render(request, 'info_adicional_usuario.html', {'form': form})
-
-def cadastrar_usuario(request):
-    cadastro = CadastroUsuario(request.POST)
-    if cadastro.is_valid():
-        cadastro.save()
-        messages.add_message(request, constants.SUCCESS, 'Usuario criado com sucesso.')
-        return redirect('/produtos/listar_produtos')
+    if request.method == 'POST':
+        form = CadastroUsuario(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, constants.SUCCESS, 'Usuario criado com sucesso.')
+            return redirect('/produtos/listar_produtos')
+        else:
+            messages.add_message(request, constants.ERROR, 'Não foi possível cadastrar o usuário.')
     else:
-        messages.add_message(request, constants.ERROR, 'Não foi possível cadastrar o usuário.')
-    return redirect('/usuarios/info_adicional_usuario')
+        form = CadastroUsuario()
+    return render(request, 'info_adicional_usuario.html', {'form': form})
+    
+
+    
 
 @has_permission_decorator('gerenciar_usuarios') 
 def listar_usuarios(request):
@@ -48,7 +50,7 @@ def listar_usuarios(request):
     if estado_filtrar:
         usuarios = usuarios.filter(estado__icontains=estado_filtrar)
 
-    # criar filtro de telefone e cpf
+    # TODO criar filtro de telefone e cpf
 
     usuarios_ordenados = usuarios.order_by('-id')
     paginacao = Paginator(usuarios_ordenados, 4)

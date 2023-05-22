@@ -4,8 +4,6 @@ from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from cpf_field.models import CPFField
 
-
-# TODO unique para celular e cpf?
 class Usuarios(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nome = models.CharField(max_length=40)
