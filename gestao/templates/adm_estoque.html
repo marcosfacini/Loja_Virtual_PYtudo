@@ -37,10 +37,18 @@
 
                 <div>
                     <label>Preço menor que:</label>
-                    <input type="text" name="preco_menor_filtrar">
+                    <input type="text" id="preco_menor_filtrar" name="preco_menor_filtrar">
 
                     <label> Preço maior que:</label>
-                    <input type="text" name="preco_maior_filtrar">
+                    <input type="text" id="preco_maior_filtrar" name="preco_maior_filtrar">
+                </div>
+
+                <div>
+                    <label>Preço de custo menor que:</label>
+                    <input type="text" id="preco_de_custo_menor_filtrar" name="preco_de_custo_menor_filtrar">
+
+                    <label> Preço de custo maior que:</label>
+                    <input type="text" id="preco_de_custo_maior_filtrar" name="preco_de_custo_maior_filtrar">
                 </div>
 
                 <input type="text" placeholder="Busque pela marca"  name="marca">
@@ -71,6 +79,7 @@
         <th scope="col"> Quantidade</th>
         <th scope="col"> Marca</th>
         <th scope="col"> Cor</th>
+        <th scope="col"> Preço de custo</th>
         <th scope="col"> Preço</th>
         <th scope="col">Editar</th>
         <th scope="col">Remover</th>
@@ -81,14 +90,15 @@
         {% for produto in produtos_paginados %}
             <tr>
                 <th scope="row">{{ produto.id }}</th>
-                <td><a href="{% url 'ver_produto' produto.id %}">
+                <td><a href="{% url 'detalhes_produto' produto.id %}">
                         <img src="{{ produto.foto.url }}" width="80" height="80"></td>
                     </a>
                 <td>{{ produto.nome}}</td>
                 <td>{{ produto.categoria}}</td>
-                <td>{{ produto.quantidade}}</td>
+                <td>{{ produto.quantidade}}</td> 
                 <td>{{ produto.marca}}</td>
                 <td>{{ produto.cor}}</td>
+                <td>{{ produto.preco_de_custo}}</td>
                 <td>{{ produto.preco}}</td>
                 <td><a href="{% url 'alterar_produto' produto.id %}">Alterar</a></td>
                 <td><a href="{% url 'excluir_produto' produto.id %}">Remover</a></td>
@@ -118,4 +128,20 @@
     
 </div> 
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    
+    <script> 
+        $(document).ready(function(){
+          $('#preco_menor_filtrar').mask('000000,00', {reverse: true});
+          $('#preco_maior_filtrar').mask('000000,00', {reverse: true});
+          $('#preco_de_custo_menor_filtrar').mask('000000,00', {reverse: true});
+          $('#preco_de_custo_maior_filtrar').mask('000000,00', {reverse: true});
+
+
+        });
+
+    </script>
 {% endblock %}

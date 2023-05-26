@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/ver_produto.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %} 
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <img width="100%" src="{{produto.foto.url}}">
+        </div>
+
+        <div class="col-md">
+            <h1 class="titulo">{{produto.nome}}</h1>
+            <p class="paragrafo">Descrição: {{produto.descricao}}</p>
+            <p class="paragrafo">Preco de custo: {{produto.preco_de_custo}}</p>
+            <p class="paragrafo">Preco: {{produto.preco}}</p>
+            <p class="paragrafo">Categoria: {{produto.categoria}}</p>
+            <p class="paragrafo">Marca: {{produto.marca}}</p>
+            <p class="paragrafo">Cor: {{produto.cor}}</p>
+            <p class="paragrafo">Quantidade: {{produto.quantidade}}</p>
+        </div>
+    </div>
+
+    <br> 
+    CADASTRADO EM: {{produto.data_cadastro|date:"d/m/Y" }} às {{ produto.data_cadastro|time:"H:i" }}
+    <br>
+    <br>
+    ATUALIZADO EM: {{produto.data_atualizacao|date:"d/m/Y" }} às {{ produto.data_atualizacao|time:"H:i" }}
+
+    <br>
+    <br>
+    <a href="{% url 'alterar_produto' produto.id %}">Alterar</a>
+    <br>
+    <br>
+    <a href="{% url 'excluir_produto' produto.id %}">Remover</a>
+
+{% endblock %}

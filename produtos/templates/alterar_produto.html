@@ -23,10 +23,10 @@
         </div>
     </div>
 
+    <br> 
+    CADASTRADO EM: {{produto.data_cadastro|date:"d/m/Y" }} às {{ produto.data_cadastro|time:"H:i" }}
     <br>
-    {{produto.data_cadastro|date:"d/m/Y" }} às {{ produto.data_cadastro|time:"H:i" }}
-    <br>
-    {{produto.data_atualizacao|date:"d/m/Y" }} às {{ produto.data_atualizacao|time:"H:i" }}
+    ATUALIZADO EM: {{produto.data_atualizacao|date:"d/m/Y" }} às {{ produto.data_atualizacao|time:"H:i" }}
 
     <div class="container">
         <br>
@@ -41,10 +41,15 @@
           <textarea id="campo_descricao" name="descricao" rows="4" cols="50">
             {{produto.descricao}}
           </textarea>
+
+          <p> 
+            <label for="preco_de_custo">Preço de Custo:</label>
+            <input style="width: 40%;" class="form-control" id="preco_de_custo" type="texte"  value="{{produto.preco_de_custo}}" name="preco_de_custo">
+          </p>
   
           <p> 
             <label>Preço:</label>
-            <input style="width: 40%;" class="form-control" type="texte"  value="{{produto.preco}}" name="preco">
+            <input style="width: 40%;" class="form-control" id="preco" type="texte"  value="{{produto.preco}}" name="preco">
           </p>
   
           <label>Categoria:</label>
@@ -63,6 +68,16 @@
         <br>
 
         <p> 
+          <label>Marca:</label>
+          <input style="width: 40%;" class="form-control" type="texte"  value="{{produto.marca}}" name="marca">
+        </p>
+
+        <p> 
+          <label>Cor:</label>
+          <input style="width: 40%;" class="form-control" type="texte"  value="{{produto.cor}}" name="cor">
+        </p>
+
+        <p> 
           <label>Quantidade:</label>
           <input style="width: 40%;" class="form-control" type="number"  value="{{produto.quantidade}}" name="quantidade">
         </p>
@@ -70,6 +85,19 @@
           <input type="submit" class="btn btn-success btn-lg" value="Alterar">
 
         </form>
-    </div>
+    </div> 
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    
+    <script> 
+        $(document).ready(function(){
+          $('#preco_de_custo').mask('000000,00', {reverse: true});
+          $('#preco').mask('000000,00', {reverse: true});
+
+        });
+
+    </script>
 {% endblock %}

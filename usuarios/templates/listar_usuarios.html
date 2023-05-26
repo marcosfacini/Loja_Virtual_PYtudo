@@ -5,7 +5,7 @@
 {% block 'title' %}PYTudo{% endblock %}
 
 {% block 'head' %} 
-    <link href="{% static 'usuarios/css/listar_usuarios.css' %}" rel="stylesheet">
+    <link href="{% static 'usuarios/css/listar_usuarios.css' %}" rel="stylesheet"> 
 {% endblock %}
 
 {% block 'body' %} 
@@ -34,11 +34,27 @@
             </div>
 
             <div class="col-md-5">
+                <input type="text" placeholder="Busque pelo bairro" class="form-control" name="bairro">
+            </div>
+
+            <div class="col-md-5">
                 <input type="text" placeholder="Busque pelo cidade" class="form-control" name="cidade">
             </div>
 
             <div class="col-md-5">
                 <input type="text" placeholder="Busque pelo estado" class="form-control" name="estado">
+            </div>
+
+            <div class="col-md-5">
+                <input type="text" id="celular" placeholder="Busque pelo celular" class="form-control" name="celular">
+            </div>
+
+            <div class="col-md-5">
+                <input type="text" id="cpf" placeholder="Busque pelo cpf" class="form-control" name="cpf">
+            </div>
+
+            <div class="col-md-5">
+                <input type="text" id="data_de_nascimento" placeholder="Busque pela data de nascimento" class="form-control" name="data_de_nascimento">
             </div>
 
             <div class="col-md-3">
@@ -96,4 +112,27 @@
             
         </div> 
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    
+    <script> 
+        $(document).ready(function(){
+            $('#cpf').mask('000.000.000-00', {reverse: true});
+            $('#data_de_nascimento').mask('00/00/0000');
+            var SPMaskBehavior = function (val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+              },
+              spOptions = {
+                onKeyPress: function(val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                  }
+              };
+              
+              $('#celular').mask(SPMaskBehavior, spOptions);
+
+        });
+
+    </script>
 {% endblock %}

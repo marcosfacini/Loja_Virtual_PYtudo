@@ -46,7 +46,7 @@ def adm_estoque(request):
     nome_filtrar = request.GET.get('nome')
     if nome_filtrar:
         produtos = produtos.filter(nome__icontains=nome_filtrar)
-    
+     
     categoria_filtrar = request.GET.get('categoria')
     if categoria_filtrar: 
         produtos = produtos.filter(categoria_id=categoria_filtrar)
@@ -60,6 +60,16 @@ def adm_estoque(request):
     if preco_maior_filtrar:
         preco_maior_filtrar_decimal = Decimal(preco_maior_filtrar.replace(',','.'))
         produtos = produtos.filter(preco__gt=preco_maior_filtrar_decimal)
+
+    preco_de_custo_menor_filtrar = request.GET.get('preco_de_custo_menor_filtrar')
+    if preco_de_custo_menor_filtrar:
+        preco_de_custo_menor_filtrar_decimal = Decimal(preco_de_custo_menor_filtrar.replace(',','.'))
+        produtos = produtos.filter(preco_de_custo__lt=preco_de_custo_menor_filtrar_decimal)
+    
+    preco_de_custo_maior_filtrar = request.GET.get('preco_de_custo_maior_filtrar')
+    if preco_de_custo_maior_filtrar:
+        preco_de_custo_maior_filtrar_decimal = Decimal(preco_de_custo_maior_filtrar.replace(',','.'))
+        produtos = produtos.filter(preco_de_custo__gt=preco_de_custo_maior_filtrar_decimal)
 
     marca_filtar = request.GET.get('marca')
     if marca_filtar:
@@ -85,6 +95,11 @@ def adm_estoque(request):
 
     return render(request, 'adm_estoque.html', {'produtos_paginados': produtos_paginados,
                                                 'categorias': categorias})
+
+@has_role_decorator('gestor')
+def detalhes_produto(request, id):
+    produto = Produtos.objects.get(id=id)
+    return render(request, 'detalhes_produto.html', {'produto': produto})
 
 
 

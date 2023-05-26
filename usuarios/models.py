@@ -8,7 +8,7 @@ class Usuarios(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nome = models.CharField(max_length=40)
     cpf = CPFField('CPF')
-    data_de_nascimento = models.DateField(default=None, null=True) # tirar null=True
+    data_de_nascimento = models.DateField() 
     celular = PhoneNumberField(null=False, blank=False)
     endereco = models.CharField(max_length=50)
     numero_endereco = models.CharField(max_length=10)

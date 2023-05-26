@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from rolepermissions.decorators import has_role_decorator, has_permission_decorator
 from django.core.paginator import Paginator
 
+# @login required
 def info_adicional_usuario(request):
     if request.method == 'POST':
         form = CadastroUsuario(request.POST)
@@ -20,12 +21,9 @@ def info_adicional_usuario(request):
         else:
             messages.add_message(request, constants.ERROR, 'Não foi possível cadastrar o usuário.')
     else:
-        form = CadastroUsuario()
+        form = CadastroUsuario(initial={'usuario': request.user})
     return render(request, 'info_adicional_usuario.html', {'form': form})
     
-
-    
-
 @has_permission_decorator('gerenciar_usuarios') 
 def listar_usuarios(request):
     usuarios = Usuarios.objects.all()
@@ -34,13 +32,17 @@ def listar_usuarios(request):
     if nome_filtrar:
         usuarios = usuarios.filter(nome__icontains=nome_filtrar)
 
-    email_filtrar = request.GET.get('email')
+    email_filtrar = request.GET.get('email') 
     if email_filtrar:
         usuarios = usuarios.filter(usuario__email__icontains=email_filtrar)
 
     endereco_filtrar = request.GET.get('endereco')
     if endereco_filtrar:
         usuarios = usuarios.filter(endereco__icontains=endereco_filtrar)
+
+    bairro_filtrar = request.GET.get('bairro')
+    if bairro_filtrar:
+        usuarios = usuarios.filter(bairro__icontains=bairro_filtrar)
 
     cidade_filtrar = request.GET.get('cidade')
     if cidade_filtrar:
@@ -50,7 +52,19 @@ def listar_usuarios(request):
     if estado_filtrar:
         usuarios = usuarios.filter(estado__icontains=estado_filtrar)
 
-    # TODO criar filtro de telefone e cpf
+    celular_filtrar = request.GET.get('celular')
+    if celular_filtrar:
+        usuarios = usuarios.filter(celular__icontains=celular_filtrar)
+
+    cpf_filtrar = request.GET.get('cpf')
+    if cpf_filtrar:
+        usuarios = usuarios.filter(cpf__icontains=cpf_filtrar)
+
+    data_de_nascimento_filtrar = request.GET.get('data_de_nascimento')
+    if data_de_nascimento_filtrar:
+        usuarios = usuarios.filter(data_de_nascimento__icontains=data_de_nascimento_filtrar)
+
+    # e cpf bairro data d nascimento
 
     usuarios_ordenados = usuarios.order_by('-id')
     paginacao = Paginator(usuarios_ordenados, 4)

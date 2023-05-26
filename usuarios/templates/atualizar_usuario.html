@@ -23,8 +23,8 @@
                 <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.nome}}" name="nome">
                 <br>
 
-                <label>celular:</label>
-                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.celular}}" name="celular">
+                <label>celular:</label> 
+                <input style="width: 40%;" class="form-control" id="celular" type="texte" value="{{usuario.celular.as_national}}" name="celular">
                 <br>
 
                 <label>endereco:</label>
@@ -51,4 +51,27 @@
             </form>
     
 
+            ATUALIZADO ULTIMA VEZ EM: {{usuario.data_atualizacao|date:"d/m/Y" }} às {{usuario.data_atualizacao|time:"H:i" }}
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    
+    <script> 
+        $(document).ready(function(){
+            var SPMaskBehavior = function (val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+              },
+              spOptions = {
+                onKeyPress: function(val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                  }
+              };
+              
+              $('#celular').mask(SPMaskBehavior, spOptions);
+
+        });
+
+    </script>
 {% endblock %}

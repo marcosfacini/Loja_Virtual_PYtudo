@@ -75,7 +75,6 @@ def cadastrar_produto(request):
 def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)
     avaliacoes = Avaliacao.objects.filter(produto=id)
-    print (avaliacoes)
     return render(request, 'ver_produto.html', {'produto': produto,
                                                 'avaliacoes': avaliacoes})
 
@@ -114,16 +113,23 @@ def alterar_produto(request, id):
     elif request.method == 'POST':
         nome = request.POST.get('nome')
         descricao = request.POST.get('descricao')
+        preco_de_custo = request.POST.get('preco_de_custo')
         preco = request.POST.get('preco')
         categoria = request.POST.get('categoria')
+        marca = request.POST.get('marca')
+        cor = request.POST.get('cor')
         quantidade = request.POST.get('quantidade')
         produto = Produtos.objects.get(id=id)
         categoria_by_id = Categoria.objects.get(id=categoria)
         produto.nome = nome
         produto.descricao = descricao
+        preco_de_custo_in_decimal = Decimal(preco_de_custo.replace(',','.'))
+        produto.preco_de_custo = preco_de_custo_in_decimal
         preco_in_decimal = Decimal(preco.replace(',','.'))
         produto.preco = preco_in_decimal
         produto.categoria = categoria_by_id
+        produto.marca = marca
+        produto.cor = cor
         produto.quantidade = quantidade
         produto.save()
         messages.add_message(request, constants.SUCCESS, 'Produto atualizado com sucesso.')

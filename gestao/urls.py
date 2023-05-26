@@ -7,6 +7,7 @@ urlpatterns = [
     path('criar_gestor/', views.criar_gestor, name="criar_gestor"),
     path('salvar_gestor/', views.salvar_gestor, name='salvar_gestor'),
     path('adm_estoque/', views.adm_estoque, name='adm_estoque'),
+    path('detalhes_produto/<int:id>', views.detalhes_produto, name='detalhes_produto'),
    
 ]
 
@@ -35,11 +36,7 @@ ordenacao por tabela na lista de produtos e de usuarios do gestor
 
 Cupom de desconto 
 
-model data_de_nascimento tirar null=True
-campo de forein key de usuario do allauth nao pode aparecer no forms, tem q ser preenchido automaticamente
-campo preco_de_custo na model produtos
-
-atualizar paginas de atualizar produto e de usuarios para ter todos os campos da model
+criar filtro de telefone e data de nascimento 
 
 Testes automatizados
 
@@ -55,9 +52,10 @@ Soma dos produtos no carrinho
 Processo de venda
 
 Mais de uma imagem por produto 
+poder cadastrar um produto sem imagem
+poder exibir um produto sem imagem
 
 Usuario seleciona quais produtos ficarao na home
-
 Produtos em destaque/promoção num banner
 
 Segurança/repassar permissões em todas as views visando possiveis ataques 
@@ -72,6 +70,14 @@ Desabilitar urls do accounts que não vou usar
 
 # form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
 
+USUARIO DEVERIA PODER MUDAR O SEU CPF E SUA DATA DE NASCIMENTO DEPOIS DO CADASTRO FEITO? 
+se for possivel tem que validar os campos atualizados e colocar as mascaras no cadastrar e no atualizar usuario
+
+campo numero de endereço no cadastro de usuario e obrigatorio?
+
+PERMITIR USUARIO MUDAR EMAIL? 
+ENVIO DE VALIDAÇÃO DE CASDTRO SERÁ VIA EMAL
+
 
 Front:
 Templates do accounts/404
@@ -79,8 +85,10 @@ Form de avaliação em estrelas
 Navbar/menu
 Css das paginas 
 footer 
+paginação estilizada
 modal em botoes excluir
 posicao da mensagem de erro nos forms
+mascaras para campo de precos ao cadastrar - mudar o widget para aceitar a mascara?
 
 precisa importar essa versao do bootstrap?
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -89,4 +97,5 @@ menu da nav so funciona na versao 4
 tentar importar arquivos estaticos jquery pelo static
 
 deploy/servidor e integracao com bd
+containers - docker/kubernets
 emails """
