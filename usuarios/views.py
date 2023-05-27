@@ -9,6 +9,8 @@ from rolepermissions.roles import assign_role
 from django.contrib.auth.models import User
 from rolepermissions.decorators import has_role_decorator, has_permission_decorator
 from django.core.paginator import Paginator
+from datetime import datetime
+
 
 # @login required
 def info_adicional_usuario(request):
@@ -54,17 +56,16 @@ def listar_usuarios(request):
 
     celular_filtrar = request.GET.get('celular')
     if celular_filtrar:
-        usuarios = usuarios.filter(celular__icontains=celular_filtrar)
+        usuarios = usuarios.filter(celular=celular_filtrar)
 
     cpf_filtrar = request.GET.get('cpf')
     if cpf_filtrar:
-        usuarios = usuarios.filter(cpf__icontains=cpf_filtrar)
+        usuarios = usuarios.filter(cpf=cpf_filtrar)
 
     data_de_nascimento_filtrar = request.GET.get('data_de_nascimento')
     if data_de_nascimento_filtrar:
-        usuarios = usuarios.filter(data_de_nascimento__icontains=data_de_nascimento_filtrar)
-
-    # e cpf bairro data d nascimento
+        data_convertida = datetime.strptime(data_de_nascimento_filtrar, "%d/%m/%Y").strftime('%Y-%m-%d')
+        usuarios = usuarios.filter(data_de_nascimento=data_convertida)
 
     usuarios_ordenados = usuarios.order_by('-id')
     paginacao = Paginator(usuarios_ordenados, 4)
