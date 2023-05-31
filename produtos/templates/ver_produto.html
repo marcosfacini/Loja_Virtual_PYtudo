@@ -19,7 +19,21 @@
 
     <div class="row">
         <div class="col-md-3">
-            <img width="100%" src="{{produto.foto.url}}">
+            {% if produto.imagem_principal %}
+                <img width="100%" src="{{produto.imagem_principal.url}}">
+            {% else %}
+                <img width="100%" src="{% static 'produtos\img\sem foto.jpg' %}">
+            {% endif %}
+        </div>
+        
+        <br>
+        <br>
+        <br>
+
+        <div>
+            {% for imagem in imagens %}
+                <img width="100%" src="{{imagem.foto.url}}">
+            {% endfor %}
         </div>
 
         <div class="col-md">

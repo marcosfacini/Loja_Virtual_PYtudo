@@ -11,7 +11,6 @@ class Categoria(models.Model):
 class Produtos(models.Model):
     nome = models.CharField(max_length=50)
     descricao = models.TextField()
-    foto = models.ImageField()
     preco_de_custo = models.DecimalField(max_digits=8, decimal_places=2)
     preco = models.DecimalField(max_digits=8, decimal_places=2)
     categoria = models.ForeignKey(Categoria, blank=True, null=True, on_delete=models.SET_NULL)
@@ -20,10 +19,15 @@ class Produtos(models.Model):
     quantidade = models.IntegerField()
     data_cadastro = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True, null=True)
+    imagem_principal = models.ImageField(upload_to ='produtos/', blank=True, null=True)
 
 
     def __str__(self):
         return self.nome
+    
+class Imagens(models.Model):
+    produto = models.ForeignKey(Produtos, on_delete=models.CASCADE) 
+    foto = models.ImageField(upload_to ='produtos/')
     
 class Avaliacao(models.Model):
     choices = (

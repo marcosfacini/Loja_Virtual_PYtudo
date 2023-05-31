@@ -1,7 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.urls import reverse
-from .models import Produtos, Categoria, Avaliacao
-from .forms import CadastroProduto
+from .models import Produtos, Categoria, Avaliacao, Imagens
 from django.contrib import messages
 from django.contrib.messages import constants 
 from rolepermissions.decorators import has_permission_decorator, has_role_decorator
@@ -60,28 +59,53 @@ def listar_produtos(request):
 
 @has_permission_decorator('alterar_produto')
 def cadastrar_produto(request):
+    categorias = Categoria.objects.all()
     if request.method == 'POST':
-        form = CadastroProduto(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, constants.SUCCESS, 'Produto salvo com sucesso.')
-            return redirect('/produtos/listar_produtos')
-        else:
-            messages.add_message(request, constants.ERROR, 'Erro ao salvar formulário. Tente novamente.')
-    else:
-        form = CadastroProduto()
-    return render(request, 'cadastrar_produto.html', {'form': form})
+        nome = request.POST.get('nome')
+        descricao = request.POST.get('descricao')
+        preco_de_custo = request.POST.get('preco_de_custo')
+        preco_de_custo_in_decimal = Decimal(preco_de_custo.replace(',','.'))
+        preco = request.POST.get('preco')
+        preco_in_decimal = Decimal(preco.replace(',','.'))
+        categoria = request.POST.get('categoria')
+        marca = request.POST.get('marca')
+        cor = request.POST.get('cor')
+        quantidade = request.POST.get('quantidade')
+        imagem_principal = request.FILES.get('imagem_principal')
+
+        produto = Produtos(nome=nome, 
+                           descricao=descricao, 
+                           preco_de_custo=preco_de_custo_in_decimal, 
+                           preco=preco_in_decimal, 
+                           categoria_id=categoria, 
+                           marca=marca, 
+                           cor=cor, 
+                           quantidade=quantidade)
+        produto.save()
+
+        imagens = request.FILES.getlist('imagens')
+        if imagens:
+            for img in imagens:
+                imagem = Imagens(produto=produto, foto=img)
+                imagem.save()
+        messages.add_message(request, constants.SUCCESS, 'Produto salvo com sucesso.')
+        # TODO fazer logica de mensagens de erro e de validaçoes do form
+
+    return render(request, 'cadastrar_produto.html', {'categorias': categorias})
 
 def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)
     avaliacoes = Avaliacao.objects.filter(produto=id)
+    imagens = Imagens.objects.filter(produto_id=id)
     return render(request, 'ver_produto.html', {'produto': produto,
-                                                'avaliacoes': avaliacoes})
+                                                'avaliacoes': avaliacoes,
+                                                'imagens': imagens})
 
 @has_permission_decorator('alterar_produto')
 def excluir_produto(request, id):
     produto = Produtos.objects.get(id=id)
     produto.delete()
+    messages.add_message(request, constants.SUCCESS, 'Produto excluído com sucesso.')
     return redirect('/gestao/adm_estoque')
 
 def listar_categorias(request):
@@ -108,8 +132,10 @@ def alterar_produto(request, id):
     if request.method == 'GET':
         produto = Produtos.objects.get(id=id)
         categorias = Categoria.objects.all()
+        imagens = Imagens.objects.filter(produto_id=id)
         return render(request, 'alterar_produto.html', {'produto': produto,
-                                                        'categorias': categorias})
+                                                        'categorias': categorias,
+                                                        'imagens': imagens})
     elif request.method == 'POST':
         nome = request.POST.get('nome')
         descricao = request.POST.get('descricao')
@@ -142,3 +168,31 @@ def salvar_avaliacao(request, id_produto):
     avalicao.save()
     return redirect(f'/produtos/ver_produto/{id_produto}')
 
+def alterar_imagem_principal(request, id_produto):
+    imagem = request.FILES.get('imagem_principal')
+    produto = Produtos.objects.get(id=id_produto)
+    produto.imagem_principal = imagem
+    produto.save()
+    messages.add_message(request, constants.SUCCESS, 'Imagem alterada com sucesso.')
+    return redirect(f'/produtos/ver_produto/{id_produto}')
+
+
+def incluir_imagens(request, id_produto):
+    imagens = request.FILES.getlist('imagens')
+    for img in imagens:
+        imagem = Imagens(produto_id=id_produto, foto=img)
+        imagem.save()
+    messages.add_message(request, constants.SUCCESS, 'Imagem incluída com sucesso.')
+    return redirect(f'/produtos/ver_produto/{id_produto}')
+
+def excluir_imagem(request, id_imagem, id_produto):
+    imagem = Imagens.objects.get(id=id_imagem)
+    imagem.delete()
+    messages.add_message(request, constants.SUCCESS, 'Imagem excluída com sucesso.')
+    return redirect(f'/produtos/alterar_produto/{id_produto}')
+
+def excluir_imagem_principal(request, id_produto):
+    produto = Produtos.objects.get(id=id_produto)
+    produto.imagem_principal.delete()
+    messages.add_message(request, constants.SUCCESS, 'Imagem excluída com sucesso.')
+    return redirect(f'/produtos/ver_produto/{id_produto}')

@@ -19,7 +19,11 @@
 
     <div class="row">
         <div class="col-md-3">
-            <img width="100%" src="{{produto.foto.url}}">
+          {% if produto.imagem_principal %}
+          <img width="100%" src="{{produto.imagem_principal.url}}">
+      {% else %}
+          <img width="100%" src="{% static 'produtos\img\sem foto.jpg' %}">
+      {% endif %}
         </div>
     </div>
 
@@ -30,7 +34,7 @@
 
     <div class="container">
         <br>
-      <form action="{% url 'alterar_produto' produto.id %}" method="POST">
+      <form action="{% url 'alterar_produto' produto.id %}" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
 
             <label>Nome do produto:</label>
@@ -82,12 +86,73 @@
           <input style="width: 40%;" class="form-control" type="number"  value="{{produto.quantidade}}" name="quantidade">
         </p>
 
-          <input type="submit" class="btn btn-success btn-lg" value="Alterar">
+        <input type="submit" class="btn btn-success btn-lg" value="Alterar">
 
         </form>
     </div> 
 
-{% endblock %}
+    <br>
+    <br>
+    <br>
+
+  <div>
+    Alteração de imagens:
+    <form action="{% url 'alterar_imagem_principal' produto.id %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+      <p>
+        <label>Imagem principal:</label>
+      <input type="file" name="imagem_principal">
+      </p>
+      <input type="submit" class="btn btn-success btn-lg" value="Alterar">
+    </form>
+
+    <br>
+
+    <form action="{% url 'incluir_imagens' produto.id %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+      <p>
+        <label>Incluir outras imagens:</label>
+      <input type="file" name="imagens" multiple>
+      </p>
+      <input type="submit" class="btn btn-success btn-lg" value="Incluir">
+    </form>
+
+  </div>
+  
+  <br>
+  <br>
+
+  <div class="row">
+    <p>Excluir imagens:</p>
+    <div class="col-md">
+      <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            {% if produto.imagem_principal %}
+                <img width="100%" src="{{produto.imagem_principal.url}}">
+                <a class="btn btn-danger" href="{% url 'excluir_imagem_principal' produto.id %}" role="button">Excluir</a>
+            {% endif %}
+          </div>
+        </div>
+    </div>
+  </div>
+
+<br>
+<br>
+  <div class="row">
+    <div class="col-md">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          {% for img in imagens %}
+            <img width="100%" src="{{img.foto.url}}">
+            <a class="btn btn-danger" href="{% url 'excluir_imagem' img.id produto.id %}" role="button">Excluir</a>
+            <br>
+            <br>
+            <br>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>  
+
+{% endblock %} 
 
 {% block scripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>

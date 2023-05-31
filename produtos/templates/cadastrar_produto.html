@@ -19,12 +19,73 @@
 
     <div class="wrapper">
         <form action="{% url 'cadastrar_produto' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
-        <table>
-            {{form.as_table}}
-            {{ form.non_field_errors }}
-        </table>
+            <label>Nome do produto:</label>
+            <input style="width: 40%;" class="form-control" type="texte" name="nome">
+          </p>
+
+          <label for="campo_descricao">Descricao:</label>
+          <textarea id="campo_descricao" name="descricao" rows="4" cols="50">
+          </textarea>
+
+          <p> 
+            <label for="preco_de_custo">Preço de Custo:</label>
+            <input style="width: 40%;" class="form-control" id="preco_de_custo" type="texte" name="preco_de_custo">
+          </p>
+  
+          <p> 
+            <label>Preço:</label>
+            <input style="width: 40%;" class="form-control" id="preco" type="texte" name="preco">
+          </p>
+  
+          <label>Categoria:</label>
+          <select style="width: 20%;" class="form-control" name="categoria">
+            <option value="">Selecione uma categoria:</option>
+            {% for categoria in categorias %}
+                <option value="{{categoria.id}}">{{categoria}}</option>
+            {% endfor %}
+          </select>
+        <br>
+
+        <p> 
+          <label>Marca:</label>
+          <input style="width: 40%;" class="form-control" type="texte" name="marca">
+        </p>
+
+        <p> 
+          <label>Cor:</label>
+          <input style="width: 40%;" class="form-control" type="texte" name="cor">
+        </p>
+
+        <p> 
+          <label>Quantidade:</label>
+          <input style="width: 40%;" class="form-control" type="number" name="quantidade">
+        </p>
+
+        <p>
+          <label>Imagem Principal:</label>
+        <input type="file" name="imagem_principal">
+        </p>
+
+        <p>
+          <label>Outras imagens:</label>
+        <input type="file" name="imagens" multiple>
+        </p>
+
         <input class="btn btn-success" type="submit" value="Enviar">
         </form>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    
+    <script> 
+        $(document).ready(function(){
+          $('#preco_de_custo').mask('000000,00', {reverse: true});
+          $('#preco').mask('000000,00', {reverse: true});
+
+        });
+
+    </script>
 {% endblock %}
 

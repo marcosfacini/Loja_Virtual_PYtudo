@@ -49,11 +49,17 @@ Soma dos produtos no carrinho
 
 Processo de venda
 
-Mais de uma imagem por produto 
-poder cadastrar um produto sem imagem
-poder exibir um produto sem imagem
+verificar mensagens de erro e de sucesso nas funcões
 
-Usuario seleciona quais produtos ficarao na home
+formatar imagens antes de salvar
+on cascade nao deleta imagens
+tratamento de erro validacao no forms - usar form model?
+
+usuarios anonimos podem comentar?
+model avaliacao vai ter usuario on cascade?
+funcao atualizar e excluir comentario
+
+gestor seleciona quais produtos ficarao na home
 Produtos em destaque/promoção num banner
 
 Segurança/repassar permissões em todas as views visando possiveis ataques 
