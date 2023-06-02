@@ -94,6 +94,7 @@ def atualizar_usuario(request, id):
         celular = request.POST.get('celular')
         endereco = request.POST.get('endereco')
         numero_endereco = request.POST.get('numero_endereco')
+        complemento = request.POST.get('complemento')
         bairro = request.POST.get('bairro')
         cidade = request.POST.get('cidade')
         estado = request.POST.get('estado')
@@ -102,6 +103,7 @@ def atualizar_usuario(request, id):
         usuario.celular = celular
         usuario.endereco = endereco
         usuario.numero_endereco = numero_endereco
+        usuario.complemento = complemento
         usuario.bairro = bairro
         usuario.estado = estado
         usuario.save()

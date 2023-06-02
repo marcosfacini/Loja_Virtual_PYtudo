@@ -32,7 +32,7 @@
 
         <div>
             {% for imagem in imagens %}
-                <img width="100%" src="{{imagem.foto.url}}">
+                <img width="80" height="80" src="{{imagem.foto.url}}"> 
             {% endfor %}
         </div>
 
@@ -40,7 +40,9 @@
             <h1 class="titulo">{{produto.nome}}</h1>
             <p class="paragrafo">{{produto.descricao}}</p>
             <p class="paragrafo">{{produto.preco}}</p>
-            <p class="paragrafo">{{produto.categoria}}</p>
+            {% if produto.categoria %}
+                <p class="paragrafo">{{produto.categoria}}</p>
+            {% endif %}
             <p class="paragrafo">{{produto.marca}}</p>
             <p class="paragrafo">{{produto.cor}}</p>
         </div>

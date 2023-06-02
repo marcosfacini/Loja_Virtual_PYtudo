@@ -31,7 +31,11 @@
             <p class="paragrafo">Descrição: {{produto.descricao}}</p>
             <p class="paragrafo">Preco de custo: {{produto.preco_de_custo}}</p>
             <p class="paragrafo">Preco: {{produto.preco}}</p>
-            <p class="paragrafo">Categoria: {{produto.categoria}}</p>
+            {% if produto.categoria %}
+                <p class="paragrafo">Categoria: {{produto.categoria}}</p>
+            {% else %}
+                <p class="paragrafo">Categoria: Sem categoria </p>
+            {% endif %}
             <p class="paragrafo">Marca: {{produto.marca}}</p>
             <p class="paragrafo">Cor: {{produto.cor}}</p>
             <p class="paragrafo">Quantidade: {{produto.quantidade}}</p>

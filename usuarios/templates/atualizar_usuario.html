@@ -35,6 +35,14 @@
                 <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.numero_endereco}}" name="numero_endereco">
                 <br>
 
+                <label>Complemento:</label> 
+                {% if usuario.complemento %}
+                    <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.complemento}}" name="complemento">
+                {% else %}
+                    <input style="width: 40%;" class="form-control" type="texte" name="complemento">
+                {% endif %}
+                <br>
+
                 <label>bairro:</label>
                 <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.bairro}}" name="bairro">
                 <br>

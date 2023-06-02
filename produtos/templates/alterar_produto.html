@@ -58,14 +58,14 @@
   
           <label>Categoria:</label>
           <select style="width: 20%;" class="form-control" name="categoria">
+            <option value=''>Escolha uma categoria:</option>
+            <option value=''>Sem categoria:</option>
             {% for categoria in categorias %}
-            
               {% if produto.categoria.nome == categoria.nome %}
                 <option value="{{categoria.id}}" selected>{{categoria}}</option>
               {% else %}
-  
                 <option value="{{categoria.id}}">{{categoria}}</option>
-              {% endif%}
+              {% endif %}
             {% endfor %}
             
           </select>

@@ -6,6 +6,7 @@ from django.contrib.messages import constants
 from rolepermissions.decorators import has_permission_decorator, has_role_decorator
 from decimal import Decimal
 from django.core.paginator import Paginator
+from .forms import CadastrarProduto
 
 
 
@@ -59,8 +60,8 @@ def listar_produtos(request):
 
 @has_permission_decorator('alterar_produto')
 def cadastrar_produto(request):
-    categorias = Categoria.objects.all()
     if request.method == 'POST':
+        form = CadastrarProduto(request.POST, request.FILES)
         nome = request.POST.get('nome')
         descricao = request.POST.get('descricao')
         preco_de_custo = request.POST.get('preco_de_custo')
@@ -80,18 +81,22 @@ def cadastrar_produto(request):
                            categoria_id=categoria, 
                            marca=marca, 
                            cor=cor, 
-                           quantidade=quantidade)
+                           quantidade=quantidade,
+                           imagem_principal=imagem_principal)
         produto.save()
 
-        imagens = request.FILES.getlist('imagens')
+        imagens = request.FILES.getlist('outras_imagens')
         if imagens:
             for img in imagens:
                 imagem = Imagens(produto=produto, foto=img)
                 imagem.save()
         messages.add_message(request, constants.SUCCESS, 'Produto salvo com sucesso.')
-        # TODO fazer logica de mensagens de erro e de validaçoes do form
+        return redirect('/produtos/listar_produtos')
+    else:
+        form = CadastrarProduto()
+    return render(request, 'cadastrar_produto.html', {'form': form})
 
-    return render(request, 'cadastrar_produto.html', {'categorias': categorias})
+
 
 def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)
@@ -137,25 +142,31 @@ def alterar_produto(request, id):
                                                         'categorias': categorias,
                                                         'imagens': imagens})
     elif request.method == 'POST':
-        nome = request.POST.get('nome')
-        descricao = request.POST.get('descricao')
-        preco_de_custo = request.POST.get('preco_de_custo')
-        preco = request.POST.get('preco')
-        categoria = request.POST.get('categoria')
-        marca = request.POST.get('marca')
-        cor = request.POST.get('cor')
-        quantidade = request.POST.get('quantidade')
         produto = Produtos.objects.get(id=id)
-        categoria_by_id = Categoria.objects.get(id=categoria)
+        nome = request.POST.get('nome')
         produto.nome = nome
+        descricao = request.POST.get('descricao')
         produto.descricao = descricao
+        preco_de_custo = request.POST.get('preco_de_custo')
         preco_de_custo_in_decimal = Decimal(preco_de_custo.replace(',','.'))
         produto.preco_de_custo = preco_de_custo_in_decimal
+        preco = request.POST.get('preco')
         preco_in_decimal = Decimal(preco.replace(',','.'))
         produto.preco = preco_in_decimal
-        produto.categoria = categoria_by_id
+
+        categoria = request.POST.get('categoria')
+        if categoria == '':
+            categoria = None
+            produto.categoria = categoria
+        else:
+            categoria_by_id = Categoria.objects.get(id=categoria)
+            produto.categoria = categoria_by_id
+        
+        marca = request.POST.get('marca')
         produto.marca = marca
+        cor = request.POST.get('cor')
         produto.cor = cor
+        quantidade = request.POST.get('quantidade')
         produto.quantidade = quantidade
         produto.save()
         messages.add_message(request, constants.SUCCESS, 'Produto atualizado com sucesso.')

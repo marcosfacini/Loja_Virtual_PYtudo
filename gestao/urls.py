@@ -43,17 +43,15 @@ Metodo de pagamento
 Calculo de frete api
 inserir campo cep na model do usuario?
 
-Tratamento de erros try/except
-
 Soma dos produtos no carrinho
 
 Processo de venda
 
 verificar mensagens de erro e de sucesso nas funcões
 
-formatar imagens antes de salvar
-on cascade nao deleta imagens
-tratamento de erro validacao no forms - usar form model?
+tratamento de erro validacao no forms de produtos 
+tratamento de erro nos forms de atualizacao
+Tratamento de erros try/except
 
 usuarios anonimos podem comentar?
 model avaliacao vai ter usuario on cascade?
@@ -97,6 +95,7 @@ paginação estilizada
 modal em botoes excluir
 posicao da mensagem de erro nos forms
 mascaras para campo de precos ao cadastrar - mudar o widget para aceitar a mascara?
+campos de descricao editáveis - possibilidade de negrito e paragrafo
 
 precisa importar essa versao do bootstrap?
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -106,4 +105,9 @@ tentar importar arquivos estaticos jquery pelo static
 
 deploy/servidor e integracao com bd
 containers - docker/kubernets
-emails """
+emails 
+
+restringir tamanho de mb para upload - atraves da requisicao do servidor
+on cascade nao deleta imagens apenas a url delas no banco - como vai ficar no deploy?
+
+"""
