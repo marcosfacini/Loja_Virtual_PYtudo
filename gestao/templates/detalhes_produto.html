@@ -9,14 +9,6 @@
 
 {% block 'body' %} 
 
-    {% if messages %}
-        {% for message in messages %}
-            <section class="alert {{message.tags}}">
-                {{message}}
-            </section>
-        {% endfor %}
-    {% endif %}
-
     <div class="row">
         <div class="col-md-3">
             {% if produto.imagem_principal %}

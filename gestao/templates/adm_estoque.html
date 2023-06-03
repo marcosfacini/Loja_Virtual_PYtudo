@@ -10,15 +10,6 @@
 
 {% block 'body' %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <section class="alert {{message.tags}}">
-                {{message}}
-            </section>
-        {% endfor %}
-    {% endif %}
-
-
     <form action="#" method="GET"> {% csrf_token %} 
         <div class="row">
             

@@ -9,15 +9,6 @@
 
 {% block 'body' %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <section class="alert {{message.tags}}">
-                {{message}}
-            </section>
-        {% endfor %}
-    {% endif %}
-
-        
     <form action="{%url 'salvar_gestor'%}" method="POST" > {%csrf_token%}
         <label>Email:</label>
         <input type="email" class="form-control" name="email">

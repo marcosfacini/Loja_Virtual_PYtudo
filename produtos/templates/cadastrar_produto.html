@@ -9,14 +9,6 @@
 
 {% block 'body' %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <section class="alert {{message.tags}}">
-                {{message}}
-            </section>
-        {% endfor %}
-    {% endif %}
-
     <form action="{% url 'cadastrar_produto' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
       <table>
         {{form.as_table}}

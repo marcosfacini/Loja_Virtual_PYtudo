@@ -12,8 +12,6 @@
     {% block 'head' %} {% endblock%}
   </head>
   <body>
-    
-    
  
     <nav class="navbar navbar-expand-lg navbar-dark bg-nav">
         <a class="navbar-brand" href="{% url 'listar_produtos' %}">PyTudo</a>
@@ -35,6 +33,14 @@
 
         <a class="btn btn-primary" style="position: absolute; right: 0;" href="{% url 'ver_carrinho' %}" role="button">Carrinho</a>
     </nav>
+
+    {% if messages %}
+        {% for message in messages %}
+            <section class="alert {{message.tags}}">
+                {{message}}
+            </section>
+        {% endfor %}
+    {% endif %}
 
     {% block 'body' %}
     

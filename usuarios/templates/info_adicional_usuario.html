@@ -9,14 +9,6 @@
 
 {% block 'body' %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <section class="alert {{message.tags}}">
-                {{message}}
-            </section>
-        {% endfor %}
-    {% endif %}
-
     <div class="wrapper">
         <form action="{% url 'info_adicional_usuario' %}" method="POST">{% csrf_token %}
             <table>

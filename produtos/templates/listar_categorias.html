@@ -9,15 +9,6 @@
 
 {% block 'body' %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <section class="alert {{message.tags}}">
-                {{message}}
-            </section>
-        {% endfor %}
-    {% endif %}
-
-        
         <h2 class="titulo">Categorias</h2>
         <a href="#" class="btn-btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Nova Categoria</a>
     

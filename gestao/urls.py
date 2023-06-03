@@ -75,8 +75,6 @@ Desabilitar urls do accounts que não vou usar
 USUARIO DEVERIA PODER MUDAR O SEU CPF E SUA DATA DE NASCIMENTO DEPOIS DO CADASTRO FEITO? 
 se for possivel tem que validar os campos atualizados e colocar as mascaras no cadastrar e no atualizar usuario
 
-campo numero de endereço no cadastro de usuario e obrigatorio?
-
 campo estado com um select com todos os estados brasileiros? teria que mudar a model e todos os forms
 
 compensa fazer um filtro de data que busque somente pelo ano ou somente pelo mes?
