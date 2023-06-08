@@ -49,14 +49,11 @@ Processo de venda
 
 verificar mensagens de erro e de sucesso nas funcões
 
-paginação categorias
-filtro de categorias
-adicionar cayegorias
 formularios - gestao e de avaliação
 
 Tratamento de erros try/except em todas as funcoes
 
-slugs nas urls quem id
+slugs nas urls que tem id
 
 pagina home
 

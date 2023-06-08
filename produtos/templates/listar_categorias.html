@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load filtros %}
 
 {% block 'title' %}PYTudo{% endblock %}
 
@@ -23,6 +24,23 @@
         </div>
         </div>
     </form>
+
+    <br>
+    <br>
+
+    <form action="{% url 'cadastrar_categoria' %}" method="POST"> {% csrf_token %} 
+        <div class="row">
+            
+        <div class="col-md-5">
+            <label>Cadastrar nova categoria</label>
+            <input type="text" class="form-control" name="nome" maxlength="40">
+        </div>
+    
+        <div class="col-md-3">
+            <input type="submit" value="SALVAR" class="btn btn-primary">
+        </div>
+        </div>
+    </form>
     
     <table class="table table-striped">
         <thead>
@@ -34,13 +52,37 @@
     
         <tbody>
             {% for categoria in categorias %}
-                <tr>
+                <tr> 
                     <td>{{categoria.nome}}</td> 
                     <td><a href="{% url 'excluir_categoria' categoria.id %}">Excluir</a></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <br>
+    <br>
+    <div class="pagination">
+        {% if categorias.has_previous %}
+            <a href="?{% param_replace page=1 %}">First</a>
+            {% if categorias.previous_page_number != 1 %}
+                <a href="?{% param_replace page=categorias.previous_page_number %}">Previous</a>
+            {% endif %}
+        {% endif %}
+
+        Page {{ categorias.number }} of {{ paginator.num_pages }} 
+
+        {% if categorias.has_next %}
+            {% if categorias.next_page_number != paginator.num_pages %}
+                <a href="?{% param_replace page=categorias.next_page_number %}">Next</a>
+            {% endif %}
+            <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+        {% endif %}
+
+        <p>Objects {{ categorias.start_index }}—{{ categorias.end_index }}</p>
+        
+    </div> 
+
     
     
 

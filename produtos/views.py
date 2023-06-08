@@ -115,6 +115,14 @@ def excluir_produto(request, id):
 
 def listar_categorias(request):
     categorias = Categoria.objects.all()
+    nome_filtrar = request.GET.get('nome')
+    if nome_filtrar:
+        categorias = categorias.filter(nome__icontains=nome_filtrar)
+    print (categorias)
+    categorias_ordenadas = categorias.order_by('nome')
+    paginacao = Paginator(categorias_ordenadas, 5)
+    page = request.GET.get('page')
+    categorias = paginacao.get_page(page)
     return render(request, 'listar_categorias.html', {'categorias': categorias})
 
 @has_permission_decorator('alterar_produto')
