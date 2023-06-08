@@ -8,49 +8,22 @@
 {% endblock %}
 
 {% block 'body' %}
+
+    <div class="wrapper">
+        <form action="{% url 'atualizar_usuario' usuario.id %}" method="POST">{% csrf_token %}
+            <table>
+                {{form.as_table}} 
+                {{ form.non_field_errors }}
+                
+            </table>
+        <input class="btn btn-success" type="submit" value="Enviar">
+        </form>
+    </div>
     
-            <form action="{% url 'atualizar_usuario' usuario.id %}" method="POST"> {% csrf_token %}
-                <label>Nome:</label>
-                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.nome}}" name="nome">
-                <br>
-
-                <label>celular:</label> 
-                <input style="width: 40%;" class="form-control" id="celular" type="texte" value="{{usuario.celular.as_national}}" name="celular">
-                <br>
-
-                <label>endereco:</label>
-                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.endereco}}" name="endereco">
-                <br>
-
-                <label>numero_endereco:</label>
-                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.numero_endereco}}" name="numero_endereco">
-                <br>
-
-                <label>Complemento:</label> 
-                {% if usuario.complemento %}
-                    <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.complemento}}" name="complemento">
-                {% else %}
-                    <input style="width: 40%;" class="form-control" type="texte" name="complemento">
-                {% endif %}
-                <br>
-
-                <label>bairro:</label>
-                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.bairro}}" name="bairro">
-                <br>
-
-                <label>cidade:</label>
-                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.cidade}}" name="cidade">
-                <br>
-
-                <label>estado:</label>
-                <input style="width: 40%;" class="form-control" type="texte" value="{{usuario.estado}}" name="estado">
-                <br>
-
-                <input type="submit" class="btn btn-success btn-lg" value="Alterar">
-            </form>
     
+    ATUALIZADO ULTIMA VEZ EM: {{usuario.data_atualizacao|date:"d/m/Y" }} às {{usuario.data_atualizacao|time:"H:i" }}
 
-            ATUALIZADO ULTIMA VEZ EM: {{usuario.data_atualizacao|date:"d/m/Y" }} às {{usuario.data_atualizacao|time:"H:i" }}
+    
 
 {% endblock %}
 
@@ -59,6 +32,8 @@
     
     <script> 
         $(document).ready(function(){
+            $('#id_cpf').mask('000.000.000-00', {reverse: true});
+            $('#id_data_de_nascimento').mask('00/00/0000');
             var SPMaskBehavior = function (val) {
                 return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
               },
@@ -68,7 +43,7 @@
                   }
               };
               
-              $('#celular').mask(SPMaskBehavior, spOptions);
+              $('#id_celular').mask(SPMaskBehavior, spOptions);
 
         });
 

@@ -9,45 +9,39 @@
 
 {% block 'body' %}
 
-        <h2 class="titulo">Categorias</h2>
-        <a href="#" class="btn-btn-danger" data-bs-toggle="modal" data-bs-target="#myModal">Nova Categoria</a>
+    <h2 class="titulo">Categorias</h2>
     
-
+    <form action="#" method="GET"> {% csrf_token %} 
         <div class="row">
-            {% for categoria in categorias %} 
-                <div class="col-md">
-                    <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                                <h5 class="card-title">{{categoria.nome}}</h5>
-                                <a class="btn btn-danger" href="{% url 'excluir_categoria' categoria.id %}" role="button">Excluir</a>
-                        </div>
-                    </div>
-                </div>
+            
+        <div class="col-md-5">
+            <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+        </div>
+    
+        <div class="col-md-3">
+            <input type="submit" value="FILTRAR" class="btn btn-primary">
+        </div>
+        </div>
+    </form>
+    
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Excluir</th>
+          </tr>
+        </thead>
+    
+        <tbody>
+            {% for categoria in categorias %}
+                <tr>
+                    <td>{{categoria.nome}}</td> 
+                    <td><a href="{% url 'excluir_categoria' categoria.id %}">Excluir</a></td>
+                </tr>
             {% endfor %}
-        </div>
-
-
-
-
-
-
-    <div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <form action="{% url 'cadastrar_categoria' %}" method="POST">{% csrf_token %}
-            <div class="modal-header">
-              <h4 class="modal-title" id="myModalLabel">Cadastrar nova Categoria</h4>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <input type="text" class="form-control" name="nome" placeholder="Digite a categoria">
-            </div>
-            <div class="modal-footer">
-                <input type="submit" class="btn-nova-empresa" value="Salvar">
-            </div>
-          </div>
-            </form>
-        </div>
-    </div>
+        </tbody>
+    </table>
+    
+    
 
 {% endblock %}

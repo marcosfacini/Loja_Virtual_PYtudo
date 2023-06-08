@@ -49,9 +49,18 @@ Processo de venda
 
 verificar mensagens de erro e de sucesso nas funcões
 
-tratamento de erro validacao no forms de produtos 
-tratamento de erro nos forms de atualizacao
-Tratamento de erros try/except
+paginação categorias
+filtro de categorias
+adicionar cayegorias
+formularios - gestao e de avaliação
+
+Tratamento de erros try/except em todas as funcoes
+
+slugs nas urls quem id
+
+pagina home
+
+pdb set trace - para debugar
 
 usuarios anonimos podem comentar?
 model avaliacao vai ter usuario on cascade?
@@ -72,9 +81,6 @@ Desabilitar urls do accounts que não vou usar
 
 # form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
 
-USUARIO DEVERIA PODER MUDAR O SEU CPF E SUA DATA DE NASCIMENTO DEPOIS DO CADASTRO FEITO? 
-se for possivel tem que validar os campos atualizados e colocar as mascaras no cadastrar e no atualizar usuario
-
 campo estado com um select com todos os estados brasileiros? teria que mudar a model e todos os forms
 
 compensa fazer um filtro de data que busque somente pelo ano ou somente pelo mes?
@@ -92,7 +98,6 @@ footer
 paginação estilizada
 modal em botoes excluir
 posicao da mensagem de erro nos forms
-mascaras para campo de precos ao cadastrar - mudar o widget para aceitar a mascara?
 campos de descricao editáveis - possibilidade de negrito e paragrafo
 
 precisa importar essa versao do bootstrap?

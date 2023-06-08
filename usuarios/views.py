@@ -1,5 +1,5 @@
-from django.shortcuts import render, HttpResponse, redirect
-from .forms import CadastroUsuario
+from django.shortcuts import render, redirect
+from .forms import CadastroUsuario, AtualizarUsuario
 from .models import Usuarios
 from django.contrib import messages
 from django.contrib.messages import constants 
@@ -10,6 +10,9 @@ from django.contrib.auth.models import User
 from rolepermissions.decorators import has_role_decorator, has_permission_decorator
 from django.core.paginator import Paginator
 from datetime import datetime
+from cpf_field.validators import validate_cpf
+from django.core.exceptions import ValidationError
+
 
 
 # @login required
@@ -84,31 +87,55 @@ def excluir_usuario(request, id):
 def ver_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
     return render(request, 'ver_usuario.html', {'usuario': usuario,})
-
+    
 def atualizar_usuario(request, id):
-    if request.method == 'GET':    
-        usuario = Usuarios.objects.get(id=id)
-        return render(request, 'atualizar_usuario.html', {'usuario': usuario})
-    elif request.method == 'POST':
-        nome = request.POST.get('nome')
-        celular = request.POST.get('celular')
-        endereco = request.POST.get('endereco')
-        numero_endereco = request.POST.get('numero_endereco')
-        complemento = request.POST.get('complemento')
-        bairro = request.POST.get('bairro')
-        cidade = request.POST.get('cidade')
-        estado = request.POST.get('estado')
-        usuario = Usuarios.objects.get(id=id)
-        usuario.nome = nome
-        usuario.celular = celular
-        usuario.endereco = endereco
-        usuario.numero_endereco = numero_endereco
-        usuario.complemento = complemento
-        usuario.bairro = bairro
-        usuario.estado = estado
-        usuario.save()
-        messages.add_message(request, constants.SUCCESS, 'Usuario atualizado com sucesso.')
-        return redirect(f'/usuarios/atualizar_usuario/{id}')
+    usuario = Usuarios.objects.get(id=id)
+    if request.method == 'POST':
+        form = AtualizarUsuario(request.POST)
+        try:
+            nome = request.POST.get('nome')
+            usuario.nome = nome
+            cpf = request.POST.get('cpf')
+            validate_cpf(cpf)
+            usuario.cpf = cpf
+            data_de_nascimento = request.POST.get('data_de_nascimento')
+            data_convertida = datetime.strptime(data_de_nascimento, "%d/%m/%Y")
+            usuario.data_de_nascimento = data_convertida
+            celular = request.POST.get('celular')
+            usuario.celular = celular
+            endereco = request.POST.get('endereco')
+            usuario.endereco = endereco
+            numero_endereco = request.POST.get('numero_endereco')
+            usuario.numero_endereco = numero_endereco
+            complemento = request.POST.get('complemento')
+            usuario.complemento = complemento
+            bairro = request.POST.get('bairro')
+            usuario.bairro = bairro
+            cidade = request.POST.get('cidade')
+            usuario.cidade = cidade
+            estado = request.POST.get('estado')
+            usuario.estado = estado
+            if form.is_valid():
+                usuario.save()
+                messages.add_message(request, constants.SUCCESS, 'Usuario atualizado com sucesso.')
+                return redirect(f'/usuarios/atualizar_usuario/{id}')
+            else:
+                messages.add_message(request, constants.ERROR, 'Não foi possível atualizar o formulário')
+        except ValidationError as error:
+            messages.add_message(request, constants.ERROR, f'{error}')
+            return render(request, 'atualizar_usuario.html', {'form': form,
+                                                      'usuario': usuario})
+        except:
+            messages.add_message(request, constants.ERROR, 'Não foi possível atualizar o formulário')
+            return render(request, 'atualizar_usuario.html', {'form': form,
+                                                      'usuario': usuario})     
+    else:
+        dados = usuario.__dict__
+        form = AtualizarUsuario(dados)
+    return render(request, 'atualizar_usuario.html', {'form': form,
+                                                      'usuario': usuario})
+
+
 
 
 
