@@ -7,6 +7,7 @@ from rolepermissions.decorators import has_permission_decorator, has_role_decora
 from decimal import Decimal
 from django.core.paginator import Paginator
 from .forms import CadastrarProduto
+from usuarios.models import Usuarios
 
 
 
@@ -181,11 +182,18 @@ def alterar_produto(request, id):
         return redirect(f'/produtos/alterar_produto/{id}')
     
 def salvar_avaliacao(request, id_produto):
+    usuario = Usuarios.objects.get(usuario=request.user)
     estrelas = request.POST.get('estrelas')
     comentario = request.POST.get('comentario')
-    avalicao = Avaliacao(usuario=request.user, produto_id=id_produto, estrelas=estrelas, comentario=comentario)
+    avalicao = Avaliacao(usuario=usuario, produto_id=id_produto, estrelas=estrelas, comentario=comentario)
     avalicao.save()
     return redirect(f'/produtos/ver_produto/{id_produto}')
+
+def excluir_avaliacao(request, id_avaliacao, id_produto):
+    avaliacao = Avaliacao.objects.get(id=id_avaliacao)
+    avaliacao.delete()
+    return redirect(f'/produtos/ver_produto/{id_produto}')
+
 
 def alterar_imagem_principal(request, id_produto):
     imagem = request.FILES.get('imagem_principal')

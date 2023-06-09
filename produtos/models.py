@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from usuarios.models import Usuarios
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=40)
@@ -37,10 +38,12 @@ class Avaliacao(models.Model):
         ('4', 'Otimo'),
         ('5', 'Perfeito')
     )
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True)
     produto = models.ForeignKey(Produtos, on_delete=models.CASCADE)
-    estrelas = models.CharField(max_length=1, choices=choices, blank=True, null=True)
+    estrelas = models.CharField(max_length=1, choices=choices)
     comentario = models.TextField()
+    data_avaliacao = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
         return self.estrelas

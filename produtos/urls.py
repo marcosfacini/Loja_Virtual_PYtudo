@@ -15,4 +15,5 @@ urlpatterns = [
     path('incluir_imagens/<int:id_produto>', views.incluir_imagens, name='incluir_imagens'),
     path('excluir_imagem/<int:id_imagem>/<int:id_produto>', views.excluir_imagem, name='excluir_imagem'),
     path('excluir_imagem_principal/<int:id_produto>', views.excluir_imagem_principal, name='excluir_imagem_principal'),
+    path('excluir_avaliacao/<int:id_avaliacao>/<int:id_produto>', views.excluir_avaliacao, name='excluir_avaliacao'),
 ]

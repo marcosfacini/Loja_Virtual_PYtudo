@@ -49,7 +49,7 @@ Processo de venda
 
 verificar mensagens de erro e de sucesso nas funcões
 
-formularios - gestao e de avaliação
+formularios - gestao 
 
 Tratamento de erros try/except em todas as funcoes
 
@@ -59,9 +59,7 @@ pagina home
 
 pdb set trace - para debugar
 
-usuarios anonimos podem comentar?
-model avaliacao vai ter usuario on cascade?
-funcao atualizar e excluir comentario
+funcao atualizar avaliacao
 
 gestor seleciona quais produtos ficarao na home
 Produtos em destaque/promoção num banner
@@ -73,6 +71,8 @@ If com request.user na view?
 If dentro do template html?
 
 Gestao desabilita/habilita contas de  usuarios e gerentes
+
+apenas o proprio usuario e o gestor tem permissao de apagar e atualizar o seu proprio comentario
 
 Desabilitar urls do accounts que não vou usar
 
@@ -96,6 +96,11 @@ paginação estilizada
 modal em botoes excluir
 posicao da mensagem de erro nos forms
 campos de descricao editáveis - possibilidade de negrito e paragrafo
+botao logue-se para comentar
+como aparece comentario que teve usuario deletado ?
+paginar avaliacoes
+contador que tras quantidade de itens de resultado de uma pesquisa
+
 
 precisa importar essa versao do bootstrap?
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>

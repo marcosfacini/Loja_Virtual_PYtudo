@@ -44,8 +44,8 @@
         <br>
 
         <form action="{% url 'salvar_avaliacao' produto.id %}" method="POST"> {% csrf_token %}
-            <select class="form-select" aria-label="Default select example" name="estrelas">
-                <option hidden="true">Estrelas</option>
+            <label>Estrelas:</label>
+            <select class="form-select" aria-label="Default select example" name="estrelas" required>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -83,8 +83,18 @@
         <div class="row">
             <div class="col-md-3">
                 {% for avaliacao in avaliacoes %} 
-                    {{avaliacao.estrelas}}
-                    {{avaliacao.comentario}}
+                    Estrelas: {{avaliacao.estrelas}}
+                    <br>
+                    Comentário: {{avaliacao.comentario}}
+                    <br>
+                    Uusario: {{avaliacao.usuario.nome}}
+                    <br>
+                    Data da avaliação: {{avaliacao.data_avaliacao}}
+                    <br>
+                    Ultima atualização: {{avaliacao.data_atualizacao}}
+                    <br>
+                    <a class="btn btn-danger" href="{% url 'excluir_avaliacao' avaliacao.id produto.id %}" role="button">Excluir</a>
+                    <br>
                     <br>
                 {% endfor %}
             </div>
