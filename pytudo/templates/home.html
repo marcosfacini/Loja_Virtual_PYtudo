@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filtros %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/listar_produtos.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+<form action="{% url 'listar_produtos' %}" method="GET"> {% csrf_token %} 
+    <div class="row">
+        
+            <div class="col-md-5">
+                <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+            </div>
+
+            <div class="col-md-4">
+                <select class="form-select" name="categoria">
+                    <option value="" disabled selected hidden>Escolha uma categoria</option>
+                    {% for categoria in categorias %}
+                        <option value="{{categoria.id}}">{{categoria}} </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label>Menor que:</label>
+                <input type="text" name="preco_menor_filtrar">
+
+                <label> Maior que:</label>
+                <input type="text" name="preco_maior_filtrar">
+            </div>
+
+            <input type="text" placeholder="Busque pela marca"  name="marca">
+
+            <input type="text" placeholder="Busque pela cor"  name="cor">
+
+            <select class="form-select" aria-label="Default select example" name="ordenacao">
+                <option value="" disabled selected hidden>Ordenar por:</option>
+                <option value="maior">Maior preço</option>
+                <option value="menor">Menor preço</option>
+            </select>
+        
+        <div class="col-md-3">
+            <input type="submit" value="FILTRAR" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+
+    
+{% endblock %}
+
+{% block scripts %}
+    
+{% endblock %}

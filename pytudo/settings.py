@@ -149,7 +149,7 @@ MESSAGE_TAGS = {
 
 ROLEPERMISSIONS_MODULE = 'pytudo.roles'
 
-LOGIN_REDIRECT_URL = '/produtos/listar_produtos'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 ACCOUNT_LOGOUT_ON_GET = True 
 

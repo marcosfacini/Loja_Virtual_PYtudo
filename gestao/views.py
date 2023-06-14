@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.messages import constants 
 from rolepermissions.roles import assign_role
@@ -37,7 +37,7 @@ def salvar_gestor(request):
                                  password=senha_provisoria)
     assign_role(gestor, 'gestor')
     messages.add_message(request, constants.SUCCESS, 'Gestor cadastrado com sucesso')
-    return redirect('/produtos/listar_produtos')
+    return redirect('home')
 
 def adm_estoque(request):
     produtos = Produtos.objects.all()

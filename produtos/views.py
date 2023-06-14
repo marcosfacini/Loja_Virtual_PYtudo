@@ -92,7 +92,7 @@ def cadastrar_produto(request):
                 imagem = Imagens(produto=produto, foto=img)
                 imagem.save()
         messages.add_message(request, constants.SUCCESS, 'Produto salvo com sucesso.')
-        return redirect('/produtos/listar_produtos')
+        return redirect('/gestao/adm_estoque')
     else:
         form = CadastrarProduto()
     return render(request, 'cadastrar_produto.html', {'form': form})
@@ -201,7 +201,7 @@ def alterar_imagem_principal(request, id_produto):
     produto.imagem_principal = imagem
     produto.save()
     messages.add_message(request, constants.SUCCESS, 'Imagem alterada com sucesso.')
-    return redirect(f'/produtos/ver_produto/{id_produto}')
+    return redirect(f'/produtos/alterar_produto/{id_produto}')
 
 
 def incluir_imagens(request, id_produto):
@@ -210,7 +210,7 @@ def incluir_imagens(request, id_produto):
         imagem = Imagens(produto_id=id_produto, foto=img)
         imagem.save()
     messages.add_message(request, constants.SUCCESS, 'Imagem incluída com sucesso.')
-    return redirect(f'/produtos/ver_produto/{id_produto}')
+    return redirect(f'/produtos/alterar_produto/{id_produto}')
 
 def excluir_imagem(request, id_imagem, id_produto):
     imagem = Imagens.objects.get(id=id_imagem)
@@ -222,4 +222,4 @@ def excluir_imagem_principal(request, id_produto):
     produto = Produtos.objects.get(id=id_produto)
     produto.imagem_principal.delete()
     messages.add_message(request, constants.SUCCESS, 'Imagem excluída com sucesso.')
-    return redirect(f'/produtos/ver_produto/{id_produto}')
+    return redirect(f'/produtos/alterar_produto/{id_produto}')

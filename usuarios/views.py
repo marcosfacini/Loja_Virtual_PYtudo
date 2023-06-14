@@ -22,7 +22,7 @@ def info_adicional_usuario(request):
         if form.is_valid():
             form.save()
             messages.add_message(request, constants.SUCCESS, 'Usuario criado com sucesso.')
-            return redirect('/produtos/listar_produtos')
+            return redirect('home')
         else:
             messages.add_message(request, constants.ERROR, 'Não foi possível cadastrar o usuário.')
     else:

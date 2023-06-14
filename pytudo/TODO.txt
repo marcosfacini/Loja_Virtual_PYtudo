@@ -17,9 +17,7 @@ Cupom de desconto
 gestor seleciona quais produtos ficarao na home
 Produtos em destaque/promoção num banner
 
-slugs nas urls que tem id
-
-pagina home
+slugs nas urls que tem id dos produtos
 
 funcao atualizar avaliacao
 
