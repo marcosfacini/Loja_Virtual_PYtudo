@@ -50,6 +50,28 @@
     </div>
 </form>
 
+<div class="row">
+    {% for produto in produtos %} 
+        <div class="col-md">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <a href="{% url 'ver_produto' produto.produto.id %}" class="links">
+                        {% if produto.produto.imagem_principal %}
+                            <img width="100%" src="{{produto.produto.imagem_principal.url}}">
+                        {% else %}
+                            <img width="100%" src="{% static 'produtos\img\sem foto.jpg' %}">
+                        {% endif %}
+                        <h5 class="card-title">{{produto.produto.nome}}</h5>
+                        <div class="preco"> {{produto.produto.preco}} </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+    {% endfor %}
+
+</div>
+
     
 {% endblock %}
 

@@ -14,8 +14,10 @@ relatorio de balanço de lucro
 
 Cupom de desconto 
 
-gestor seleciona quais produtos ficarao na home
-Produtos em destaque/promoção num banner
+nao aceitar mesmo produto duas vezes na home
+filtro e paginacao no painel da home
+
+banner
 
 slugs nas urls que tem id dos produtos
 
@@ -70,7 +72,7 @@ botao logue-se para comentar
 como aparece comentario que teve usuario deletado ?
 paginar avaliacoes
 contador que tras quantidade de itens de resultado de uma pesquisa
-ordenacao por tabela na lista de produtos e de usuarios do gestor
+ordenacao por tabela na lista de produtos e de usuarios do gestor - datatables jquery
 form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
 compensa fazer um filtro de data que busque somente pelo ano ou somente pelo mes?
 

@@ -5,7 +5,7 @@ from rolepermissions.roles import assign_role
 from rolepermissions.permissions import grant_permission, revoke_permission
 from django.contrib.auth.models import User
 from rolepermissions.decorators import has_role_decorator
-from produtos.models import Produtos, Categoria
+from produtos.models import Produtos, Categoria, DestacadosHome
 from django.core.paginator import Paginator
 from decimal import Decimal
 
@@ -100,6 +100,32 @@ def adm_estoque(request):
 def detalhes_produto(request, id):
     produto = Produtos.objects.get(id=id)
     return render(request, 'detalhes_produto.html', {'produto': produto})
+
+def painel_controle(request):
+    produtos = Produtos.objects.all()
+    return render(request, 'painel_controle.html',{'produtos': produtos})
+
+def exibicao_home(request):
+    produtos = request.POST.getlist('selecionados[]')
+    acao = request.POST.get('acao')
+    if produtos == []:
+        messages.add_message(request, constants.ERROR, 'Selecione um produto')
+        return redirect('/gestao/painel_controle')
+
+    if acao == 'incluir':
+        for produto in produtos:
+            home = DestacadosHome(produto_id=produto)
+            home.save()
+        messages.add_message(request, constants.SUCCESS, 'Produtos adicionados na home com sucesso')
+
+    if acao == 'excluir':
+        for produto in produtos:
+            home = DestacadosHome.objects.get(produto_id=produto)
+            home.delete()
+        messages.add_message(request, constants.ERROR, 'Produtos deletados da home com sucesso')
+
+    return redirect('/gestao/painel_controle')
+
 
 
 

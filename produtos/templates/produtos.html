@@ -66,8 +66,6 @@
                             {% endif %}
                             <h5 class="card-title">{{produto.nome}}</h5>
                             <div class="preco"> {{produto.preco}} </div>
-                            <a class="btn btn-danger" href="{% url 'excluir_produto' produto.id %}" role="button">Excluir</a>
-                            <a class="btn btn-warning" href="{% url 'alterar_produto' produto.id %}" role="button">Alterar</a>
                         </a>
                     </div>
                 </div>

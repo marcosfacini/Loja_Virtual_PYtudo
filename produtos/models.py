@@ -46,4 +46,14 @@ class Avaliacao(models.Model):
     data_atualizacao = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return self.estrelas
+        return self.comentario
+    
+class DestacadosHome(models.Model):
+    produto = models.ForeignKey(Produtos, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.produto.nome
+    
+class Banner(models.Model):
+    imagem = models.ImageField(upload_to ='banners/')
+

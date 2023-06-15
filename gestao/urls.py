@@ -8,6 +8,9 @@ urlpatterns = [
     path('salvar_gestor/', views.salvar_gestor, name='salvar_gestor'),
     path('adm_estoque/', views.adm_estoque, name='adm_estoque'),
     path('detalhes_produto/<int:id>', views.detalhes_produto, name='detalhes_produto'),
+    path('painel_controle/', views.painel_controle, name='painel_controle'),
+    path('exibicao_home/', views.exibicao_home, name='exibicao_home'),
+    
    
 ]
 
