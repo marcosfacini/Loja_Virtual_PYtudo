@@ -50,9 +50,11 @@
     </div>
 </form>
 
-{% if banner.imagem %}
+
+{% for banner in banners %}
     <img width="100%" src="{{banner.imagem.url}}">
-{% endif %}
+{% endfor %}
+
 
 <div class="row">
     {% for produto in produtos %} 

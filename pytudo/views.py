@@ -6,10 +6,7 @@ from gestao.models import Banner
 def home(request):
     categorias = Categoria.objects.all()
     produtos = DestacadosHome.objects.all()
-    try:
-        banner = Banner.objects.get(home=True)
-    except:
-        banner = ''
+    banners = Banner.objects.filter(home=True)
     return render(request, 'home.html', {'categorias': categorias,
                                          'produtos': produtos,
-                                         'banner': banner})
+                                         'banners': banners})

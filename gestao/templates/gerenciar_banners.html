@@ -24,6 +24,7 @@
           {% for banner in banners %}
             <img width="100%" src="{{banner.imagem.url}}">
             <a class="btn btn-danger" href="{% url 'selecionar_banner' banner.id %}" role="button">Selecionar</a>
+            <a class="btn btn-danger" href="{% url 'tirar_banner_home' banner.id %}" role="button">Retirar</a>
             <a class="btn btn-danger" href="{% url 'deletar_banner' banner.id %}" role="button">Excluir</a>
             <br>
             <br>

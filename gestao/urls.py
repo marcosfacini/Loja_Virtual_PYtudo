@@ -15,6 +15,7 @@ urlpatterns = [
     path('adicionar_banner/', views.adicionar_banner, name='adicionar_banner'),
     path('selecionar_banner/<int:id_banner>', views.selecionar_banner, name='selecionar_banner'),
     path('deletar_banner/<int:id_banner>', views.deletar_banner, name='deletar_banner'),
+    path('tirar_banner_home/<int:id_banner>', views.tirar_banner_home, name='tirar_banner_home'),
     
    
 ]

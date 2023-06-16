@@ -1,5 +1,3 @@
-pdb set trace - para debugar
-
 Lista de desejos - igual model carrinho? - mudar model carrinho para armazenar dados numa session?
 
 campo estado com um select com todos os estados brasileiros? teria que mudar a model e todos os forms
@@ -14,13 +12,9 @@ relatorio de balanço de lucro
 
 Cupom de desconto 
 
-nao aceitar mesmo produto duas vezes na home e nao dar erro ao tentar deletar eles
-filtro e paginacao no painel da home
-
 slugs nas urls que tem id dos produtos
 
 funcao atualizar avaliacao
-
 
 Calculo de frete api
 inserir campo cep na model do usuario?
@@ -62,7 +56,7 @@ Form de avaliação em estrelas
 Navbar/menu
 Css das paginas 
 footer 
-paginação estilizada
+paginação estilizada - escolher quantidade de itens por pagina
 modal em botoes excluir
 posicao da mensagem de erro nos forms
 campos de descricao editáveis - possibilidade de negrito e paragrafo
@@ -70,9 +64,10 @@ botao logue-se para comentar
 como aparece comentario que teve usuario deletado ?
 paginar avaliacoes
 contador que tras quantidade de itens de resultado de uma pesquisa
-ordenacao por tabela na lista de produtos e de usuarios do gestor - datatables jquery
+ordenacao nas tabelas de produtos e de usuarios - datatables jquery
 form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
 compensa fazer um filtro de data que busque somente pelo ano ou somente pelo mes?
+banner interativo
 
 precisa importar essa versao do bootstrap?
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
