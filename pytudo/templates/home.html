@@ -28,7 +28,7 @@
 
             <div>
                 <label>Menor que:</label>
-                <input type="text" name="preco_menor_filtrar">
+                <input type="text" name="preco_menor_filtrar"> 
 
                 <label> Maior que:</label>
                 <input type="text" name="preco_maior_filtrar">
@@ -49,6 +49,10 @@
         </div>
     </div>
 </form>
+
+{% if banner.imagem %}
+    <img width="100%" src="{{banner.imagem.url}}">
+{% endif %}
 
 <div class="row">
     {% for produto in produtos %} 

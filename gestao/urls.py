@@ -9,7 +9,12 @@ urlpatterns = [
     path('adm_estoque/', views.adm_estoque, name='adm_estoque'),
     path('detalhes_produto/<int:id>', views.detalhes_produto, name='detalhes_produto'),
     path('painel_controle/', views.painel_controle, name='painel_controle'),
+    path('produtos_home/', views.produtos_home, name='produtos_home'),
     path('exibicao_home/', views.exibicao_home, name='exibicao_home'),
+    path('gerenciar_banners/', views.gerenciar_banners, name='gerenciar_banners'),
+    path('adicionar_banner/', views.adicionar_banner, name='adicionar_banner'),
+    path('selecionar_banner/<int:id_banner>', views.selecionar_banner, name='selecionar_banner'),
+    path('deletar_banner/<int:id_banner>', views.deletar_banner, name='deletar_banner'),
     
    
 ]

@@ -54,6 +54,5 @@ class DestacadosHome(models.Model):
     def __str__(self):
         return self.produto.nome
     
-class Banner(models.Model):
-    imagem = models.ImageField(upload_to ='banners/')
+
 

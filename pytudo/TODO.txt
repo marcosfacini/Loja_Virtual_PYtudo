@@ -14,10 +14,8 @@ relatorio de balanço de lucro
 
 Cupom de desconto 
 
-nao aceitar mesmo produto duas vezes na home
+nao aceitar mesmo produto duas vezes na home e nao dar erro ao tentar deletar eles
 filtro e paginacao no painel da home
-
-banner
 
 slugs nas urls que tem id dos produtos
 

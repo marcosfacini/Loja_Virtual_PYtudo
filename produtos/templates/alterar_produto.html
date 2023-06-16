@@ -112,22 +112,23 @@
   <br>
   <br>
 
+{% if produto.imagem_principal %}
   <div class="row">
     <p>Excluir imagens:</p>
     <div class="col-md">
       <div class="card" style="width: 18rem;">
           <div class="card-body">
-            {% if produto.imagem_principal %}
-                <img width="100%" src="{{produto.imagem_principal.url}}">
-                <a class="btn btn-danger" href="{% url 'excluir_imagem_principal' produto.id %}" role="button">Excluir</a>
-            {% endif %}
+              <img width="100%" src="{{produto.imagem_principal.url}}">
+              <a class="btn btn-danger" href="{% url 'excluir_imagem_principal' produto.id %}" role="button">Excluir</a>
           </div>
         </div>
     </div>
   </div>
+  {% endif %}
 
 <br>
 <br>
+{% if imagens %}
   <div class="row">
     <div class="col-md">
       <div class="card" style="width: 18rem;">
@@ -142,7 +143,8 @@
         </div>
       </div>
     </div>
-  </div>  
+  </div> 
+{% endif %} 
 
 {% endblock %} 
 

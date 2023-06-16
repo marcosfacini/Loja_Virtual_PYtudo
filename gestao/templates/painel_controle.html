@@ -10,70 +10,14 @@
 
 {% block 'body' %}
 
-adm estoque
-banner
-usuarios
-produtos destacados
+<a class="btn btn-primary" href="{% url 'adm_estoque' %}" role="button">Gerenciar estoque</a>
+<a class="btn btn-primary" href="{% url 'cadastrar_produto' %}" role="button">Cadastrar Produtos</a>
+<a class="btn btn-primary" href="{% url 'listar_categorias' %}" role="button">Categorias</a>
+<a class="btn btn-primary" href="{% url 'listar_usuarios' %}" role="button">Usuarios</a>
+<a class="btn btn-primary" href="{% url 'produtos_home' %}" role="button">Produtos da homepage</a>
+<a class="btn btn-primary" href="{% url 'gerenciar_banners' %}" role="button">Banners</a>
 
-relatorios:
-
-<form action="{% url 'exibicao_home' %}" method="POST"> {% csrf_token %}
-
-    <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Selecionar</th> 
-            <th scope="col">Foto</th>
-            <th scope="col">Nome</th>
-            <th scope="col">Categoria</th>
-            <th scope="col">Quantidade</th>
-            <th scope="col">Marca</th>
-            <th scope="col">Cor</th>
-            <th scope="col">Preço de custo</th>
-            <th scope="col">Preço</th>
-            <th scope="col">Editar</th>
-            <th scope="col">Remover</th>
-            
-          </tr>
-        </thead>
-    
-        <tbody>
-            {% for produto in produtos %}
-                <tr>
-                    <td><input type="checkbox" name="selecionados[]" value="{{ produto.id }}"></td> 
-                    <td><a href="{% url 'detalhes_produto' produto.id %}">
-                            {% if produto.imagem_principal %}
-                                <img src="{{produto.imagem_principal.url}}" width="80" height="80"></td>
-                            {% else %}
-                                <img src="{% static 'produtos\img\sem foto.jpg' %}" width="80" height="80"></td>
-                            {% endif %}
-                        </a>
-                    <td>{{ produto.nome}}</td>
-                    {% if produto.categoria %}
-                        <td>{{ produto.categoria}}</td>
-                    {% else %}
-                        <td>Sem categoria </td>
-                    {% endif %}
-                    <td>{{ produto.quantidade}}</td> 
-                    <td>{{ produto.marca}}</td>
-                    <td>{{ produto.cor}}</td>
-                    <td>{{ produto.preco_de_custo}}</td>
-                    <td>{{ produto.preco}}</td>
-                    <td><a href="{% url 'alterar_produto' produto.id %}">Alterar</a></td>
-                    <td><a href="{% url 'excluir_produto' produto.id %}">Remover</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <label for="acao">Selecione uma ação:</label>
-    <select name="acao" id="acao">
-    <option value="incluir">Incluir na home</option>
-    <option value="excluir">Excluir da home</option>
-    </select>
-      
-    <input type="submit" value="Enviar">
-    </form>
+relatorios
     
     
 {% endblock %}

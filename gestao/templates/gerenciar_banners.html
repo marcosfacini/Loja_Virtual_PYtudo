@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/listar_produtos.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+<form action="{% url 'adicionar_banner' %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+    <input type="file" name="banner" accept="image/*">
+    <br>
+    <button class="btn btn-dark my-4" type="submit">Submit</button>
+</form>
+
+{% if banners %}
+<div class="row">
+    <div class="col-md">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          {% for banner in banners %}
+            <img width="100%" src="{{banner.imagem.url}}">
+            <a class="btn btn-danger" href="{% url 'selecionar_banner' banner.id %}" role="button">Selecionar</a>
+            <a class="btn btn-danger" href="{% url 'deletar_banner' banner.id %}" role="button">Excluir</a>
+            <br>
+            <br>
+            <br>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>  
+{% endif %}
+    
+{% endblock %}
+
+{% block scripts %}
+    
+{% endblock %}

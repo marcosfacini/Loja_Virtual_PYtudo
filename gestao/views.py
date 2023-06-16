@@ -8,6 +8,7 @@ from rolepermissions.decorators import has_role_decorator
 from produtos.models import Produtos, Categoria, DestacadosHome
 from django.core.paginator import Paginator
 from decimal import Decimal
+from .models import Banner
 
 @has_role_decorator('gestor')
 def criar_gerente(request):
@@ -102,8 +103,11 @@ def detalhes_produto(request, id):
     return render(request, 'detalhes_produto.html', {'produto': produto})
 
 def painel_controle(request):
+    return render(request, 'painel_controle.html')
+
+def produtos_home(request):
     produtos = Produtos.objects.all()
-    return render(request, 'painel_controle.html',{'produtos': produtos})
+    return render(request, 'produtos_home.html', {'produtos': produtos})
 
 def exibicao_home(request):
     produtos = request.POST.getlist('selecionados[]')
@@ -122,9 +126,46 @@ def exibicao_home(request):
         for produto in produtos:
             home = DestacadosHome.objects.get(produto_id=produto)
             home.delete()
-        messages.add_message(request, constants.ERROR, 'Produtos deletados da home com sucesso')
+        messages.add_message(request, constants.SUCCESS, 'Produtos deletados da home com sucesso')
 
     return redirect('/gestao/painel_controle')
+
+def gerenciar_banners(request):
+    banners = Banner.objects.all()
+    return render(request, 'gerenciar_banners.html', {'banners': banners})
+
+def adicionar_banner(request):
+    img = request.FILES.get('banner')
+    if img:
+        banner = Banner(imagem=img)
+        banner.save()
+        messages.add_message(request, constants.SUCCESS, 'Banner salvo com sucesso')
+        return redirect('/gestao/gerenciar_banners')
+    else:
+        messages.add_message(request, constants.ERROR, 'Selecione uma imagem válida')
+        return redirect('/gestao/gerenciar_banners')
+
+
+def selecionar_banner(request, id_banner):
+    try:
+        banner_atual = Banner.objects.get(home=True)
+        banner_atual.home = False
+        banner_atual.save()
+    except:
+        pass
+    finally:
+        banner = Banner.objects.get(id=id_banner)
+        banner.home = True
+        banner.save()
+        messages.add_message(request, constants.SUCCESS, 'Banner adicionado na home com sucesso.')
+        return redirect('/gestao/gerenciar_banners')
+
+
+def deletar_banner(request, id_banner):
+    banner = Banner.objects.get(id=id_banner)
+    banner.delete()
+    messages.add_message(request, constants.SUCCESS, 'Banner deletado com sucesso')
+    return redirect('/gestao/gerenciar_banners')
 
 
 
