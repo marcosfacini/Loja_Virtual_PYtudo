@@ -2,7 +2,10 @@ Lista de desejos - igual model carrinho? - mudar model carrinho para armazenar d
 
 campo estado com um select com todos os estados brasileiros? teria que mudar a model e todos os forms
 
-Capturar registro do que foi atualizado usuario/produtos
+Capturar registro do que foi criado/atualizado/deletado usuario
+
+painel de busca e criação de relatorio de historicos
+
 Historico de compras do usuario e de vendas do produto
 
 Controle de estoque do gerente quant/sub/add
@@ -11,10 +14,6 @@ preco de custo/preco pro consumirdor/lucro
 relatorio de balanço de lucro
 
 Cupom de desconto 
-
-slugs nas urls que tem id dos produtos
-
-funcao atualizar avaliacao
 
 Calculo de frete api
 inserir campo cep na model do usuario?
@@ -32,7 +31,7 @@ repassar permissões em todas as views visando possiveis ataques
 Pagina de perfil e botão atualizar/excluir só o usuario do perfil tem acesso  
 If com request.user na view?
 If dentro do template html?
-apenas o proprio usuario e o gestor tem permissao de apagar e atualizar o seu proprio comentario
+funcao atualizar avaliacao - apenas o proprio usuario e o gestor tem permissao de apagar e atualizar o seu proprio comentario
 
 Gestao desabilita/habilita contas de  usuarios e gerentes
 
@@ -68,6 +67,8 @@ ordenacao nas tabelas de produtos e de usuarios - datatables jquery
 form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
 compensa fazer um filtro de data que busque somente pelo ano ou somente pelo mes?
 banner interativo
+slugs nas urls que tem id dos produtos
+seo do site
 
 precisa importar essa versao do bootstrap?
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
