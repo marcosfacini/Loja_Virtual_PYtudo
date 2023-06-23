@@ -2,8 +2,6 @@ Lista de desejos - igual model carrinho? - mudar model carrinho para armazenar d
 
 campo estado com um select com todos os estados brasileiros? teria que mudar a model e todos os forms
 
-Capturar registro do que foi criado/atualizado/deletado usuario
-
 painel de busca e criação de relatorio de historicos
 
 Historico de compras do usuario e de vendas do produto
