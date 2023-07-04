@@ -55,7 +55,7 @@ def listar_usuarios(request):
 
     estado_filtrar = request.GET.get('estado')
     if estado_filtrar:
-        usuarios = usuarios.filter(estado__icontains=estado_filtrar)
+        usuarios = usuarios.filter(estado=estado_filtrar)
 
     celular_filtrar = request.GET.get('celular')
     if celular_filtrar:
