@@ -22,7 +22,7 @@ class AtualizarUsuario(forms.Form):
     complemento = forms.CharField(max_length=50, required=False)
     bairro = forms.CharField(max_length=30)
     cidade = forms.CharField(max_length=30)
-    estado = forms.CharField(max_length=30)
+    estado = forms.ChoiceField(choices=Usuarios.ESTADOS_BRASILEIROS, label='Estado')
 
 
 

@@ -1,8 +1,7 @@
 Lista de desejos - igual model carrinho? - mudar model carrinho para armazenar dados numa session?
 
-campo estado com um select com todos os estados brasileiros? teria que mudar a model e todos os forms
-
 painel de busca e criação de relatorio de historicos
+cada usuario ve as alterações em seu perfil
 
 Historico de compras do usuario e de vendas do produto
 
