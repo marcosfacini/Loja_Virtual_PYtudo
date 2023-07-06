@@ -10,7 +10,7 @@
 {% block 'body' %}
 
     <div class="row">
-        {% for produto in carrinho.produtos.all %}
+        {% for produto in lista.produtos.all %}
             {{produto}}
         {% endfor %}
     </div>
@@ -18,6 +18,6 @@
     <br>
     <br>
     <br>
-    <a class="btn btn-primary" href="{% url 'esvaziar_carrinho' %}" role="button">Esvaziar Carrinho</a>
+    <a class="btn btn-primary" href="{% url 'esvaziar_lista_desejo' %}" role="button">Esvaziar Lista</a>
 
 {% endblock %}

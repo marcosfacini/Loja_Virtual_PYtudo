@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from produtos.models import Produtos
-from vendas.models import Carrinho
+from vendas.models import ListaDesejo, Venda, ItemVenda
 from django.urls import reverse
+from django.contrib import messages
+from django.contrib.messages import constants 
 
 def vender_produto(request, id):
     produto = Produtos.objects.get(id=id)
@@ -10,29 +12,36 @@ def vender_produto(request, id):
     produto.save()
     return redirect(f'/produtos/ver_produto/{id}')
 
-def adicionar_no_carrinho(request, id):
-    carrinho_existente = Carrinho.objects.filter(usuario=request.user.id).first()
+def adicionar_na_lista_desejo(request, id):
+    lista_existente = ListaDesejo.objects.filter(usuario=request.user.id).first()
     produto = Produtos.objects.get(id=id)
-    if carrinho_existente:
-        carrinho_existente.produtos.add(produto) 
-        return redirect(reverse('ver_carrinho'))
+    if lista_existente:
+        lista_existente.produtos.add(produto) 
+        return redirect(reverse('ver_lista_desejo'))
     else:
-        carrinho = Carrinho(usuario_id=request.user.id) 
-        carrinho.save()
-        carrinho.produtos.add(produto)
-        return redirect(reverse('ver_carrinho'))
+        lista = ListaDesejo(usuario_id=request.user.id) 
+        lista.save()
+        lista.produtos.add(produto)
+        return redirect(reverse('ver_lista_desejo'))
 
-def ver_carrinho(request):
-    carrinho = Carrinho.objects.filter(usuario=request.user.id).first()
-    return render(request, 'ver_carrinho.html', {'carrinho': carrinho})
+def ver_lista_desejo(request):
+    lista = ListaDesejo.objects.filter(usuario_id=request.user.id).first()
+    return render(request, 'ver_lista_desejo.html', {'lista': lista})
 
 
-def esvaziar_carrinho(request):
-    carrinho = Carrinho.objects.filter(usuario=request.user.id).first()
-    if carrinho:
-        carrinho.delete()
-        return redirect(reverse('listar_produtos'))
-    else:
-        return redirect(reverse('ver_carrinho'))
+def esvaziar_lista_desejo(request):
+    try:
+        lista = ListaDesejo.objects.get(usuario=request.user.id)
+        lista.delete()
+    except:
+        messages.add_message(request, constants.ERROR, 'Erro ao deletar ou a lista já está vazia')
+    return redirect(reverse('ver_lista_desejo'))
+   
+    
+def criar_historico_da_venda(request, produtos_ids, quantidades, valor_total):
+    venda = Venda(usuario=request.user.id, valor_total=valor_total)
+    venda.save()
+    for produto_id, quantidade in zip(produtos_ids, quantidades):
+        ItemVenda.objects.create(venda=venda, produto=produto_id, quantidade=int(quantidade))
 
 

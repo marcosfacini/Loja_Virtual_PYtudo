@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Carrinho
+from .models import ListaDesejo, Venda, ItemVenda
 
-admin.site.register(Carrinho)
+admin.site.register(ListaDesejo)
+admin.site.register(Venda)
+admin.site.register(ItemVenda)
 
