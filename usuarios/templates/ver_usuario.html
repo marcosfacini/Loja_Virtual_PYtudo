@@ -23,11 +23,22 @@
             {% endif %}
             <p class="paragrafo">{{usuario.bairro}}</p>
             <p class="paragrafo">{{usuario.cidade}}</p>
-            <p class="paragrafo">{{usuario.estado}}</p>
+            <p class="paragrafo">{{usuario.get_estado_display}}</p>
             <p class="paragrafo">DATA DE CADASTRO: {{usuario.usuario.date_joined|date:"d/m/Y" }} às {{ usuario.usuario.date_joined|time:"H:i" }}</p>
             <p class="paragrafo">DATA DO ULTIMO LOGIN: {{usuario.usuario.last_login|date:"d/m/Y" }} às {{ usuario.usuario.last_login|time:"H:i" }} </p>
             <p class="paragrafo">ATUALIZADO EM: {{usuario.data_atualizacao|date:"d/m/Y" }} às {{usuario.data_atualizacao|time:"H:i" }}</p>
         </div>
+    </div>
+
+    <div>
+        O QUE FOI ATUALIZADO:
+        <br>
+        {% for registro in registros %}
+        {{registro.data_atualizacao}}
+        <br>
+        {{registro.detalhes}}
+        <br>
+        {% endfor %}
     </div>
 
 {% endblock %}

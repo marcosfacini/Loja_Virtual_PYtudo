@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import CadastroUsuario, AtualizarUsuario
-from .models import Usuarios
+from .models import Usuarios, RegistroAlteracaoUsuario
 from django.contrib import messages
 from django.contrib.messages import constants 
 from django.urls import reverse
@@ -86,7 +86,8 @@ def excluir_usuario(request, id):
 
 def ver_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
-    return render(request, 'ver_usuario.html', {'usuario': usuario,})
+    registros = RegistroAlteracaoUsuario.objects.filter(usuario_id=id)
+    return render(request, 'ver_usuario.html', {'usuario': usuario, 'registros': registros}) 
     
 def atualizar_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
