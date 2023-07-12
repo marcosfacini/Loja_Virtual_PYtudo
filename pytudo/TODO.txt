@@ -1,24 +1,20 @@
-criar model carrinho e armazenar dados numa session
+quanto tempo dura essa session? aonde está armazenada ?
+carrinho recebe a quantidade de cada produto
+produtos repitidos no carrinho - adicionar/excluir
+Calculo de frete api - inserir campo cep na model do usuario?
+Cupom de desconto
+Metodos de pagamento
+registro no relatorio de venda
 
-painel de busca e criação de relatorio de historicos
-
-Historico de compras do usuario e de vendas do produto
+Historico de compras do usuario 
 
 Controle de estoque do gerente quant/sub/add
 quantidade inicial/atual
 preco de custo/preco pro consumirdor/lucro
 relatorio de balanço de lucro
 
-Cupom de desconto 
-
-Calculo de frete api
-inserir campo cep na model do usuario?
-
-
-- Processo de venda:
-Soma dos produtos no carrinho
-Metodos de pagamento
-
+painel de busca e criação de relatorio de historicos
+alteracao produtos/alteracao usuarios/estoque/vendas/compras de um determinado usuario
 
 
 - Segurança:
@@ -78,6 +74,7 @@ tentar importar arquivos estaticos jquery pelo static
 integracao com bd
 containers - docker/kubernets
 configuracao emails 
+armazenar session em cokkies?
 
 restringir tamanho de mb para upload - atraves da requisicao do servidor
 on cascade nao deleta imagens apenas a url delas no banco - como vai ficar no deploy?

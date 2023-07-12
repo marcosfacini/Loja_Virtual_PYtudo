@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block 'body' %}
+    <h1>Carrinho de Compras</h1>
+
+    {% if carrinho %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in carrinho %}
+                    <tr>
+                        <td>{{ produto.nome }}</td>
+                        <td>R$ {{ produto.preco }}</td>
+                        <td><a href="{% url 'remover_do_carrinho' produto.id %}">Remover</a></td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2">Total:</td>
+                    <td>R$ {{ total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <p>O carrinho está vazio.</p>
+    {% endif %}
+{% endblock %}
