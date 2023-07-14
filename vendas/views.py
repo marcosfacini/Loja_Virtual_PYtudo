@@ -32,24 +32,28 @@ def esvaziar_lista_desejo(request):
 
 
 def adicionar_ao_carrinho(request, produto_id):
-    produto = Produtos.objects.get(id=produto_id)
-
     if 'carrinho' not in request.session:
-        request.session['carrinho'] = []
+        request.session['carrinho'] = {}
 
     carrinho = request.session['carrinho']
-    carrinho.append(produto.id)
+    id_produto = str(produto_id)
+    if id_produto in carrinho:
+        carrinho[id_produto] += 1
+    else:
+        carrinho[id_produto] = 1
     request.session.modified = True
 
     return redirect('carrinho')
 
 def remover_do_carrinho(request, produto_id):
-    produto = Produtos.objects.get(id=produto_id)
-
-    carrinho = request.session.get('carrinho', [])
-    if produto.id in carrinho:
-        carrinho.remove(produto.id)
-        request.session.modified = True
+    if 'carrinho' in request.session:
+        carrinho = request.session['carrinho']
+        id_produto = str(produto_id)
+        if id_produto in carrinho:
+            carrinho[id_produto] -= 1
+            if carrinho[id_produto] <= 0:
+                del carrinho[id_produto]
+            request.session.modified = True
 
     return redirect('carrinho')
 
@@ -58,11 +62,16 @@ def carrinho(request):
     total = 0
 
     if 'carrinho' in request.session:
-        carrinho_ids = request.session['carrinho']
+        carrinho_session = request.session['carrinho']
+        carrinho_ids = list(carrinho_session.keys())
         carrinho = Produtos.objects.filter(id__in=carrinho_ids)
-        total = sum(produto.preco for produto in carrinho)
+        soma_unidades = []
+        for produto in carrinho:
+            soma = produto.preco * carrinho_session[str(produto.id)]
+            soma_unidades.append(soma)
+        total = sum(soma_unidades)
 
-    return render(request, 'carrinho.html', {'carrinho': carrinho,'total': total})
+    return render(request, 'carrinho.html', {'carrinho': carrinho, 'total': total})
 
 
 def vender_produto(request, id):

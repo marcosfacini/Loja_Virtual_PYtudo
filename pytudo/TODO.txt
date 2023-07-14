@@ -1,6 +1,4 @@
-quanto tempo dura essa session? aonde está armazenada ?
-carrinho recebe a quantidade de cada produto
-produtos repitidos no carrinho - adicionar/excluir
+form com a opção de colocar quantidade
 Calculo de frete api - inserir campo cep na model do usuario?
 Cupom de desconto
 Metodos de pagamento
@@ -19,6 +17,9 @@ alteracao produtos/alteracao usuarios/estoque/vendas/compras de um determinado u
 
 - Segurança:
 repassar permissões em todas as views visando possiveis ataques 
+
+usuario deslogado não pode efetuar a compra - precisa ser redirecionado para pagina de login, 
+depois que logar ou de criar a conta para onde é redirecionado? ele perde as informações da compra que já tinha preenchido?
 
 Pagina de perfil e botão atualizar/excluir só o usuario do perfil tem acesso  
 If com request.user na view?
@@ -74,7 +75,7 @@ tentar importar arquivos estaticos jquery pelo static
 integracao com bd
 containers - docker/kubernets
 configuracao emails 
-armazenar session em cokkies?
+armazenar session em cokkies? vao ser ecerradas quando? e vao durar quanto tempo?
 
 restringir tamanho de mb para upload - atraves da requisicao do servidor
 on cascade nao deleta imagens apenas a url delas no banco - como vai ficar no deploy?

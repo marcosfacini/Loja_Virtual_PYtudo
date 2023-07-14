@@ -10,3 +10,12 @@ def param_replace(context, **kwargs):
     for k in [k for k, v in d.items() if not v]:
         del d[k]
     return d.urlencode()
+
+@register.filter
+def get_item(dictionary, key):
+    string = str(key)
+    return dictionary.get(string)
+
+@register.filter
+def multiply_item(amount, unity_price):
+    return amount * unity_price 
