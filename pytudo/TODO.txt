@@ -1,4 +1,4 @@
-form com a opção de colocar quantidade
+form com a opção de colocar quantidade 
 Calculo de frete api - inserir campo cep na model do usuario?
 Cupom de desconto
 Metodos de pagamento
