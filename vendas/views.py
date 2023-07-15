@@ -4,7 +4,9 @@ from vendas.models import ListaDesejo, Venda, ItemVenda
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages import constants 
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def adicionar_na_lista_desejo(request, id):
     lista_existente = ListaDesejo.objects.filter(usuario=request.user.id).first()
     produto = Produtos.objects.get(id=id)
@@ -72,6 +74,16 @@ def carrinho(request):
         total = sum(soma_unidades)
 
     return render(request, 'carrinho.html', {'carrinho': carrinho, 'total': total})
+
+def adicionar_quantidade_no_carrinho(request):
+    carrinho = request.session['carrinho']
+    for key, value in request.POST.items():
+        if key.startswith('quantidade_') and value != '':
+            replace = key.replace('quantidade_', '')
+            carrinho[replace] = int(value)
+            request.session.modified = True
+    return redirect('carrinho')
+
 
 
 def vender_produto(request, id):

@@ -1,4 +1,3 @@
-form com a opção de colocar quantidade 
 Calculo de frete api - inserir campo cep na model do usuario?
 Cupom de desconto
 Metodos de pagamento
@@ -6,7 +5,10 @@ registro no relatorio de venda
 
 Historico de compras do usuario 
 
+status do pedido
+
 Controle de estoque do gerente quant/sub/add
+quando estoque chegar a 0 produto fica como esgotado
 quantidade inicial/atual
 preco de custo/preco pro consumirdor/lucro
 relatorio de balanço de lucro
