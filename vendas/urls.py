@@ -11,5 +11,6 @@ urlpatterns = [
     path('adicionar_ao_carrinho/<int:produto_id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'),
     path('remover_do_carrinho/<int:produto_id>/', views.remover_do_carrinho, name='remover_do_carrinho'),
     path('adicionar_quantidade_no_carrinho/', views.adicionar_quantidade_no_carrinho, name='adicionar_quantidade_no_carrinho'),
+    path('excluir_do_carrinho/<int:id_produto>/', views.excluir_do_carrinho, name='excluir_do_carrinho'),
     
 ]

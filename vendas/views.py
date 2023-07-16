@@ -84,6 +84,12 @@ def adicionar_quantidade_no_carrinho(request):
             request.session.modified = True
     return redirect('carrinho')
 
+def excluir_do_carrinho(request, id_produto):
+    carrinho = request.session['carrinho']
+    del carrinho[str(id_produto)]
+    request.session.modified = True
+    return redirect('carrinho')
+
 
 
 def vender_produto(request, id):

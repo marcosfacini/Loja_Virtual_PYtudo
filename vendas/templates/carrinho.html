@@ -20,9 +20,10 @@
                     <th>Preço</th>
                     <th>Quantidade</th>
                     <th>Total</th>
-                    <th>Remover</th>
+                    <th>Subtrair</th>
                     <th>Adicionar</th>
                     <th>Inserir Quantidade</th>
+                    <th>Remover</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +39,7 @@
                             <input type="number" placeholder="Digite a quantidade"  name="quantidade_{{produto.id}}" min="1">
                             <input type="submit" value="Alterar" class="btn btn-primary">
                         </td>
+                        <td><a href="{% url 'excluir_do_carrinho' produto.id %}">Excluir</a></td>
                     </tr>
                 {% endfor %}
                 <tr>
