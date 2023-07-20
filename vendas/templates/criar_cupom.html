@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/listar_categorias.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+    <h2 class="titulo">Criar Cupom</h2>
+
+    <form action="{% url 'criar_cupom' %}" method="POST">{% csrf_token %}
+        <table>
+            {{form.as_table}}
+            {{ form.non_field_errors }}
+        </table>
+    <input class="btn btn-success" type="submit" value="Enviar">
+    </form>
+    
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    
+    <script> 
+        $(document).ready(function(){
+            $('#id_inicio_validade').mask('00/00/0000');
+            $('#id_fim_validade').mask('00/00/0000');
+
+        });
+
+    </script>
+{% endblock %}

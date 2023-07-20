@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filtros %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'produtos/css/listar_produtos.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+<a class="btn btn-primary" href="{% url 'criar_cupom' %}" role="button">Criar novo cupom</a>
+
+<form action="#" method="GET"> {% csrf_token %} 
+    <div class="row">
+        
+        <div class="col-md-5">
+            <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+        </div>
+
+        <div class="col-md-3">
+            <input type="submit" value="FILTRAR" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+
+<form action="{% url 'alterar_cupons' %}" method="POST"> {% csrf_token %}
+
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Selecionar</th> 
+            <th scope="col">Codigo</th>
+            <th scope="col">Tipo de Desconto</th>
+            <th scope="col">Desconto</th>
+            <th scope="col">Quantidade</th>
+            <th scope="col">Início</th>
+            <th scope="col">Fim</th>
+            <th scope="col">Criado em</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+    
+        <tbody>
+            {% for cupom in cupons_paginados %}
+                <tr>
+                    <td><input type="checkbox" name="selecionados[]" value="{{ cupom.id }}"></td> 
+                    <td>{{ cupom.codigo}}</td>
+                    <td>{{ cupom.get_tipo_desconto_display}}</td>
+                    <td>{{ cupom.desconto}}</td> 
+                    <td>{{ cupom.quantidade}}</td>
+                    <td>{{ cupom.inicio_validade|date:"d/m/Y"}}</td>
+                    <td>{{ cupom.fim_validade|date:"d/m/Y"}}</td>
+                    <td>{{ cupom.criado_em|date:"d/m/Y"}}</td>
+                    <td>{% if cupom.ativo %}
+                            Ativo
+                        {% else %}
+                            Desabilitado
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <label for="acao">Selecione uma ação:</label>
+    <select name="acao" id="acao">
+    <option value="ativar">Ativar Cupom</option>
+    <option value="desabilitar">Desabilitar Cupom</option>
+    <option value="excluir">Excluir Cupom</option>
+    </select>
+      
+    <input type="submit" value="Alterar">
+    </form> 
+
+    <div class="pagination">
+        {% if cupons_paginados.has_previous %}
+            <a href="?{% param_replace page=1 %}">First</a>
+            {% if cupons_paginados.previous_page_number != 1 %}
+                <a href="?{% param_replace page=cupons_paginados.previous_page_number %}">Previous</a>
+            {% endif %}
+        {% endif %}
+    
+        Page {{ cupons_paginados.number }} of {{ paginator.num_pages }} 
+    
+        {% if cupons_paginados.has_next %}
+            {% if cupons_paginados.next_page_number != paginator.num_pages %}
+                <a href="?{% param_replace page=cupons_paginados.next_page_number %}">Next</a>
+            {% endif %}
+            <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+        {% endif %}
+    
+        <p>Objects {{ cupons_paginados.start_index }}—{{ cupons_paginados.end_index }}</p>
+        
+    </div> 
+    
+    
+{% endblock %}
+

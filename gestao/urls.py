@@ -16,6 +16,8 @@ urlpatterns = [
     path('selecionar_banner/<int:id_banner>', views.selecionar_banner, name='selecionar_banner'),
     path('deletar_banner/<int:id_banner>', views.deletar_banner, name='deletar_banner'),
     path('tirar_banner_home/<int:id_banner>', views.tirar_banner_home, name='tirar_banner_home'),
+    path('gerenciar_cupons/', views.gerenciar_cupons, name='gerenciar_cupons'),
+    path('alterar_cupons/', views.alterar_cupons, name='alterar_cupons'),
     
    
 ]

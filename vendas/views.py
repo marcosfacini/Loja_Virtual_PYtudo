@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages import constants 
 from django.contrib.auth.decorators import login_required
+from .forms import CupomDesconto
 
 @login_required
 def adicionar_na_lista_desejo(request, id):
@@ -90,6 +91,18 @@ def excluir_do_carrinho(request, id_produto):
     request.session.modified = True
     return redirect('carrinho')
 
+def criar_cupom(request):
+    if request.method == 'POST':
+        form = CupomDesconto(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, constants.SUCCESS, 'Cupom criado com sucesso.')
+            return redirect('gerenciar_cupons')
+        else:
+            messages.add_message(request, constants.ERROR, 'Não foi possível criar o cupom.')
+    else:
+        form = CupomDesconto()
+    return render(request, 'criar_cupom.html', {'form': form})
 
 
 def vender_produto(request, id):

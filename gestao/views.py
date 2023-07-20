@@ -9,6 +9,7 @@ from produtos.models import Produtos, Categoria, DestacadosHome
 from django.core.paginator import Paginator
 from decimal import Decimal
 from .models import Banner
+from vendas.models import CupomDesconto
 
 @has_role_decorator('gestor')
 def criar_gerente(request):
@@ -218,6 +219,49 @@ def tirar_banner_home(request, id_banner):
     banner.save()
     messages.add_message(request, constants.SUCCESS, 'Banner retirado com sucesso')
     return redirect('/gestao/gerenciar_banners')
+
+def gerenciar_cupons(request):
+    cupons = CupomDesconto.objects.all()
+    codigo_filtrar = request.GET.get('nome')
+    if codigo_filtrar:
+        cupons = cupons.filter(codigo__icontains=codigo_filtrar)
+
+    cupons_ordenados = cupons.order_by('-id')
+    paginacao = Paginator(cupons_ordenados, 3)
+    page = request.GET.get('page')
+    cupons_paginados = paginacao.get_page(page)
+    return render(request, 'gerenciar_cupons.html', {'cupons_paginados': cupons_paginados,}) 
+
+def alterar_cupons(request):
+    cupons = request.POST.getlist('selecionados[]')
+    acao = request.POST.get('acao')
+    if cupons == []:
+        messages.add_message(request, constants.ERROR, 'Selecione um cupom')
+        return redirect('/gestao/gerenciar_cupons')
+    
+    if acao == 'ativar':
+        for cupom in cupons:
+            cumpom_selecionado = CupomDesconto.objects.get(id=cupom)
+            cumpom_selecionado.ativo = True
+            cumpom_selecionado.save()
+        messages.add_message(request, constants.SUCCESS, 'Cupons ativados com sucesso com sucesso')
+
+
+    if acao == 'desabilitar':
+        for cupom in cupons:
+            cumpom_selecionado = CupomDesconto.objects.get(id=cupom)
+            cumpom_selecionado.ativo = False
+            cumpom_selecionado.save()
+        messages.add_message(request, constants.SUCCESS, 'Cupons desabilitados com sucesso com sucesso')
+
+    if acao == 'excluir':
+        for cupom in cupons:
+            cumpom_selecionado = CupomDesconto.objects.get(id=cupom)
+            cumpom_selecionado.delete()
+        messages.add_message(request, constants.SUCCESS, 'Cupons deletados com sucesso')
+
+    return redirect('/gestao/gerenciar_cupons')
+
 
 
 

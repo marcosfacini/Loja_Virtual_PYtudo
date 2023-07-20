@@ -1,11 +1,14 @@
+comprar/excluir da lista de desejo
+validar cupom
 Calculo de frete api - inserir campo cep na model do usuario?
-Cupom de desconto
 Metodos de pagamento
-registro no relatorio de venda
+debita do estoque e dos cupons
+registro no relatorio de venda/historico cupom
 
 Historico de compras do usuario 
 
 status do pedido
+usuario acessa o status de seus pedidos
 
 Controle de estoque do gerente quant/sub/add
 quando estoque chegar a 0 produto fica como esgotado
@@ -14,7 +17,7 @@ preco de custo/preco pro consumirdor/lucro
 relatorio de balanço de lucro
 
 painel de busca e criação de relatorio de historicos
-alteracao produtos/alteracao usuarios/estoque/vendas/compras de um determinado usuario
+alteracao produtos/alteracao usuarios/estoque/vendas/compras de um determinado usuario/cupons
 
 
 - Segurança:
@@ -64,6 +67,7 @@ compensa fazer um filtro de data que busque somente pelo ano ou somente pelo mes
 banner interativo
 slugs nas urls que tem id dos produtos
 seo do site
+check box que seleciona todos os itens de uma vez
 
 precisa importar essa versao do bootstrap?
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
