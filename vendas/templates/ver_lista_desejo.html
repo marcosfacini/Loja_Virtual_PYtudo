@@ -9,15 +9,35 @@
 
 {% block 'body' %}
 
-    <div class="row">
-        {% for produto in lista.produtos.all %}
-            {{produto}}
-        {% endfor %}
-    </div>
+    <h1>Lista de desejos</h1>
 
-    <br>
-    <br>
-    <br>
-    <a class="btn btn-primary" href="{% url 'esvaziar_lista_desejo' %}" role="button">Esvaziar Lista</a>
+    {% if lista.produtos.all %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Comprar</th>
+                    <th>Remover</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in lista.produtos.all %}
+                    <tr>
+                        <td>{{ produto.nome }}</td>
+                        <td>R$ {{ produto.preco }}</td>
+                        <td><a href="{% url 'adicionar_ao_carrinho' produto.id %}">Comprar</a></td>
+                        <td><a href="{% url 'excluir_item_da_lista' produto.id %}">Excluir</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+        <a class="btn btn-primary" href="{% url 'esvaziar_lista_desejo' %}" role="button">Esvaziar Lista</a>
+    {% else %}
+        <p>A lista está vazia.</p>
+    {% endif %}
 
-{% endblock %}
+{% endblock %} 

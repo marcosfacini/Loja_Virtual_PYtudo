@@ -1,4 +1,3 @@
-comprar/excluir da lista de desejo
 validar cupom
 Calculo de frete api - inserir campo cep na model do usuario?
 Metodos de pagamento

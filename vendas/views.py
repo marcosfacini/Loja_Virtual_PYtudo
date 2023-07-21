@@ -24,6 +24,11 @@ def ver_lista_desejo(request):
     lista = ListaDesejo.objects.filter(usuario_id=request.user.id).first()
     return render(request, 'ver_lista_desejo.html', {'lista': lista})
 
+def excluir_item_da_lista(request, id_produto):
+    lista = ListaDesejo.objects.get(usuario_id=request.user.id)
+    produto = Produtos.objects.get(id=id_produto)
+    lista.produtos.remove(produto)
+    return redirect('ver_lista_desejo')
 
 def esvaziar_lista_desejo(request):
     try:
