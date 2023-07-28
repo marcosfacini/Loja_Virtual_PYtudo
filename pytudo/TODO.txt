@@ -1,4 +1,3 @@
-validar cupom
 Calculo de frete api - inserir campo cep na model do usuario?
 Metodos de pagamento
 debita do estoque e dos cupons
@@ -44,6 +43,7 @@ ENVIO DE VALIDAÇÃO DE CADASTRO SERÁ VIA EMAL
 verificar mensagens de erro e de sucesso nas funcões
 Tratamento de erros try/except em todas as funcoes
 Testes automatizados
+.strip() nos forms de busca
 
 
 - Front:

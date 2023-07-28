@@ -37,18 +37,42 @@
                         <td><a href="{% url 'adicionar_ao_carrinho' produto.id %}">Mais</a></td>
                         <td><form action="{% url 'adicionar_quantidade_no_carrinho'%}" method="POST"> {% csrf_token %} 
                             <input type="number" placeholder="Digite a quantidade"  name="quantidade_{{produto.id}}" min="1">
-                            <input type="submit" value="Alterar" class="btn btn-primary">
+                            <input type="submit" value="Alterar" class="btn btn-primary"></form>
                         </td>
                         <td><a href="{% url 'excluir_do_carrinho' produto.id %}">Excluir</a></td>
                     </tr>
                 {% endfor %}
                 <tr>
-                    <td colspan="2">Total:</td>
+                    <td colspan="2">Total=</td>
                     <td>R$ {{ total }}</td>
                 </tr>
             </tbody>
         </table>
+
+        <form action="{% url 'validar_cupom' %}" method="POST"> {% csrf_token %} 
+            <div class="row">
+                
+                <div class="col-md-5">
+                    <input type="text" placeholder="Digite o código" class="form-control" name="codigo">
+                </div>
+        
+                <div class="col-md-3">
+                    <input type="submit" value="ENVIAR" class="btn btn-primary">
+                </div>
+            </div>
+        </form>
+
     {% else %}
         <p>O carrinho está vazio.</p>
     {% endif %}
+
+
+    {% if total_com_desconto >= 0 %}
+        {{request.session.cupom|get_cupom_type:'desconto'}} <a href="{% url 'retirar_cupom_da_session'%}">Remover</a>
+        <br>
+        TOTAL = {{total_com_desconto}}
+    {% endif %}
+
+
+
 {% endblock %}

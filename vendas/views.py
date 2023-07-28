@@ -5,7 +5,9 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages import constants 
 from django.contrib.auth.decorators import login_required
-from .forms import CupomDesconto
+from .forms import FormCupomDesconto
+from .models import CupomDesconto 
+from datetime import date
 
 @login_required
 def adicionar_na_lista_desejo(request, id):
@@ -68,6 +70,7 @@ def remover_do_carrinho(request, produto_id):
 def carrinho(request):
     carrinho = []
     total = 0
+    total_com_desconto = None
 
     if 'carrinho' in request.session:
         carrinho_session = request.session['carrinho']
@@ -79,7 +82,20 @@ def carrinho(request):
             soma_unidades.append(soma)
         total = sum(soma_unidades)
 
-    return render(request, 'carrinho.html', {'carrinho': carrinho, 'total': total})
+    if 'cupom' in request.session:
+        cupom = request.session['cupom']
+        valor_desconto = cupom['desconto'][0]
+        tipo_desconto = cupom['desconto'][1]
+        if tipo_desconto == 'R':
+            total_com_desconto = float(total) - valor_desconto
+            if total_com_desconto <= 0:
+                total_com_desconto = 0
+        elif tipo_desconto == 'P':
+            total_com_desconto = float(total) - (float(total) * valor_desconto / 100)
+            if total_com_desconto <= 0:
+                total_com_desconto = 0
+
+    return render(request, 'carrinho.html', {'carrinho': carrinho, 'total': total, 'total_com_desconto': total_com_desconto})
 
 def adicionar_quantidade_no_carrinho(request):
     carrinho = request.session['carrinho']
@@ -98,7 +114,7 @@ def excluir_do_carrinho(request, id_produto):
 
 def criar_cupom(request):
     if request.method == 'POST':
-        form = CupomDesconto(request.POST)
+        form = FormCupomDesconto(request.POST)
         if form.is_valid():
             form.save()
             messages.add_message(request, constants.SUCCESS, 'Cupom criado com sucesso.')
@@ -106,9 +122,45 @@ def criar_cupom(request):
         else:
             messages.add_message(request, constants.ERROR, 'Não foi possível criar o cupom.')
     else:
-        form = CupomDesconto()
+        form = FormCupomDesconto()
     return render(request, 'criar_cupom.html', {'form': form})
 
+def validar_cupom(request):
+    codigo = request.POST.get('codigo')
+    dia_atual = date.today()
+    try:
+        cupom = CupomDesconto.objects.get(codigo=codigo)
+    except:
+        messages.add_message(request, constants.ERROR, 'Cupom inválido.')
+        return redirect('carrinho')
+    if cupom.quantidade < 1:
+        messages.add_message(request, constants.ERROR, 'Cupom esgotado.')
+        return redirect('carrinho')
+    if cupom.ativo == False:
+        messages.add_message(request, constants.ERROR, 'Cupom desativado.')
+        return redirect('carrinho')
+    if cupom.inicio_validade > dia_atual:
+        messages.add_message(request, constants.ERROR, 'Cupom fora da validade.')
+        return redirect('carrinho')
+    if dia_atual > cupom.fim_validade:
+        messages.add_message(request, constants.ERROR, 'Cupom fora do prazo de validade.')
+        return redirect('carrinho')
+    
+    request.session['cupom'] = {}
+    desconto = request.session['cupom']
+    desconto['desconto'] = [cupom.desconto, cupom.tipo_desconto]
+    request.session.modified = True
+    
+    messages.add_message(request, constants.SUCCESS, f'Cupom {cupom.codigo} adicionado.')
+    return redirect('carrinho')
+
+def retirar_cupom_da_session(request):
+    if 'cupom' in request.session:
+        del request.session['cupom']
+        request.session.modified = True
+        messages.add_message(request, constants.SUCCESS, f'Cupom removido.')
+    return redirect('carrinho')
+    
 
 def vender_produto(request, id):
     produto = Produtos.objects.get(id=id)

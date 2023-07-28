@@ -227,7 +227,7 @@ def gerenciar_cupons(request):
         cupons = cupons.filter(codigo__icontains=codigo_filtrar)
 
     cupons_ordenados = cupons.order_by('-id')
-    paginacao = Paginator(cupons_ordenados, 3)
+    paginacao = Paginator(cupons_ordenados, 10)
     page = request.GET.get('page')
     cupons_paginados = paginacao.get_page(page)
     return render(request, 'gerenciar_cupons.html', {'cupons_paginados': cupons_paginados,}) 
