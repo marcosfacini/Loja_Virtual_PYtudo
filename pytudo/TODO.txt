@@ -67,10 +67,8 @@ banner interativo
 slugs nas urls que tem id dos produtos
 seo do site
 check box que seleciona todos os itens de uma vez
+favicon.ico 404 (Not Found)
 
-precisa importar essa versao do bootstrap?
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-menu da nav so funciona na versao 4
 
 tentar importar arquivos estaticos jquery pelo static
 

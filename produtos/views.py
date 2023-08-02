@@ -223,3 +223,6 @@ def excluir_imagem_principal(request, id_produto):
     produto.imagem_principal.delete()
     messages.add_message(request, constants.SUCCESS, 'Imagem excluída com sucesso.')
     return redirect(f'/produtos/alterar_produto/{id_produto}')
+
+def teste(request):
+    return render(request, 'teste.html')
