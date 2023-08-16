@@ -189,8 +189,10 @@ def gerenciar_banners(request):
 
 def adicionar_banner(request):
     img = request.FILES.get('banner')
+    titulo = request.POST.get('titulo')
+    subtitulo = request.POST.get('subtitulo')
     if img:
-        banner = Banner(imagem=img)
+        banner = Banner(imagem=img, titulo=titulo, subtitulo=subtitulo)
         banner.save()
         messages.add_message(request, constants.SUCCESS, 'Banner salvo com sucesso')
         return redirect('/gestao/gerenciar_banners')

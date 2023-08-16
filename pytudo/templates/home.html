@@ -9,50 +9,35 @@
 
 {% block 'body' %}
 
-<form action="{% url 'listar_produtos' %}" method="GET"> {% csrf_token %} 
-    <div class="row">
-        
-            <div class="col-md-5">
-                <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+{% if banners %}
+<header id="header" class="vh-100 carousel slide" data-bs-ride="carousel" style="padding-top: 104px;">
+    <div class="container h-100 d-flex align-items-center carousel-inner">
+        {% for image in banners %}
+            <div class="text-center carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ image.imagem.url }}" alt="Banner Image" class="carousel-image">
+                <div class="carousel-caption">
+                    <h2 class="text-capitalize text-white">{{ image.titulo }}</h2>
+                    <h1 class="text-uppercase py-2 fw-bold text-white">{{ image.subtitulo }}</h1>
+                    <a href="#" class="btn mt-3 text-uppercase">Comprar</a>
+                </div>
             </div>
-
-            <div class="col-md-4">
-                <select class="form-select" name="categoria">
-                    <option value="" disabled selected hidden>Escolha uma categoria</option>
-                    {% for categoria in categorias %}
-                        <option value="{{categoria.id}}">{{categoria}} </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div>
-                <label>Menor que:</label>
-                <input type="text" name="preco_menor_filtrar"> 
-
-                <label> Maior que:</label>
-                <input type="text" name="preco_maior_filtrar">
-            </div>
-
-            <input type="text" placeholder="Busque pela marca"  name="marca">
-
-            <input type="text" placeholder="Busque pela cor"  name="cor">
-
-            <select class="form-select" aria-label="Default select example" name="ordenacao">
-                <option value="" disabled selected hidden>Ordenar por:</option>
-                <option value="maior">Maior preço</option>
-                <option value="menor">Menor preço</option>
-            </select>
-        
-        <div class="col-md-3">
-            <input type="submit" value="FILTRAR" class="btn btn-primary">
-        </div>
+        {% endfor %}
     </div>
-</form>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#header" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#header" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</header>
+{% endif %}
 
 
-{% for banner in banners %}
-    <img width="100%" src="{{banner.imagem.url}}">
-{% endfor %}
+
+
+
+
 
 
 <div class="row">

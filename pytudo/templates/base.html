@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block 'title' %}Pytudo{% endblock%}</title>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!-- bootstrap js -->
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <!-- fontawesome cdn -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- bootstrap css -->
@@ -16,53 +20,55 @@
   </head>
   <body>
     <!-- navbar -->
-    <nav class = "navbar navbar-expand-lg navbar-light bg-white py-4 fixed-top">
-      <div class = "container">
+    <nav class = "navbar navbar-expand-lg navbar-light bg-white py-4 ">
+      <div class = "container barra_navegacao">
           <a class = "navbar-brand d-flex justify-content-between align-items-center order-lg-0" href = "{% url 'home' %}">
               <img src = "{% static 'base\img\shopping-bag-icon.png' %}" alt = "site icon">
               <span class = "text-uppercase fw-lighter ms-2">Pytudo</span>
           </a>
 
-          <div class = "order-lg-2 nav-btns">
-              <button type = "button" class = "btn position-relative">
-                  <a href ="{% url 'carrinho' %}"><i class = "fa fa-shopping-cart"></i><a/>
-                  <span class = "position-absolute top-0 start-100 translate-middle badge bg-primary">5</span>
-              </button>
-              <button type = "button" class = "btn position-relative">
-                  <a href ="{% url 'ver_lista_desejo' %}"><i class = "fa fa-heart"></i><a/>
-                  <span class = "position-absolute top-0 start-100 translate-middle badge bg-primary">2</span>
-              </button>
-              <button type = "button" class = "btn position-relative">
-                  <a href ="{% url 'listar_produtos' %}"><i class = "fa fa-search"></i><a/>
-              </button>
-          </div>
+        <div class="search-form d-flex justify-content-center align-items-center flex-grow-1">
+            <form class="d-flex" action="{% url 'listar_produtos' %}" method="GET">
+                <input type="text" class="form-control me-2" name="nome" placeholder="O que você procura?">
+            </form>
 
-          <button class = "navbar-toggler border-0" type = "button" data-bs-toggle = "collapse" data-bs-target = "#navMenu">
-              <span class = "navbar-toggler-icon"></span>
-          </button>
+            <div class="dropdown">
+                <a class="nav-link text-uppercase text-dark dropdown-toggle" href="#" role="button" id="categoriasDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Categorias
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
+                    {% for categoria in categorias %}
+                        <li><a class="dropdown-item" href="#">{{ categoria }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
 
-          <div class = "collapse navbar-collapse order-lg-1" id = "navMenu">
-              <ul class = "navbar-nav mx-auto text-center">
-                  <li class = "nav-item px-2 py-2">
-                      <a class = "nav-link text-uppercase text-dark" href ="{% url 'home' %}">Home</a>
-                  </li>
-                  <li class = "nav-item px-2 py-2">
-                      <a class = "nav-link text-uppercase text-dark" href = "{% url 'listar_categorias' %}">Categorias</a>
-                  </li>
-                  <li class = "nav-item px-2 py-2">
-                      <a class = "nav-link text-uppercase text-dark" href ="{% url 'painel_controle' %}">Painel de Controle</a>
-                  </li>
-                  <li class = "nav-item px-2 py-2">
-                      <a class = "nav-link text-uppercase text-dark" href ="{% url 'account_login' %}">Logar</a>
-                  </li>
-                  <li class = "nav-item px-2 py-2">
-                      <a class = "nav-link text-uppercase text-dark" href ="{% url 'account_logout' %}">Deslogar</a>
-                  </li>
-                  <li class = "nav-item px-2 py-2 border-0">
-                      <a class = "nav-link text-uppercase text-dark" href ="{% url 'info_adicional_usuario' %}">Cadastrar usuario</a>
-                  </li>
-              </ul>
-          </div>
+        <div class = "order-lg-2 nav-btns">
+
+            <div class="dropdown">
+                <button type="button" class="btn position-relative dropdown-toggle" id="PainelDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-address-card" aria-hidden="true"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="PainelDropdown">
+                    {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'account_logout' %}">Deslogar</a></li>
+                    {% else %}
+                        <li><a href="{% url 'account_login' %}">Entrar</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'painel_controle' %}">Painel de controle</a></li>
+                </ul>
+            </div>
+
+            <button type = "button" class = "btn position-relative">
+                <a href ="{% url 'ver_lista_desejo' %}"><i class = "fa fa-heart"></i><a/>
+                <span class = "position-absolute top-0 start-100 translate-middle badge bg-primary">2</span>
+            </button>
+            <button type = "button" class = "btn position-relative">
+                <a href ="{% url 'carrinho' %}"><i class = "fa fa-shopping-cart"></i><a/>
+                <span class = "position-absolute top-0 start-100 translate-middle badge bg-primary">5</span>
+            </button>
+        </div>
       </div>
   </nav>
   <!-- end of navbar -->
@@ -175,12 +181,10 @@
   <!-- end of footer -->
 
 
-   <!-- jquery -->
-   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+   
+   
    <!-- isotope js -->
    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
-   <!-- bootstrap js -->
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
    <!-- custom js -->
   <link href="{% static 'base/js/script.js' %}" rel="stylesheet">
 

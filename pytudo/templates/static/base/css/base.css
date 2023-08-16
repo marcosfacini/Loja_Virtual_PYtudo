@@ -60,9 +60,32 @@ body{
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
 }
 
+.search-form {
+    flex: 1; /* Ocupa todo o espaço disponível na navbar */
+}
+
+.search-form form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-form input[type="text"] {
+    max-width: 300px; /* Define uma largura máxima para a barra de pesquisa */
+}
+
+.search-form button {
+    margin-left: 10px; /* Espaçamento entre a barra de pesquisa e o botão Pesquisar */
+}
+
+.barra_navegacao{
+    margin: 0px 20px;
+    padding: 0px 12px;
+}
+
 /* header */
 #header{
-    background: url(../images/banner-img-1.jpg) top/cover no-repeat;
+    background: url(/pytudo/templates/static/base/img/background.jpg) top/cover no-repeat;
 }
 .carousel-inner h1{
     font-size: 60px;
@@ -73,6 +96,11 @@ body{
 }
 .carousel-item .btn:hover{
     border-color: var(--pink)!important;
+}
+
+.carousel-image {
+    height: 600px; 
+    width: auto; 
 }
 
 /* title */
