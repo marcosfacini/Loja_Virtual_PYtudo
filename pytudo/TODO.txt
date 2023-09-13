@@ -17,6 +17,8 @@ relatorio de balanço de lucro
 painel de busca e criação de relatorio de historicos
 alteracao produtos/alteracao usuarios/estoque/vendas/compras de um determinado usuario/cupons
 
+ficha tecnica do produto
+
 
 - Segurança:
 repassar permissões em todas as views visando possiveis ataques 
@@ -68,6 +70,7 @@ slugs nas urls que tem id dos produtos
 seo do site
 check box que seleciona todos os itens de uma vez
 favicon.ico 404 (Not Found)
+produto com mais de 5 fotos
 
 
 tentar importar arquivos estaticos jquery pelo static

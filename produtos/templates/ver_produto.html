@@ -9,39 +9,78 @@
 
 {% block 'body' %} 
 
-    <div class="row">
-        <div class="col-md-3">
-            {% if produto.imagem_principal %}
-                <img width="100%" src="{{produto.imagem_principal.url}}">
-            {% else %}
-                <img width="100%" src="{% static 'produtos\img\sem foto.jpg' %}">
-            {% endif %}
-        </div>
+
+<div class="container mt-5 mb-5">	
+    <div class="card">	
+        <div class="row g-0">	
+            <div class="col-md-6 border-end">	
+                <div class="d-flex flex-column justify-content-center">	
+                    <div class="main_image">	
+                        {% if produto.imagem_principal %}
+                            <img src="{{produto.imagem_principal.url}}" width="350" id="main_product_image">
+                        {% else %}
+                            <img src="{% static 'produtos\img\sem foto.jpg' %}" width="350" id="main_product_image">
+                        {% endif %}
+                    </div>	
+                    <div class="thumbnail_images">	
+                        <ul id="thumbnail">	
+                            {% for imagem in imagens %}
+                                <li>
+                                    <img src="{{imagem.foto.url}}" onclick="changeImage(this)" width="70"> 
+                                </li>
+                            {% endfor %}
+                                <li>
+                                    <img src="{{produto.imagem_principal.url}}" width="70" id="main_product_image" onclick="changeImage(this)">
+                                </li>
+                        </ul>	
+                    </div>	
+                </div>	
+            </div>	
+            <div class="col-md-6">	
+                <div class="p-3 right-side">	
+                    <div class="d-flex justify-content-between align-items-center">	
+                        <h3>{{produto.nome}}</h3>	
+                    </div>	
+                    <div class="mt-2 pr-3 content">	
+                        <p>{{produto.descricao}}</p>	
+                    </div>	
+                    <h3>R$ {{produto.preco}}</h3>	
+                    <div class="ratings d-flex flex-row align-items-center">	
+                        <div class="d-flex flex-row">	
+                            <i class='bi bi-star' ></i>	
+                            <i class='bx bxs-star' ></i>	
+                            <i class='bx bxs-star' ></i>	
+                            <i class='bx bxs-star' ></i>	
+                            <i class='bx bx-star' ></i>	
+                            estrelas
+                        </div>	
+                        <span>441 reviews</span>	
+                    </div>	
+                    <div class="buttons d-flex flex-row mt-5 gap-3">	
+                        <button id="comprarButton" class="btn btn-outline-dark" data-href="{% url 'adicionar_ao_carrinho' produto.id %}">Comprar</button>
+                        <button id="listaDesejoButton" class="btn btn-dark" data-href="{% url 'adicionar_na_lista_desejo' produto.id %}">Lista de desejo</button>
+                    </div>	
+                </div>	
+            </div>	
+        </div>	
+    </div> 
+</div>
+
+
+
+
+
+            
+
         
-        <br>
-        <br>
-        <br>
 
-        <div>
-            {% for imagem in imagens %}
-                <img width="80" height="80" src="{{imagem.foto.url}}"> 
-            {% endfor %}
-        </div>
-
-        <div class="col-md">
-            <h1 class="titulo">{{produto.nome}}</h1>
-            <p class="paragrafo">{{produto.descricao}}</p>
-            <p class="paragrafo">{{produto.preco}}</p>
+        
             {% if produto.categoria %}
                 <p class="paragrafo">{{produto.categoria}}</p>
-            {% endif %}
+            {% endif %} 
             <p class="paragrafo">{{produto.marca}}</p>
             <p class="paragrafo">{{produto.cor}}</p>
-        </div>
-    </div>
-
-        <br>
-        <br>
+       
 
         <form action="{% url 'salvar_avaliacao' produto.id %}" method="POST"> {% csrf_token %}
             <label>Estrelas:</label>
@@ -58,23 +97,7 @@
             <input class="btn btn-success" type="submit" value="Salvar">
         </form>
 
-        <br>
-        <br>
-        <br>
-        <br>
-
-        <a class="btn btn-warning" href="{% url 'adicionar_na_lista_desejo' produto.id %}" role="button">Lista de desejo</a>
-        <br>
-        <br>
-        <br>
-        <a class="btn btn-warning" href="{% url 'adicionar_ao_carrinho' produto.id %}" role="button">Carrinho</a>
-
-
-        <br>
-        <br>
-        <br>
-        <br>
-
+        
         
         <div class="row">
             <div class="col-md-3">
@@ -95,6 +118,42 @@
                 {% endfor %}
             </div>
         </div>
+
+
+
+        <script>
+            function changeImage(element) {
+        
+                var main_prodcut_image = document.getElementById('main_product_image');
+                main_prodcut_image.src = element.src;
+                
+          }
+
+          
+            document.addEventListener('DOMContentLoaded', function() {
+                // Obtenha os botões pelo ID
+                var comprarButton = document.getElementById('comprarButton');
+                var listaDesejoButton = document.getElementById('listaDesejoButton');
+            
+                // Adicione um ouvinte de evento de clique aos botões
+                comprarButton.addEventListener('click', function() {
+                    var href = comprarButton.getAttribute('data-href');
+                    if (href) {
+                        window.location.href = href; // Redirecione para o URL do botão 'Comprar'
+                    }
+                });
+            
+                listaDesejoButton.addEventListener('click', function() {
+                    var href = listaDesejoButton.getAttribute('data-href');
+                    if (href) {
+                        window.location.href = href; // Redirecione para o URL do botão 'Lista de Desejo'
+                    }
+                });
+            });
+        
+            
+
+            </script>
         
 
    
