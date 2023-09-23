@@ -9,61 +9,150 @@
 {% endblock %}
 
 
-{% block 'body' %}
-
+{% block 'body' %}     
+    
 {% if carrinho %}
-<table>
-    <thead>
-        <tr>
-            <th>Produto</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th>Total</th>
-            <th>Subtrair</th>
-            <th>Adicionar</th>
-            <th>Inserir Quantidade</th>
-            <th>Remover</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for produto in carrinho %}
-            <tr>
-                <td>{{ produto.nome }}</td>
-                <td>R$ {{ produto.preco }}</td>
-                <td>{{request.session.carrinho|get_item:produto.id}}</td>
-                <td>{{request.session.carrinho|get_item:produto.id|multiply_item:produto.preco}}</td>
-                <td><a href="{% url 'remover_do_carrinho' produto.id %}">Menos</a></td>
-                <td><a href="{% url 'adicionar_ao_carrinho' produto.id %}">Mais</a></td>
-                <td><form action="{% url 'adicionar_quantidade_no_carrinho'%}" method="POST"> {% csrf_token %} 
-                    <input type="number" placeholder="Digite a quantidade"  name="quantidade_{{produto.id}}" min="1">
-                    <input type="submit" value="Alterar" class="btn btn-primary"></form>
+<section class="h-100 h-custom">
+  <div class="container h-100 py-5">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="h5">Carrinho</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">Total</th>
+                <th scope="col">Remover</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for produto in carrinho %}
+              <tr>
+                <th scope="row">
+                  <div class="d-flex align-items-center">
+                      {% if produto.imagem_principal %}
+                            <img src="{{produto.imagem_principal.url}}" class="img-fluid rounded-3"
+                            style="width: 120px;" alt="Book">
+                        {% else %}
+                            <img src="{% static 'produtos\img\sem foto.jpg' %}" class="img-fluid rounded-3"
+                            style="width: 120px;" alt="Book">
+                        {% endif %}
+                    <div class="flex-column ms-4">
+                      <p class="mb-2">{{ produto.nome }}</p>
+                      {% if produto.categoria %}
+                        <p class="mb-0">{{ produto.categoria }}</p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </th>
+                
+                <td class="align-middle">
+                  <div class="d-flex flex-row">
+                    <a href="{% url 'remover_do_carrinho' produto.id %}">
+                    <button class="btn btn-link px-2">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                  </a>
+
+                      <form action="{% url 'adicionar_quantidade_no_carrinho'%}" method="POST" class="form-control form-control-sm" style="width: 50px;"> {% csrf_token %} 
+                        <input placeholder="{{request.session.carrinho|get_item:produto.id}}"  name="quantidade_{{produto.id}}" style="width: 100%;">
+                      </form>
+
+                      <a href="{% url 'adicionar_ao_carrinho' produto.id %}">
+                    <button class="btn btn-link px-2">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </a>
+                  </div>
                 </td>
-                <td><a href="{% url 'excluir_do_carrinho' produto.id %}">Excluir</a></td>
-            </tr>
-        {% endfor %}
-        <tr>
-            <td colspan="2">Total=</td>
-            <td>R$ {{ total }}</td>
-        </tr>
-    </tbody>
-</table>
 
-<form action="{% url 'validar_cupom' %}" method="POST"> {% csrf_token %} 
-    <div class="row">
+                <td class="align-middle">
+                  <p class="mb-0" style="font-weight: 500;">R$ {{request.session.carrinho|get_item:produto.id|multiply_item:produto.preco}}</p>
+                </td>
+
+                <td class="align-middle">
+                  <a href="{% url 'excluir_do_carrinho' produto.id %}" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                </td>
+              </tr>
+              {% endfor %}
+              
+            </tbody>
+          </table>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" class="h5">Resumo</th>
+                  <th scope="col" class="h5 align-middle text-end">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="align-middle">
+                  <p class="mb-0" style="font-weight: 500;">3 itens</p>
+                </td>
+                  <td class="align-middle text-end">
+                    <p class="mb-0" style="font-weight: 500;">R$ {{total}}</p>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="align-middle">
+                    <p class="mb-0" style="font-weight: 500;">Cupom de desconto</p>
+                  </td>
+                    <td class="align-middle text-end">
+                      <p class="mb-0" style="font-weight: 500;">R$ desct</p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="align-middle">
+                      <p class="mb-0" style="font-weight: 500;">Frete</p>
+                    </td>
+                      <td class="align-middle text-end">
+                        <p class="mb-0" style="font-weight: 500;">R$ frete</p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td class="align-middle">
+                        <p class="mb-0" style="font-weight: 500;">TOTAL</p>
+                      </td>
+                        <td class="align-middle text-end">
+                          <p class="mb-0" style="font-weight: 500;">R$ 99,99</p>
+                        </td>
+                      </tr>
+              </tbody>
+            </table>
+        </div>
         
-        <div class="col-md-5">
-            <input type="text" placeholder="Digite o código" class="form-control" name="codigo">
-        </div>
 
-        <div class="col-md-3">
-            <input type="submit" value="ENVIAR" class="btn btn-primary">
-        </div>
+      </div>
     </div>
-</form>
-
+  </div>
+</section>
+    
 {% else %}
 <p>O carrinho está vazio.</p>
 {% endif %}
+
+
+<form action="{% url 'validar_cupom' %}" method="POST"> {% csrf_token %} 
+<div class="row">
+
+<div class="col-md-5">
+  <input type="text" placeholder="Digite o código" class="form-control" name="codigo">
+</div>
+
+<div class="col-md-3">
+  <input type="submit" value="ENVIAR" class="btn btn-primary">
+</div>
+</div>
+</form>
+
+
 
 
 {% if total_com_desconto >= 0 %}
@@ -72,181 +161,10 @@
 TOTAL = {{total_com_desconto}}
 {% endif %}
 
-    
-    <section>
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12">
-              <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-                <div class="card-body p-0">
-                  <div class="row g-0">
-                    <div class="col-lg-8">
-                      <div class="p-5">
-                        <div class="d-flex justify-content-between align-items-center mb-5">
-                          <h1 class="fw-bold mb-0 text-black">Carrinho</h1>
-                          <h6 class="mb-0 text-muted">3 items</h6>
-                        </div>
-                        <hr class="my-4">
-      
-                        <div class="row mb-4 d-flex justify-content-between align-items-center">
-                          <div class="col-md-2 col-lg-2 col-xl-2">
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img5.webp"
-                              class="img-fluid rounded-3" alt="Cotton T-shirt">
-                          </div>
-                          <div class="col-md-3 col-lg-3 col-xl-3">
-                            <h6 class="text-muted">Shirt</h6>
-                            <h6 class="text-black mb-0">Cotton T-shirt</h6>
-                          </div>
-                          <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                            <button class="btn btn-link px-2"
-                              onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                              <i class="fas fa-minus"></i>
-                            </button>
-      
-                            <input id="form1" min="0" name="quantity" value="1" type="number"
-                              class="form-control form-control-sm" />
-      
-                            <button class="btn btn-link px-2"
-                              onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                              <i class="fas fa-plus"></i>
-                            </button>
-                          </div>
-                          <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                            <h6 class="mb-0">R$ 44.00</h6>
-                          </div>
-                          <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                            <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
-                          </div>
-                        </div>
-      
-                        <hr class="my-4">
-      
-                        <div class="row mb-4 d-flex justify-content-between align-items-center">
-                          <div class="col-md-2 col-lg-2 col-xl-2">
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img6.webp"
-                              class="img-fluid rounded-3" alt="Cotton T-shirt">
-                          </div>
-                          <div class="col-md-3 col-lg-3 col-xl-3">
-                            <h6 class="text-muted">nike</h6>
-                            <h6 class="text-black mb-0">shirt</h6>
-                          </div>
-                          <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                            <button class="btn btn-link px-2"
-                              onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                              <i class="fas fa-minus"></i>
-                            </button>
-      
-                            <input id="form2" min="0" name="quantity" value="1" type="number"
-                              class="form-control form-control-sm" />
-      
-                            <button class="btn btn-link px-2"
-                              onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                              <i class="fas fa-plus"></i>
-                            </button>
-                          </div>
-                          <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                            <h6 class="mb-0">€ 44.00</h6>
-                          </div>
-                          <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                            <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
-                          </div>
-                        </div>
-      
-                        <hr class="my-4">
-      
-                        <div class="row mb-4 d-flex justify-content-between align-items-center">
-                          <div class="col-md-2 col-lg-2 col-xl-2">
-                            <img
-                              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img7.webp"
-                              class="img-fluid rounded-3" alt="Cotton T-shirt">
-                          </div>
-                          <div class="col-md-3 col-lg-3 col-xl-3">
-                            <h6 class="text-muted">Shirt</h6>
-                            <h6 class="text-black mb-0">Cotton T-shirt</h6>
-                          </div>
-                          <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                            <button class="btn btn-link px-2"
-                              onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                              <i class="fas fa-minus"></i>
-                            </button>
-      
-                            <input id="form3" min="0" name="quantity" value="1" type="number"
-                              class="form-control form-control-sm" />
-      
-                            <button class="btn btn-link px-2"
-                              onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                              <i class="fas fa-plus"></i>
-                            </button>
-                          </div>
-                          <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                            <h6 class="mb-0">€ 44.00</h6>
-                          </div>
-                          <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                            <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
-                          </div>
-                        </div>
 
 
-                        <hr class="my-4">
-      
-                        <div class="pt-5">
-                          <h6 class="mb-0"><a href="#!" class="text-body"><i
-                                class="fas fa-long-arrow-alt-left me-2"></i>Continuar Comprando</a></h6>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-4 bg-grey">
-                      <div class="p-5">
-                        <h3 class="fw-bold mb-5 mt-2 pt-1">Total</h3>
-                        <hr class="my-4">
-      
-                        <div class="d-flex justify-content-between mb-4">
-                          <h5 class="text-uppercase">3 items</h5>
-                          <h5>R$ 132.00</h5>
-                        </div>
-      
-                        <h5 class="text-uppercase mb-3">Entrega</h5>
-      
-                        <div class="mb-4 pb-2">
-                          <select class="select">
-                            <option value="1">Standard-Delivery- €5.00</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                            <option value="4">Four</option>
-                          </select>
-                        </div>
-      
-                        <h5 class="text-uppercase mb-3">Cupom de Desconto</h5>
-      
-                        <div class="mb-5">
-                          <div class="form-outline">
-                            <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
-                            <label class="form-label" for="form3Examplea2">Enter your code</label>
-                          </div>
-                        </div>
-      
-                        <hr class="my-4">
-      
-                        <div class="d-flex justify-content-between mb-5">
-                          <h5 class="text-uppercase">Preço Total</h5>
-                          <h5>R$ 137.00</h5>
-                        </div>
-      
-                        <button type="button" class="btn btn-dark btn-block btn-lg"
-                          data-mdb-ripple-color="dark">Finalizar</button>
-      
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    
+
+
 
 
 

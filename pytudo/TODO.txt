@@ -19,6 +19,17 @@ alteracao produtos/alteracao usuarios/estoque/vendas/compras de um determinado u
 
 ficha tecnica do produto
 
+produtos similares/relacionados
+
+comentarios:
+botao excluir so para gestor
+aceita comentario sem etsrelas e sem comentario
+não permitir usuario deslogado comentar
+contador de comentarios
+do ultimo para o primeiro
+paginação
+
+
 
 - Segurança:
 repassar permissões em todas as views visando possiveis ataques 
@@ -42,6 +53,7 @@ ENVIO DE VALIDAÇÃO DE CADASTRO SERÁ VIA EMAL
 
 
 - Antes do deploy:
+importar o jquery em todas as paginas?
 verificar mensagens de erro e de sucesso nas funcões
 Tratamento de erros try/except em todas as funcoes
 Testes automatizados
@@ -71,10 +83,6 @@ seo do site
 check box que seleciona todos os itens de uma vez
 favicon.ico 404 (Not Found)
 produto com mais de 5 fotos
-
-
-tentar importar arquivos estaticos jquery pelo static
-
 
 
 - Deploy:
