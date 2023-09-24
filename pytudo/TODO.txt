@@ -1,4 +1,4 @@
-Calculo de frete api - inserir campo cep na model do usuario?
+Calculo de frete api 
 Metodos de pagamento
 debita do estoque e dos cupons
 registro no relatorio de venda/historico cupom
@@ -62,22 +62,19 @@ Testes automatizados
 
 - Front:
 Templates do accounts/404
-Form de avaliação em estrelas
 Navbar/menu
 Css das paginas 
 footer 
 paginação estilizada - escolher quantidade de itens por pagina
 modal em botoes excluir
 posicao da mensagem de erro nos forms
-campos de descricao editáveis - possibilidade de negrito e paragrafo
+campos de descricao/ficha tecnica editáveis - possibilidade de negrito e paragrafo
 botao logue-se para comentar
 como aparece comentario que teve usuario deletado ?
-paginar avaliacoes
 contador que tras quantidade de itens de resultado de uma pesquisa
 ordenacao nas tabelas de produtos e de usuarios - datatables jquery
 form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
 compensa fazer um filtro de data que busque somente pelo ano ou somente pelo mes?
-banner interativo
 slugs nas urls que tem id dos produtos
 seo do site
 check box que seleciona todos os itens de uma vez

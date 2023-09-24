@@ -103,9 +103,17 @@ def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)
     avaliacoes = Avaliacao.objects.filter(produto=id)
     imagens = Imagens.objects.filter(produto_id=id)
+    if avaliacoes:
+        estrelas = []
+        for av in avaliacoes:
+            estrelas.append(int(av.estrelas))
+        media_estrelas = str(round(sum(estrelas) / avaliacoes.count()))
+    else:
+        media_estrelas = str(5)
     return render(request, 'ver_produto.html', {'produto': produto,
                                                 'avaliacoes': avaliacoes,
-                                                'imagens': imagens})
+                                                'imagens': imagens,
+                                                'media_estrelas': media_estrelas})
 
 @has_permission_decorator('alterar_produto')
 def excluir_produto(request, id):
