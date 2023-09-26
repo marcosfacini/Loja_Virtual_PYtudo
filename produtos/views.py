@@ -110,8 +110,9 @@ def ver_produto(request, id):
         media_estrelas = str(round(sum(estrelas) / avaliacoes.count()))
     else:
         media_estrelas = str(5)
+    avaliacoes_ordenadas = avaliacoes.order_by('-data_avaliacao')
     return render(request, 'ver_produto.html', {'produto': produto,
-                                                'avaliacoes': avaliacoes,
+                                                'avaliacoes_ordenadas': avaliacoes_ordenadas,
                                                 'imagens': imagens,
                                                 'media_estrelas': media_estrelas})
 
@@ -193,6 +194,9 @@ def salvar_avaliacao(request, id_produto):
     usuario = Usuarios.objects.get(usuario=request.user)
     estrelas = request.POST.get('estrelas')
     comentario = request.POST.get('comentario')
+    if estrelas == None:
+        messages.add_message(request, constants.ERROR, 'Por favor escolha a quantidade de estrelas.')
+        return redirect(f'/produtos/ver_produto/{id_produto}')
     avalicao = Avaliacao(usuario=usuario, produto_id=id_produto, estrelas=estrelas, comentario=comentario)
     avalicao.save()
     return redirect(f'/produtos/ver_produto/{id_produto}')

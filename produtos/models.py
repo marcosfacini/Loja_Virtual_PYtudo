@@ -105,15 +105,15 @@ class Avaliacao(models.Model):
         ('4', 'Otimo'),
         ('5', 'Perfeito')
     )
-    usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.CASCADE)
     produto = models.ForeignKey(Produtos, on_delete=models.CASCADE)
     estrelas = models.CharField(max_length=1, choices=choices)
-    comentario = models.TextField()
+    comentario = models.TextField(blank=True, null=True)
     data_avaliacao = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return self.comentario
+        return self.usuario
     
 class DestacadosHome(models.Model):
     produto = models.ForeignKey(Produtos, on_delete=models.CASCADE)

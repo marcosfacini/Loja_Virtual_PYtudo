@@ -21,28 +21,18 @@ ficha tecnica do produto
 
 produtos similares/relacionados
 
-comentarios:
-botao excluir so para gestor
-aceita comentario sem etsrelas e sem comentario
-não permitir usuario deslogado comentar
-contador de comentarios
-do ultimo para o primeiro
-paginação
-
-
-
 - Segurança:
+ter role de gestor e de gerente?
+Gestao desabilita/habilita contas de  usuarios e gerentes
+
 repassar permissões em todas as views visando possiveis ataques 
+
+quando se deleta um usuario, precisa deletar também o auth user dele
 
 usuario deslogado não pode efetuar a compra - precisa ser redirecionado para pagina de login, 
 depois que logar ou de criar a conta para onde é redirecionado? ele perde as informações da compra que já tinha preenchido?
 
 Pagina de perfil e botão atualizar/excluir só o usuario do perfil tem acesso  
-If com request.user na view?
-If dentro do template html?
-funcao atualizar avaliacao - apenas o proprio usuario e o gestor tem permissao de apagar e atualizar o seu proprio comentario
-
-Gestao desabilita/habilita contas de  usuarios e gerentes
 
 Desabilitar urls do accounts que não vou usar
 
@@ -66,11 +56,11 @@ Navbar/menu
 Css das paginas 
 footer 
 paginação estilizada - escolher quantidade de itens por pagina
+paginação dos comentarios
 modal em botoes excluir
 posicao da mensagem de erro nos forms
 campos de descricao/ficha tecnica editáveis - possibilidade de negrito e paragrafo
 botao logue-se para comentar
-como aparece comentario que teve usuario deletado ?
 contador que tras quantidade de itens de resultado de uma pesquisa
 ordenacao nas tabelas de produtos e de usuarios - datatables jquery
 form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
