@@ -26,11 +26,11 @@ def salvar_gerente(request):
     messages.add_message(request, constants.SUCCESS, 'Gerente cadastrado com sucesso')
     return redirect('/gestao/criar_gerente')
 
-@has_role_decorator('gestor')
+# @has_role_decorator('gestor')
 def criar_gestor(request):
     return render(request, 'criar_gestor.html')
 
-@has_role_decorator('gestor')
+# @has_role_decorator('gestor')
 def salvar_gestor(request):
     email = request.POST.get('email')
     senha_provisoria = request.POST.get('senha_provisoria')

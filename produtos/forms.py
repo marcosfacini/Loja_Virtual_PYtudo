@@ -2,6 +2,7 @@ from dataclasses import fields
 from django import forms
 from .models import Categoria
 from django.forms.widgets import ClearableFileInput
+from ckeditor_uploader.fields import RichTextUploadingFormField
 
 class CadastrarProduto(forms.Form):
     nome = forms.CharField(max_length=50)
@@ -14,6 +15,7 @@ class CadastrarProduto(forms.Form):
     quantidade = forms.IntegerField()
     imagem_principal = forms.ImageField(required=False)
     outras_imagens = forms.ImageField(widget=ClearableFileInput(attrs={'multiple':True}), required=False)
+    especificacao = RichTextUploadingFormField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

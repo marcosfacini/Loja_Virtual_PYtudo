@@ -163,6 +163,11 @@
     {% if produto.cor %}
         <p>Cor: {{produto.cor}}</p>
     {% endif %}
+    {% if produto.especificacao %}
+        <div class="container">
+            {{produto.especificacao|safe}}
+        </div>
+    {% endif %}
 </div>
 
 <div class="container mt-5">

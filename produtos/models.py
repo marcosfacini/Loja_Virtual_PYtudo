@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from usuarios.models import Usuarios
 from django.utils import timezone
+from ckeditor_uploader.fields import RichTextUploadingField
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=40)
@@ -23,6 +24,7 @@ class Produtos(models.Model):
     data_cadastro = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True, null=True)
     imagem_principal = models.ImageField(upload_to ='produtos/', blank=True, null=True)
+    especificacao = RichTextUploadingField(blank=True, null=True)
 
 
     def __str__(self):
@@ -49,7 +51,8 @@ class Produtos(models.Model):
             old_cor = old_obj.cor
             old_quantidade = old_obj.quantidade
             old_imagem_principal = old_obj.imagem_principal
-            detalhes = f"Produto atualizado - {self.comparar_alteracoes(old_nome, old_descricao, old_preco_de_custo, old_preco, old_categoria, old_marca, old_cor, old_quantidade, old_imagem_principal)}"
+            old_especificacao = old_obj.especificacao
+            detalhes = f"Produto atualizado - {self.comparar_alteracoes(old_nome, old_descricao, old_preco_de_custo, old_preco, old_categoria, old_marca, old_cor, old_quantidade, old_imagem_principal, old_especificacao)}"
         else:
             detalhes = f"Produto {self.nome} criado"
 
@@ -61,7 +64,7 @@ class Produtos(models.Model):
         )
         registro.save()
 
-    def comparar_alteracoes(self, old_nome, old_descricao, old_preco_de_custo, old_preco, old_categoria, old_marca, old_cor, old_quantidade, old_imagem_principal):
+    def comparar_alteracoes(self, old_nome, old_descricao, old_preco_de_custo, old_preco, old_categoria, old_marca, old_cor, old_quantidade, old_imagem_principal, old_especificacao):
         alteracoes = []
 
         if old_nome != self.nome:
@@ -90,6 +93,10 @@ class Produtos(models.Model):
 
         if old_imagem_principal != self.imagem_principal:
             alteracoes.append(f"Imagem principal alterada de '{old_imagem_principal}' para '{self.imagem_principal}'")
+
+        if old_especificacao.strip() != self.especificacao.strip():
+            alteracoes.append(f"As especificações foram alteradas de '{old_especificacao}' para '{self.especificacao}'")
+
 
         return ", ".join(alteracoes)
     

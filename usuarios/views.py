@@ -80,7 +80,9 @@ def listar_usuarios(request):
 @has_permission_decorator('gerenciar_usuarios')
 def excluir_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
+    user = User.objects.get(username=usuario.usuario)
     usuario.delete()
+    user.delete()
     messages.add_message(request, constants.SUCCESS, 'Usuario excluído com sucesso.')
     return redirect('/usuarios/listar_usuarios')
 

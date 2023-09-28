@@ -74,6 +74,7 @@ def cadastrar_produto(request):
         cor = request.POST.get('cor')
         quantidade = request.POST.get('quantidade')
         imagem_principal = request.FILES.get('imagem_principal')
+        especificacao = request.POST.get('especificacao')
 
         produto = Produtos(nome=nome, 
                            descricao=descricao, 
@@ -83,7 +84,8 @@ def cadastrar_produto(request):
                            marca=marca, 
                            cor=cor, 
                            quantidade=quantidade,
-                           imagem_principal=imagem_principal)
+                           imagem_principal=imagem_principal,
+                           especificacao=especificacao)
         produto.save()
 
         imagens = request.FILES.getlist('outras_imagens')
@@ -186,6 +188,8 @@ def alterar_produto(request, id):
         produto.cor = cor
         quantidade = request.POST.get('quantidade')
         produto.quantidade = quantidade
+        especificacao = request.POST.get('especificacao')
+        produto.especificacao = especificacao
         produto.save()
         messages.add_message(request, constants.SUCCESS, 'Produto atualizado com sucesso.')
         return redirect(f'/produtos/alterar_produto/{id}')
