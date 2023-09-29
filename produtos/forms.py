@@ -20,3 +20,6 @@ class CadastrarProduto(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['descricao'].widget = forms.Textarea()
+
+class AtualizarEspecificacao(forms.Form):
+    especificacao = RichTextUploadingFormField()

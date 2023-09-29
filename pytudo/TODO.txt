@@ -16,11 +16,8 @@ relatorio de balanço de lucro
 
 painel de busca e criação de relatorio de historicos
 alteracao produtos/alteracao usuarios/estoque/vendas/compras de um determinado usuario/cupons
+é necessário funcao que limpe os historicos?
 campo que mostre que usuario que fez as alterações
-
-especificacao:
-alterar especificacao
-historico da alteracao
 
 produtos similares/relacionados
 
@@ -72,6 +69,8 @@ verificar mensagens de erro e de sucesso nas funcões
 Tratamento de erros try/except em todas as funcoes
 Testes automatizados
 .strip() nos forms de busca
+apagar imagens usadas para teste/ as imagens das especificações(tera uma funcao para deleta-las?)
+
 
 
 - Deploy:

@@ -6,7 +6,7 @@ from django.contrib.messages import constants
 from rolepermissions.decorators import has_permission_decorator, has_role_decorator
 from decimal import Decimal
 from django.core.paginator import Paginator
-from .forms import CadastrarProduto
+from .forms import CadastrarProduto, AtualizarEspecificacao
 from usuarios.models import Usuarios
 
 
@@ -158,9 +158,11 @@ def alterar_produto(request, id):
         produto = Produtos.objects.get(id=id)
         categorias = Categoria.objects.all()
         imagens = Imagens.objects.filter(produto_id=id)
+        form_especificacao = AtualizarEspecificacao()
         return render(request, 'alterar_produto.html', {'produto': produto,
                                                         'categorias': categorias,
-                                                        'imagens': imagens})
+                                                        'imagens': imagens,
+                                                        'form_especificacao': form_especificacao})
     elif request.method == 'POST':
         produto = Produtos.objects.get(id=id)
         nome = request.POST.get('nome')
@@ -188,8 +190,6 @@ def alterar_produto(request, id):
         produto.cor = cor
         quantidade = request.POST.get('quantidade')
         produto.quantidade = quantidade
-        especificacao = request.POST.get('especificacao')
-        produto.especificacao = especificacao
         produto.save()
         messages.add_message(request, constants.SUCCESS, 'Produto atualizado com sucesso.')
         return redirect(f'/produtos/alterar_produto/{id}')
@@ -239,6 +239,14 @@ def excluir_imagem_principal(request, id_produto):
     produto.imagem_principal.delete()
     messages.add_message(request, constants.SUCCESS, 'Imagem excluída com sucesso.')
     return redirect(f'/produtos/alterar_produto/{id_produto}')
+
+def atualizar_especificacao(request, id):
+    produto = Produtos.objects.get(id=id)
+    especificacao = request.POST.get('especificacao')
+    produto.especificacao = especificacao
+    produto.save()
+    messages.add_message(request, constants.SUCCESS, 'Especificação atualizada com sucesso.')
+    return redirect(f'/produtos/alterar_produto/{id}')
 
 def teste(request):
     return render(request, 'teste.html')

@@ -87,6 +87,19 @@
     <br>
     <br>
 
+    <div class="container">
+      <form action="{% url 'atualizar_especificacao' produto.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form_especificacao.media}}
+        {{form_especificacao.as_table}}
+        <input type="submit" class="btn btn-success btn-lg" value="Alterar">
+      </form>
+    </div> 
+
+    <br>
+    <br>
+    <br>
+
   <div>
     Alteração de imagens:
     <form action="{% url 'alterar_imagem_principal' produto.id %}" method="POST" enctype="multipart/form-data">{% csrf_token %}

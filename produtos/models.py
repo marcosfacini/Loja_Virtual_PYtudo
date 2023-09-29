@@ -94,8 +94,8 @@ class Produtos(models.Model):
         if old_imagem_principal != self.imagem_principal:
             alteracoes.append(f"Imagem principal alterada de '{old_imagem_principal}' para '{self.imagem_principal}'")
 
-        if old_especificacao.strip() != self.especificacao.strip():
-            alteracoes.append(f"As especificações foram alteradas de '{old_especificacao}' para '{self.especificacao}'")
+        if old_especificacao != self.especificacao:
+            alteracoes.append(f"As especificações foram alteradas")
 
 
         return ", ".join(alteracoes)
