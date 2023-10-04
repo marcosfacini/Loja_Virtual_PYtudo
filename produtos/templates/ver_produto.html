@@ -149,6 +149,7 @@
     </div> 
 </div>
 
+
 <div class="container mt-5">
     <div class="row">
 		<h2 class="text-center">Especificações</h2>
@@ -169,6 +170,40 @@
         </div>
     {% endif %}
 </div>
+
+
+{% if produtos_relacionados %}
+    <div class="container mt-5">
+        <div class="row">
+            <h2 class="text-center">Veja também:</h2>
+        </div>
+        <hr class="mt-0">
+
+    <div class = "row g-0">
+        {% for produto in produtos_relacionados %}
+            <div class = "col-md-6 col-lg-4 col-xl-3 p-2">
+                <a href="{% url 'ver_produto' produto.id %}">
+                <div class = "special-img position-relative overflow-hidden">
+                    {% if produto.produto.imagem_principal %}
+                        <img src="{{produto.produto.imagem_principal.url}}" class = "w-100">
+                    {% else %}
+                        <img src="{% static 'produtos\img\sem foto.jpg' %}"  class = "w-100">
+                    {% endif %}
+                </a>
+                </div>
+                <div class = "text-center">
+                    <p class = "text-capitalize mt-3 mb-1">{{produto.nome}}</p>
+                    <span class = "fw-bold d-block">$ {{produto.preco}}</span>
+                    <a href ="{% url 'ver_produto' produto.id %}" class = "btn btn-primary mt-3">Comprar</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    </div>
+{% endif %}
+
 
 <div class="container mt-5">
 	<div class="row">

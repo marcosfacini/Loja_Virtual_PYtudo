@@ -8,6 +8,7 @@ from decimal import Decimal
 from django.core.paginator import Paginator
 from .forms import CadastrarProduto, AtualizarEspecificacao
 from usuarios.models import Usuarios
+import random 
 
 
 
@@ -105,6 +106,8 @@ def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)
     avaliacoes = Avaliacao.objects.filter(produto=id)
     imagens = Imagens.objects.filter(produto_id=id)
+    produtos_relacionados = Produtos.objects.filter(categoria=produto.categoria).exclude(id=produto.id)
+    produtos_relacionados = random.sample(list(produtos_relacionados), min(4, len(produtos_relacionados)))
     if avaliacoes:
         estrelas = []
         for av in avaliacoes:
@@ -116,7 +119,8 @@ def ver_produto(request, id):
     return render(request, 'ver_produto.html', {'produto': produto,
                                                 'avaliacoes_ordenadas': avaliacoes_ordenadas,
                                                 'imagens': imagens,
-                                                'media_estrelas': media_estrelas})
+                                                'media_estrelas': media_estrelas,
+                                                'produtos_relacionados': produtos_relacionados})
 
 @has_permission_decorator('alterar_produto')
 def excluir_produto(request, id):

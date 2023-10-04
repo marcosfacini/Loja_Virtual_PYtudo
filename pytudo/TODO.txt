@@ -19,8 +19,6 @@ alteracao produtos/alteracao usuarios/estoque/vendas/compras de um determinado u
 é necessário funcao que limpe os historicos?
 campo que mostre que usuario que fez as alterações
 
-produtos similares/relacionados
-
 - Segurança:
 ter role de gestor e de gerente?
 Gestao desabilita/habilita contas de  usuarios e gerentes
@@ -62,6 +60,7 @@ seo do site
 check box que seleciona todos os itens de uma vez
 favicon.ico 404 (Not Found)
 produto com mais de 5 fotos
+mostrar quantidade nos icones da lista de desejo e no do carrinho
 
 - Antes do deploy:
 importar o jquery em todas as paginas?
