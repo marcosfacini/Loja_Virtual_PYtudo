@@ -253,4 +253,5 @@ def atualizar_especificacao(request, id):
     return redirect(f'/produtos/alterar_produto/{id}')
 
 def teste(request):
-    return render(request, 'teste.html')
+    categorias = Categoria.objects.all()
+    return render(request, 'teste.html', {'categorias': categorias})

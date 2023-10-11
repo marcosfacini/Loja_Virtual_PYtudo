@@ -63,7 +63,6 @@ produto com mais de 5 fotos
 mostrar quantidade nos icones da lista de desejo e no do carrinho
 
 - Antes do deploy:
-importar o jquery em todas as paginas?
 verificar mensagens de erro e de sucesso nas funcões
 Tratamento de erros try/except em todas as funcoes
 Testes automatizados
