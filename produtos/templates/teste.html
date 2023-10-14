@@ -22,13 +22,13 @@
     <nav>
         <div class="container-fluid barra">
             <div class="row h-100">
-                <div class="col-md-3 col-6 order-md-1 order-1 d-flex">
+                <div class="col-md-3 col-sm-6 col-3 order-1 d-flex">
                     <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
-                        <span class="d-flex justify-content-center align-items-center bs-icon-sm bs-icon-rounded bs-icon-primary me-2 bs-icon">
+                        <span class="d-flex justify-content-center align-items-center bs-icon-sm bs-icon-rounded bs-icon-primary me-1 bs-icon">
                             <img src="{% static 'base\img\shopping-bag-icon.png' %}" alt="site icon">
                         </span>
                         <span>
-                            <span class="text-uppercase fw-lighter ms-2">
+                            <span class="text-uppercase fw-lighter ms-1">
                                 Pytudo
                             </span>
                         </span>
@@ -36,25 +36,15 @@
                 </div>
                 
                 <div class="col-md-6 col-12 order-md-2 order-3 d-flex align-items-center justify-content-center">
-                    <div class="dropdown">
-                        <a class="text-uppercase nav-link text-dark dropdown-toggle" id="categoriasDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-                            Categorias 
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
-                            {% for categoria in categorias %}
-                                <li><a class="dropdown-item" href="#">{{ categoria }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <form class="input-group" action="{% url 'listar_produtos' %}" method="GET" style="width: 350px;">
+                    <form class="input-group" action="{% url 'listar_produtos' %}" method="GET" style="width: 80%;">
                         <div class = "input-group mb-3 mt-3">
-                            <input type = "text" name="nome" class = "form-control" placeholder="Pesquise aqui...">
-                            <button class = "btn btn-primary" style="background: #e5345b;" type = "submit"><i class = "fa fa-search"></i></button>
+                            <input type = "text" name="nome" class = "form-control" placeholder="Pesquise aqui:">
+                            <button class = "btn"  type = "submit"><i class = "fa fa-search"></i></button>
                         </div>
                     </form>
                 </div>
 
-                <div class="col-md-3 col-6 order-md-3 order-2 d-flex align-items-center justify-content-end">
+                <div class="col-md-3 col-sm-6 col-9 order-md-3 order-2 d-flex align-items-center justify-content-end">
                     <div class="nav-btns">
                         <div class="dropdown">
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="PainelDropdown">
@@ -80,6 +70,19 @@
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row text-center" style="background: #e5345b;">
+            <div class="dropdown dropdown-center">
+                <a class="text-uppercase nav-link text-dark dropdown-toggle" id="categoriasDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                    Categorias 
+                </a>
+                <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="categoriasDropdown">
+                    {% for categoria in categorias %}
+                        <li><a class="dropdown-item" href="#">{{ categoria }}</a></li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </nav>
