@@ -1,7 +1,3 @@
-/* header */
-#header{
-    background: url(/pytudo/templates/static/base/img/background.jpg) top/cover no-repeat;
-}
 .carousel-inner h1{
     font-size: 60px;
     font-family: var(--lg-font);

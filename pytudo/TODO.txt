@@ -1,5 +1,3 @@
-pagina que retorna busca por  categoria
-
 Calculo de frete api 
 Metodos de pagamento
 debita do estoque e dos cupons
@@ -47,9 +45,10 @@ ENVIO DE VALIDAÇÃO DE CADASTRO SERÁ VIA EMAL
 - Front:
 nav de categorias tem hover na row toda
 Templates do accounts/404
-Navbar/menu
+cor da Navbar 
+banner interativo (tamanho/elementos/setas)
 Css das paginas 
-footer 
+personalizar footer 
 paginação estilizada - escolher quantidade de itens por pagina
 paginação dos comentarios
 modal em botoes excluir

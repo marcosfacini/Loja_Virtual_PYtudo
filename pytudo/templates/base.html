@@ -16,69 +16,76 @@
   </head>
   <body>
     <!-- navbar -->
-    <nav class="navbar navbar-light navbar-expand-md py-3" style="background: #ecedee;"> 
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center customizada" href="{% url 'home' %}">
-                <span class="d-flex justify-content-center align-items-center bs-icon-sm bs-icon-rounded bs-icon-primary me-2 bs-icon">
-                    <img src="{% static 'base\img\shopping-bag-icon.png' %}" alt="site icon">
-                </span>
-                <span>
-                    <span class="text-uppercase fw-lighter ms-2">
-                        Pytudo
-                    </span>
-                </span>
-            </a>
-            <button data-bs-toggle="collapse" data-bs-target="#navcol-2" class="navbar-toggler">
-                <span class="visually-hidden">
-                    Toggle navigation
-                </span>
-                <span class="navbar-toggler-icon">
-    
-                </span>
-            </button>
-            <div class="collapse navbar-collapse" id="navcol-2">
-                    <form class="d-flex" action="{% url 'listar_produtos' %}" method="GET" style="width: 330px;margin-left: 20px;">
-                        <input class="form-control form-control form-control me-2" type="text" name="nome" placeholder="O que você procura?">
-                    </form>
-
-                    <div class="dropdown">
-                    <a class="text-uppercase nav-link text-dark dropdown-toggle" id="categoriasDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 20px;"> 
-                        Categorias 
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="categoriasDropdown">
-                        {% for categoria in categorias %}
-                            <li><a class="dropdown-item" href="#">{{ categoria }}</a></li>
-                        {% endfor %}
-                    </ul>
-                    </div>
-
-                    <div class="dropdown">
-                        <a class="text-uppercase nav-link text-dark dropdown-toggle" id="PainelDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left: 20px;"> 
-                            Perfil
+    <header>
+        <nav>
+            <div class="container-fluid barra">
+                <div class="row h-100">
+                    <div class="col-md-3 col-sm-6 col-3 order-1 d-flex">
+                        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                            <span class="d-flex justify-content-center align-items-center bs-icon-sm bs-icon-rounded bs-icon-primary me-1 bs-icon">
+                                <img src="{% static 'base\img\shopping-bag-icon.png' %}" alt="site icon">
+                            </span>
+                            <span>
+                                <span class="text-uppercase fw-lighter ms-1">
+                                    Pytudo
+                                </span>
+                            </span>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="PainelDropdown">
-                            {% if request.user.is_authenticated %}
-                                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Deslogar</a></li>
-                            {% else %}
-                                <li><a class="dropdown-item" href="{% url 'account_login' %}">Entrar</a></li>
-                            {% endif %}
-                            <li><a class="dropdown-item" href="{% url 'painel_controle' %}">Painel de controle</a></li>
-                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6 col-12 order-md-2 order-3 d-flex align-items-center justify-content-center">
+                        <form class="input-group" action="{% url 'listar_produtos' %}" method="GET" style="width: 80%;">
+                            <div class = "input-group mb-3 mt-3">
+                                <input type = "text" name="nome" class = "form-control" placeholder="Pesquise aqui:">
+                                <button class = "btn"  type = "submit"><i class = "fa fa-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+    
+                    <div class="col-md-3 col-sm-6 col-9 order-md-3 order-2 d-flex align-items-center justify-content-end">
+                        <div class="nav-btns">
+                            <div class="dropdown">
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="PainelDropdown">
+                                {% if request.user.is_authenticated %}
+                                    <li><a class="dropdown-item" href="{% url 'account_logout' %}">Deslogar</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'account_login' %}">Entrar</a></li>
+                                {% endif %}
+                                    <li><a class="dropdown-item" href="{% url 'painel_controle' %}">Painel de controle</a></li>
+                                </ul>
+                            </div>
+    
+                            <button class="btn position-relative" type="button">
+                                <a href ="{% url 'ver_lista_desejo' %}"><i class = "fa fa-heart"></i></a>
+                                    <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">2</span>
+                            </button>
+                            <button class="btn position-relative" type="button">
+                                <a href ="{% url 'carrinho' %}"><i class = "fa fa-shopping-cart"></i></a>
+                                    <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">5</span>
+                            </button>
+                            <button class="btn position-relative dropdown-toggle" id="PainelDropdown" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-address-card" aria-hidden="true"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                
-    <div class="order-lg-2 nav-btns">
-    <button class="btn position-relative" type="button">
-        <a href ="{% url 'ver_lista_desejo' %}"><i class = "fa fa-heart"></i><a/>
-            <span class = "position-absolute top-0 start-100 translate-middle badge bg-primary">2</span>
-    </button>
-    <button class="btn position-relative" type="button">
-        <a href ="{% url 'carrinho' %}"><i class = "fa fa-shopping-cart"></i><a/>
-            <span class = "position-absolute top-0 start-100 translate-middle badge bg-primary">5</span>
-    </button>
-    </div>
-    </div>
-    </nav>
+            </div>
+    
+            <div class="container-fluid d-flex justify-content-center" style="background: #e5345b;">
+                <div class="dropdown dropdown-center" style="width: 130px;">
+                    <a class="text-uppercase nav-link text-dark dropdown-toggle" id="categoriasDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                        Categorias 
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="categoriasDropdown">
+                        {% for categoria in categorias %}
+                            <li><a class="dropdown-item" href="{% url 'listar_produtos' %}?categoria={{categoria.id}}">{{ categoria }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
   <!-- end of navbar -->
 
     {% if messages %}
