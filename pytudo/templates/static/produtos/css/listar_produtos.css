@@ -1,3 +1,39 @@
-.preco{
-    color: #B22222;
+.pagination {
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+    justify-content: center;
 }
+
+.pagination a {
+    text-decoration: none;
+}
+
+.pagination-number {
+    padding: 12px 17px;
+    margin: 0 2px;
+    border-radius: 2px;
+    color: #fff;
+    background-color: #e5345b;
+}
+
+.pagination-number:hover,
+.pagination-current {
+    background-color: #000;
+    color: #fff;
+}
+
+.pagination-action {
+    margin: 0 2px;
+    display: flex;
+    padding: 1px 2px;
+    color: #000;
+    font-size: 1.3em;
+    align-items: center;
+}
+
+.pagination-action:hover {
+    color: #e5345b;
+}
+

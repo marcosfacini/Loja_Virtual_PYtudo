@@ -43,13 +43,11 @@ ENVIO DE VALIDAÇÃO DE CADASTRO SERÁ VIA EMAL
 
 
 - Front:
-nav de categorias tem hover na row toda
 Templates do accounts/404
 cor da Navbar 
 banner interativo (tamanho/elementos/setas)
 Css das paginas 
 personalizar footer 
-paginação estilizada - escolher quantidade de itens por pagina
 paginação dos comentarios
 modal em botoes excluir
 posicao da mensagem de erro nos forms

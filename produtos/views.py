@@ -42,6 +42,7 @@ def listar_produtos(request):
     if cor_filtar:
         produtos = produtos.filter(cor__icontains=cor_filtar)
 
+    total_produtos = produtos.count()
     produtos_ordenados = produtos.order_by('-id')
     paginacao = Paginator(produtos_ordenados, 3)
 
@@ -57,8 +58,9 @@ def listar_produtos(request):
     page = request.GET.get('page')
     produtos_paginados = paginacao.get_page(page)
 
-    return render(request, 'produtos.html', {'produtos_paginados': produtos_paginados, 
-                                             'categorias': categorias,})
+    return render(request, 'produtos.html', {'produtos_paginados': produtos_paginados,
+                                             'total_produtos': total_produtos,
+                                             'categorias': categorias})
 
 @has_permission_decorator('alterar_produto')
 def cadastrar_produto(request):

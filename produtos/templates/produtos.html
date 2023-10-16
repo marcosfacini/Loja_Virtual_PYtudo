@@ -9,46 +9,44 @@
 {% endblock %}
 
 {% block 'body' %}
-            
-        <form action="#" method="GET"> {% csrf_token %} 
-            <div class="row">
-                
-                    <div class="col-md-5">
-                        <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
-                    </div>
-
-                    <div class="col-md-4">
-                        <select class="form-select" name="categoria">
-                            <option value="" disabled selected hidden>Escolha uma categoria</option>
-                            {% for categoria in categorias %}
-                                <option value="{{categoria.id}}">{{categoria}} </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>Menor que:</label>
-                        <input type="text" name="preco_menor_filtrar">
-
-                        <label> Maior que:</label>
-                        <input type="text" name="preco_maior_filtrar">
-                    </div>
-
-                    <input type="text" placeholder="Busque pela marca"  name="marca">
-
-                    <input type="text" placeholder="Busque pela cor"  name="cor">
-
-                    <select class="form-select" aria-label="Default select example" name="ordenacao">
-                        <option value="" disabled selected hidden>Ordenar por:</option>
-                        <option value="maior">Maior preço</option>
-                        <option value="menor">Menor preço</option>
-                    </select>
-                
-                <div class="col-md-3">
-                    <input type="submit" value="FILTRAR" class="btn btn-primary">
+    <form action="#" method="GET"> 
+        <div class="row">
+                <div class="col-md-5">
+                    <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
                 </div>
+
+                <div class="col-md-4">
+                    <select class="form-select" name="categoria">
+                        <option value="" disabled selected hidden>Escolha uma categoria</option>
+                        {% for categoria in categorias %}
+                            <option value="{{categoria.id}}">{{categoria}} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label>Menor que:</label>
+                    <input type="text" name="preco_menor_filtrar">
+
+                    <label> Maior que:</label>
+                    <input type="text" name="preco_maior_filtrar">
+                </div>
+
+                <input type="text" placeholder="Busque pela marca"  name="marca">
+
+                <input type="text" placeholder="Busque pela cor"  name="cor">
+
+                <select class="form-select" aria-label="Default select example" name="ordenacao">
+                    <option value="" disabled selected hidden>Ordenar por:</option>
+                    <option value="maior">Maior preço</option>
+                    <option value="menor">Menor preço</option>
+                </select>
+            
+            <div class="col-md-3">
+                <input type="submit" value="FILTRAR" class="btn btn-primary">
             </div>
-        </form>
+        </div>
+    </form>
         
         <br>
         <br>
@@ -70,31 +68,37 @@
                     </div>
                 </div>
             </div>
-        
         {% endfor %}
-
     </div>
+
+    TOTAL: {{total_produtos}}
+
 
     <div class="pagination">
         {% if produtos_paginados.has_previous %}
-            <a href="?{% param_replace page=1 %}">First</a>
-            {% if produtos_paginados.previous_page_number != 1 %}
-                <a href="?{% param_replace page=produtos_paginados.previous_page_number %}">Previous</a>
-            {% endif %}
+        <a class="pagination-action" href="?{% param_replace page=1 %}">
+            <i class='fa fa-angle-double-left' aria-hidden="true"></i> </a>
+        <a class="pagination-action" href="?{% param_replace page=produtos_paginados.previous_page_number %}">
+            <i class='fa fa-arrow-left' aria-hidden="true"></i>
+        </a>
         {% endif %}
-
-        Page {{ produtos_paginados.number }} of {{ paginator.num_pages }} 
-
+        {% for num in produtos_paginados.paginator.page_range %}
+            {% if produtos_paginados.number == num %}
+                <span class="pagination-number pagination-current">{{ num }}</span>
+            {% elif num > produtos_paginados.number|add:'-3' and num < produtos_paginados.number|add:'3' %}
+                <a class="pagination-number" href="?{% param_replace page=num %}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
         {% if produtos_paginados.has_next %}
-            {% if produtos_paginados.next_page_number != paginator.num_pages %}
-                <a href="?{% param_replace page=produtos_paginados.next_page_number %}">Next</a>
-            {% endif %}
-            <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+            <a class="pagination-action" href="?{% param_replace page=produtos_paginados.next_page_number %}">
+                <i class='fa fa-arrow-right' aria-hidden="true"></i>
+            </a>
+            <a class="pagination-action" href="?{% param_replace page=produtos_paginados.paginator.num_pages %}" >        
+                <i class='fa fa-angle-double-right' aria-hidden="true"></i>
+            </a>
         {% endif %}
+    </div>
 
-        <p>Objects {{ produtos_paginados.start_index }}—{{ produtos_paginados.end_index }}</p>
-        
-    </div> 
 
     
 {% endblock %}
