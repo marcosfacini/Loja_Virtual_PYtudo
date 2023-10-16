@@ -73,32 +73,32 @@
 
     TOTAL: {{total_produtos}}
 
-
-    <div class="pagination">
-        {% if produtos_paginados.has_previous %}
-        <a class="pagination-action" href="?{% param_replace page=1 %}">
-            <i class='fa fa-angle-double-left' aria-hidden="true"></i> </a>
-        <a class="pagination-action" href="?{% param_replace page=produtos_paginados.previous_page_number %}">
-            <i class='fa fa-arrow-left' aria-hidden="true"></i>
-        </a>
-        {% endif %}
-        {% for num in produtos_paginados.paginator.page_range %}
-            {% if produtos_paginados.number == num %}
-                <span class="pagination-number pagination-current">{{ num }}</span>
-            {% elif num > produtos_paginados.number|add:'-3' and num < produtos_paginados.number|add:'3' %}
-                <a class="pagination-number" href="?{% param_replace page=num %}">{{ num }}</a>
+    {% if total_produtos > 3 %}
+        <div class="pagination">
+            {% if produtos_paginados.has_previous %}
+            <a class="pagination-action" href="?{% param_replace page=1 %}">
+                <i class='fa fa-angle-double-left' aria-hidden="true"></i> </a>
+            <a class="pagination-action" href="?{% param_replace page=produtos_paginados.previous_page_number %}">
+                <i class='fa fa-arrow-left' aria-hidden="true"></i>
+            </a>
             {% endif %}
-        {% endfor %}
-        {% if produtos_paginados.has_next %}
-            <a class="pagination-action" href="?{% param_replace page=produtos_paginados.next_page_number %}">
-                <i class='fa fa-arrow-right' aria-hidden="true"></i>
-            </a>
-            <a class="pagination-action" href="?{% param_replace page=produtos_paginados.paginator.num_pages %}" >        
-                <i class='fa fa-angle-double-right' aria-hidden="true"></i>
-            </a>
-        {% endif %}
-    </div>
-
+            {% for num in produtos_paginados.paginator.page_range %}
+                {% if produtos_paginados.number == num %}
+                    <span class="pagination-number pagination-current">{{ num }}</span>
+                {% elif num > produtos_paginados.number|add:'-3' and num < produtos_paginados.number|add:'3' %}
+                    <a class="pagination-number" href="?{% param_replace page=num %}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if produtos_paginados.has_next %}
+                <a class="pagination-action" href="?{% param_replace page=produtos_paginados.next_page_number %}">
+                    <i class='fa fa-arrow-right' aria-hidden="true"></i>
+                </a>
+                <a class="pagination-action" href="?{% param_replace page=produtos_paginados.paginator.num_pages %}" >        
+                    <i class='fa fa-angle-double-right' aria-hidden="true"></i>
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
 
     
 {% endblock %}
