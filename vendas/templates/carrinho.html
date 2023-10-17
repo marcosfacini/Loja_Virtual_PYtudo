@@ -81,6 +81,15 @@
             </tbody>
           </table>
 
+          <div class="container d-flex mt-5 mb-5 justify-content-center">
+            <form class="input-group" action="{% url 'validar_cupom' %}" method="POST" style="width: 70%;">{% csrf_token %}
+              <div class = "input-group mb-3 mt-3">
+                  <input type = "text" name="codigo" class = "form-control" placeholder="Cupom de desconto:">
+                  <button class = "btn"  type = "submit"><i class = "fa fa-search"></i></button>
+              </div>
+            </form>
+          </div>
+
           <div class="table-responsive">
             <table class="table">
               <thead>
@@ -99,14 +108,20 @@
                   </td>
                 </tr>
 
-                <tr>
-                  <td class="align-middle">
-                    <p class="mb-0" style="font-weight: 500;">Cupom de desconto</p>
-                  </td>
+                {% if request.session.cupom %}
+                  <tr>
+                    <td class="align-middle">
+                      <p class="mb-0" style="font-weight: 500;">Cupom de desconto 
+                        <a href="{% url 'retirar_cupom_da_session'%}"><i class="fa fa-times-circle text-danger"></i></a>
+                      </p>
+                    </td>
                     <td class="align-middle text-end">
-                      <p class="mb-0" style="font-weight: 500;">R$ desct</p>
+                        <p class="mb-0" style="font-weight: 500;">
+                          {{request.session.cupom|get_cupom_type:'desconto'}} 
+                        </p>
                     </td>
                   </tr>
+                {% endif %}
 
                   <tr>
                     <td class="align-middle">
@@ -121,10 +136,17 @@
                       <td class="align-middle">
                         <p class="mb-0" style="font-weight: 500;">TOTAL</p>
                       </td>
+                      {% if request.session.cupom %}
                         <td class="align-middle text-end">
-                          <p class="mb-0" style="font-weight: 500;">R$ 99,99</p>
+                          <p class="mb-0" style="font-weight: 500;">R$ {{total_com_desconto}}</p>
                         </td>
-                      </tr>
+                        </tr>
+                      {% else %}
+                        <td class="align-middle text-end">
+                          <p class="mb-0" style="font-weight: 500;">R$ {{total}}</p>
+                        </td>
+                        </tr>
+                      {% endif%}
               </tbody>
             </table>
         </div>
@@ -138,35 +160,6 @@
 {% else %}
 <p>O carrinho está vazio.</p>
 {% endif %}
-
-
-<form action="{% url 'validar_cupom' %}" method="POST"> {% csrf_token %} 
-<div class="row">
-
-<div class="col-md-5">
-  <input type="text" placeholder="Digite o código" class="form-control" name="codigo">
-</div>
-
-<div class="col-md-3">
-  <input type="submit" value="ENVIAR" class="btn btn-primary">
-</div>
-</div>
-</form>
-
-
-
-
-{% if total_com_desconto >= 0 %}
-{{request.session.cupom|get_cupom_type:'desconto'}} <a href="{% url 'retirar_cupom_da_session'%}">Remover</a>
-<br>
-TOTAL = {{total_com_desconto}}
-{% endif %}
-
-
- 
-
-
-
 
 
 

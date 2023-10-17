@@ -1,6 +1,6 @@
 Calculo de frete api 
 Metodos de pagamento
-debita do estoque e dos cupons
+debita do estoque e dos cupons (e deleta cupom usado da session)
 registro no relatorio de venda/historico cupom
 
 Historico de compras do usuario 

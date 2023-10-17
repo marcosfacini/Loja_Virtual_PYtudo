@@ -94,7 +94,7 @@ def carrinho(request):
             if total_com_desconto <= 0:
                 total_com_desconto = 0
         elif tipo_desconto == 'P':
-            total_com_desconto = float(total) - (float(total) * valor_desconto / 100)
+            total_com_desconto = round(float(total) - (float(total) * valor_desconto / 100),2)
             if total_com_desconto <= 0:
                 total_com_desconto = 0
 
