@@ -1,8 +1,13 @@
-@media (min-width: 1025px) {
-    .h-custom {
-    height: 100vh !important;
-    }
-    }
+.lixeira {
+    color: #dc3545;
+    margin-left: 20px;
+}
+
+.lixeira:hover{
+    color: #000;
+}
+
+
 
 
       
