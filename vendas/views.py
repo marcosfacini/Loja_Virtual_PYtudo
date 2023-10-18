@@ -77,14 +77,11 @@ def carrinho(request):
         carrinho_ids = list(carrinho_session.keys())
         carrinho = Produtos.objects.filter(id__in=carrinho_ids)
         soma_unidades = []
-        unidades = []
         for produto in carrinho:
             soma = produto.preco * carrinho_session[str(produto.id)]
             soma_unidades.append(soma)
-            unidades.append(carrinho_session[str(produto.id)])
         total = sum(soma_unidades)
-        total_unidades = sum(unidades)
-
+ 
     if 'cupom' in request.session:
         cupom = request.session['cupom']
         valor_desconto = cupom['desconto'][0]
@@ -100,8 +97,7 @@ def carrinho(request):
 
     return render(request, 'carrinho.html', {'carrinho': carrinho, 
                                              'total': total, 
-                                             'total_com_desconto': total_com_desconto,
-                                             'total_unidades': total_unidades})
+                                             'total_com_desconto': total_com_desconto,})
 
 def adicionar_quantidade_no_carrinho(request):
     carrinho = request.session['carrinho']

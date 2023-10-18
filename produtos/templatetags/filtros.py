@@ -21,6 +21,10 @@ def multiply_item(amount, unity_price):
     return amount * unity_price 
 
 @register.filter
+def total_itens(dictionary):
+    return sum(dictionary.values())
+
+@register.filter
 def get_cupom_type(dictionary, key):
     if dictionary[str(key)][1] == 'P':
         return f'- {dictionary[str(key)][0]} %'

@@ -60,7 +60,7 @@ seo do site
 check box que seleciona todos os itens de uma vez
 favicon.ico 404 (Not Found)
 produto com mais de 5 fotos
-mostrar quantidade nos icones da lista de desejo e no do carrinho
+mostrar quantidade nos icones da lista de desejo
 
 - Antes do deploy:
 verificar mensagens de erro e de sucesso nas funcões

@@ -67,7 +67,7 @@
                   </a>
                   </div>
                 </td>
-
+ 
                 <td class="align-middle">
                   <p class="mb-0" style="font-weight: 500;">R$ {{request.session.carrinho|get_item:produto.id|multiply_item:produto.preco}}</p>
                 </td>
@@ -101,7 +101,7 @@
               <tbody>
               <tr>
                 <td class="align-middle">
-                  <p class="mb-0" style="font-weight: 500;">{{total_unidades}} itens</p>
+                  <p class="mb-0" style="font-weight: 500;">{{request.session.carrinho|total_itens}} itens</p>
                 </td>
                   <td class="align-middle text-end">
                     <p class="mb-0" style="font-weight: 500;">R$ {{total}}</p>

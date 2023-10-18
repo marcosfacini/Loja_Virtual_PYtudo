@@ -1,4 +1,5 @@
 {% load static %}
+{% load filtros %}
 <!DOCTYPE html>
 <html lang="pt-BR">
   <head> 
@@ -61,7 +62,9 @@
                             </button>
                             <button class="btn position-relative" type="button">
                                 <a href ="{% url 'carrinho' %}"><i class = "fa fa-shopping-cart"></i></a>
-                                    <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">5</span>
+                                    {% if request.session.carrinho %}
+                                        <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">{{request.session.carrinho|total_itens}}</span>
+                                    {% endif %}
                             </button>
                             <button class="btn position-relative dropdown-toggle" id="PainelDropdown" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-address-card" aria-hidden="true"></i>
