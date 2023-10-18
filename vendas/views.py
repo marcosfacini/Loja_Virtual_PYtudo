@@ -24,7 +24,10 @@ def adicionar_na_lista_desejo(request, id):
 
 def ver_lista_desejo(request):
     lista = ListaDesejo.objects.filter(usuario_id=request.user.id).first()
-    return render(request, 'ver_lista_desejo.html', {'lista': lista})
+    num_lista_desejo = 0
+    if lista:
+        num_lista_desejo = lista.produtos.count()
+    return render(request, 'ver_lista_desejo.html', {'lista': lista, 'num_lista_desejo': num_lista_desejo})
 
 def excluir_item_da_lista(request, id_produto):
     lista = ListaDesejo.objects.get(usuario_id=request.user.id)

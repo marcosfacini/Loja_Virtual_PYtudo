@@ -58,7 +58,9 @@
     
                             <button class="btn position-relative" type="button">
                                 <a href ="{% url 'ver_lista_desejo' %}"><i class = "fa fa-heart"></i></a>
-                                    <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">2</span>
+                                    {% if num_lista_desejo %}
+                                        <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">{{num_lista_desejo}}</span>
+                                    {% endif %}
                             </button>
                             <button class="btn position-relative" type="button">
                                 <a href ="{% url 'carrinho' %}"><i class = "fa fa-shopping-cart"></i></a>

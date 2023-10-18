@@ -60,9 +60,9 @@ seo do site
 check box que seleciona todos os itens de uma vez
 favicon.ico 404 (Not Found)
 produto com mais de 5 fotos
-mostrar quantidade nos icones da lista de desejo
 
 - Antes do deploy:
+colocar content de categorias/lista de desejo em todas as paginas (somente nas que o usuario interage ?)
 verificar mensagens de erro e de sucesso nas funcões
 Tratamento de erros try/except em todas as funcoes
 Testes automatizados
