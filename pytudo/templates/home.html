@@ -9,17 +9,16 @@
 
 {% block 'body' %}
 
-<!-- banner interativo -->
+<!-- banner interativo --> 
 {% if banners %}
-<header id="header" class="vh-100 carousel slide" data-bs-ride="carousel" style="padding-top: 104px;">
+<header id="header" class="carousel slide carousel-dark slide" data-bs-ride="carousel" >
     <div class="container h-100 d-flex align-items-center carousel-inner">
         {% for image in banners %}
             <div class="text-center carousel-item {% if forloop.first %}active{% endif %}">
                 <img src="{{ image.imagem.url }}" alt="Banner Image" class="carousel-image">
                 <div class="carousel-caption">
-                    <h2 class="text-capitalize text-white">{{ image.titulo }}</h2>
-                    <h1 class="text-uppercase py-2 fw-bold text-white">{{ image.subtitulo }}</h1>
-                    <a href="#" class="btn mt-3 text-uppercase">Comprar</a>
+                    <h1 class="text-uppercase py-2 fw-bold text-white">{{ image.titulo }}</h1>
+                    <h2 class="text-capitalize text-white">{{ image.subtitulo }}</h2>
                 </div>
             </div>
         {% endfor %}
@@ -37,7 +36,7 @@
 
 
 <!-- produtos da home -->
-<section id = "special" class = "py-5">
+<section class = "py-5">
     <div class = "container">
         <div class = "title text-center py-5">
             <h2 class = "position-relative d-inline-block">Principais Ofertas</h2>
@@ -47,18 +46,18 @@
             {% for produto in produtos %}
             <div class = "col-md-6 col-lg-4 col-xl-3 p-2">
                 <a href="{% url 'ver_produto' produto.produto.id %}">
-                <div class = "special-img position-relative overflow-hidden">
+                <div class = "special-img d-flex justify-content-center align-items-center p-2 border-start border-end border-top border-2 rounded-top">
                     {% if produto.produto.imagem_principal %}
-                        <img src="{{produto.produto.imagem_principal.url}}" class = "w-100">
+                        <img src="{{produto.produto.imagem_principal.url}}" >
                     {% else %}
-                        <img src="{% static 'produtos\img\sem foto.jpg' %}"  class = "w-100">
+                        <img src="{% static 'produtos\img\sem foto.jpg' %}" >
                     {% endif %}
                 </a>
                 </div>
-                <div class = "text-center">
-                    <p class = "text-capitalize mt-3 mb-1">{{produto.produto.nome}}</p>
+                <div class = "text-center ps-3 pe-3 pb-3 pt-1 border-start border-end border-bottom border-2 rounded-end">
+                    <p class = "text-capitalize mb-1 d-flex justify-content-center align-items-center" style="height: 50px;">{{produto.produto.nome}}</p>
                     <span class = "fw-bold d-block">$ {{produto.produto.preco}}</span>
-                    <a href ="{% url 'ver_produto' produto.produto.id %}" class = "btn btn-primary mt-3">Comprar</a>
+                    <a href ="{% url 'ver_produto' produto.produto.id %}" class = "btn mt-2">Comprar</a>
                 </div>
             </div>
         
@@ -79,21 +78,13 @@
 
             <p class = "text-center text-muted">Receba ofertas imperdíveis antes que todo mundo!</p>
             <div class = "input-group mb-3 mt-3">
-                <input type = "text" class = "form-control" placeholder="Email...">
-                <button class = "btn btn-primary" type = "submit">Inscrever-se</button>
+                <input type = "text" class = "form-control" placeholder="Email:">
+                <button class = "btn btn-primary" type = "submit">Inscrever</button>
             </div>
         </div>
     </div>
 </section>
 <!-- end of newsletter -->
-
-
-
-
-
     
 {% endblock %}
 
-{% block scripts %}
-    
-{% endblock %}

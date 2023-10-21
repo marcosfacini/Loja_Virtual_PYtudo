@@ -171,38 +171,37 @@
     {% endif %}
 </div>
 
-
+<!-- produtos relacionados-->
 {% if produtos_relacionados %}
-    <div class="container mt-5">
+    <div class = "container py-4">
         <div class="row">
             <h2 class="text-center">Veja também:</h2>
         </div>
         <hr class="mt-0">
 
-    <div class = "row g-0">
-        {% for produto in produtos_relacionados %}
-            <div class = "col-md-6 col-lg-4 col-xl-3 p-2">
-                <a href="{% url 'ver_produto' produto.id %}">
-                <div class = "special-img position-relative overflow-hidden">
-                    {% if produto.produto.imagem_principal %}
-                        <img src="{{produto.produto.imagem_principal.url}}" class = "w-100">
-                    {% else %}
-                        <img src="{% static 'produtos\img\sem foto.jpg' %}"  class = "w-100">
-                    {% endif %}
-                </a>
+        <div class = "special-list row g-0">
+            {% for produto in produtos_relacionados %}
+                <div class = "col-md-6 col-lg-4 col-xl-3 p-2">
+                    <a href="{% url 'ver_produto' produto.id %}">
+                    <div class = "special-img d-flex justify-content-center align-items-center p-2 border-start border-end border-top border-2 rounded-top">
+                        {% if produto.produto.imagem_principal %}
+                            <img src="{{produto.imagem_principal.url}}" >
+                        {% else %}
+                            <img src="{% static 'produtos\img\sem foto.jpg' %}" >
+                        {% endif %}
+                    </a>
+                    </div>
+                    <div class = "text-center ps-3 pe-3 pb-3 pt-1 border-start border-end border-bottom border-2 rounded-end">
+                        <p class = "text-capitalize mb-1 d-flex justify-content-center align-items-center" style="height: 50px;">{{produto.nome}}</p>
+                        <span class = "fw-bold d-block">$ {{produto.preco}}</span>
+                        <a href ="{% url 'ver_produto' produto.id %}" class = "btn mt-2">Comprar</a>
+                    </div>
                 </div>
-                <div class = "text-center">
-                    <p class = "text-capitalize mt-3 mb-1">{{produto.nome}}</p>
-                    <span class = "fw-bold d-block">$ {{produto.preco}}</span>
-                    <a href ="{% url 'ver_produto' produto.id %}" class = "btn btn-primary mt-3">Comprar</a>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
-
+            {% endfor %}
+        </div>
     </div>
 {% endif %}
+<!-- fim dos produtos relacionados -->
 
 
 <div class="container mt-5">
@@ -232,7 +231,7 @@
             </form>
         </div>
     {% else %}
-    <div class="container mt-2">
+    <div class="container mt-2 mb-3">
         <div class="row">
             <div class="col-8 mx-auto text-center">
                 <p class="mb-0">Logue-se para avaliar</p>

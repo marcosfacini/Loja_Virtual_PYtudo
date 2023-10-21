@@ -44,16 +44,16 @@ def listar_produtos(request):
 
     total_produtos = produtos.count()
     produtos_ordenados = produtos.order_by('-id')
-    paginacao = Paginator(produtos_ordenados, 3)
+    paginacao = Paginator(produtos_ordenados, 4)
 
     ordenacao = request.GET.get('ordenacao')
     if ordenacao == 'maior':
         produtos_ordenados = produtos.order_by('-preco')
-        paginacao = Paginator(produtos_ordenados, 3)
+        paginacao = Paginator(produtos_ordenados, 4)
 
     elif ordenacao == 'menor':
         produtos_ordenados = produtos.order_by('preco')
-        paginacao = Paginator(produtos_ordenados, 3)
+        paginacao = Paginator(produtos_ordenados, 4)
     
     page = request.GET.get('page')
     produtos_paginados = paginacao.get_page(page)

@@ -13,7 +13,7 @@ class Categoria(models.Model):
         return self.nome
 
 class Produtos(models.Model):
-    nome = models.CharField(max_length=50)
+    nome = models.CharField(max_length=40)
     descricao = models.TextField()
     preco_de_custo = models.DecimalField(max_digits=8, decimal_places=2)
     preco = models.DecimalField(max_digits=8, decimal_places=2)

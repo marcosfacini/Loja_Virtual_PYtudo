@@ -1,3 +1,26 @@
+/* special */ 
+.special-list .btn{
+    padding: 8px 20px!important;
+}
+
+.special-img {
+    height: 150px;
+}
+
+.special-img img{
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    height: 120px;
+    width: auto;
+}
+
+.special-img:hover img{
+    -webkit-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+            transform: scale(1.2);
+}
+
 .pagination {
     display: flex;
     margin-top: 15px;

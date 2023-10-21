@@ -30,7 +30,7 @@
           {% csrf_token %}
 
             <label>Nome do produto:</label>
-            <input style="width: 40%;" class="form-control" type="texte" value="{{produto.nome}}" name="nome">
+            <input style="width: 40%;" class="form-control" type="text" maxlength="40" value="{{produto.nome}}" name="nome">
           </p>
 
           <label for="campo_descricao">Descricao:</label>

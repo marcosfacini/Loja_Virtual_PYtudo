@@ -51,27 +51,41 @@
         <br>
         <br>
 
-    <div class="row">
-        {% for produto in produtos_paginados %} 
-            <div class="col-md">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <a href="{% url 'ver_produto' produto.id %}" class="links">
-                            {% if produto.imagem_principal %}
-                                <img width="100%" src="{{produto.imagem_principal.url}}">
-                            {% else %}
-                                <img width="100%" src="{% static 'produtos\img\sem foto.jpg' %}">
-                            {% endif %}
-                            <h5 class="card-title">{{produto.nome}}</h5>
-                            <div class="preco"> {{produto.preco}} </div>
-                        </a>
-                    </div>
+    
+
+<!-- produtos -->
+<section class = "py-5">
+    <div class = "container">
+        <div class = "title text-center py-5">
+            <h2 class = "position-relative d-inline-block">Resultados: {{total_produtos}}</h2>
+        </div>
+
+        <div class = "special-list row g-0">
+            {% for produto in produtos_paginados %}
+            <div class = "col-md-6 col-lg-4 col-xl-3 p-2">
+                <a href="{% url 'ver_produto' produto.id %}">
+                <div class = "special-img d-flex justify-content-center align-items-center p-2 border-start border-end border-top border-2 rounded-top">
+                    {% if produto.produto.imagem_principal %}
+                        <img src="{{produto.imagem_principal.url}}" >
+                    {% else %}
+                        <img src="{% static 'produtos\img\sem foto.jpg' %}" >
+                    {% endif %}
+                </a>
+                </div>
+                <div class = "text-center ps-3 pe-3 pb-3 pt-1 border-start border-end border-bottom border-2 rounded-end">
+                    <p class = "text-capitalize mb-1 d-flex justify-content-center align-items-center" style="height: 50px;">{{produto.nome}}</p>
+                    <span class = "fw-bold d-block">$ {{produto.preco}}</span>
+                    <a href ="{% url 'ver_produto' produto.id %}" class = "btn mt-2">Comprar</a>
                 </div>
             </div>
-        {% endfor %}
+        
+            {% endfor %}
+        </div>
     </div>
+</section>
+<!-- fim dos produtos -->
 
-    TOTAL: {{total_produtos}}
+    
 
     {% if total_produtos > 3 %}
         <div class="pagination">

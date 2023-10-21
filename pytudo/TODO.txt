@@ -1,7 +1,14 @@
-Calculo de frete api 
+Calculo de frete api
+campo boleano chamado frete_gratis na model produto
+form do frete na pagina de detalhes do produto e no carrinho
+if frete_gratis não apresenta o form e não faz o calculo
+funcao retirar_na_loja que anula a opcao/form de calculo de frete
+
 Metodos de pagamento
 debita do estoque e dos cupons (e deleta cupom usado da session)
 registro no relatorio de venda/historico cupom
+
+django debug toolbar
 
 Historico de compras do usuario 
 
@@ -40,18 +47,16 @@ validacao formularios do app gestao
 
 PERMITIR USUARIO MUDAR EMAIL? 
 ENVIO DE VALIDAÇÃO DE CADASTRO SERÁ VIA EMAL
-
+função newsletter
 
 - Front:
 Templates do accounts/404
-cor da Navbar 
-banner interativo (tamanho/elementos/setas)
+cores = Navbar/banner
 Css das paginas 
 personalizar footer 
 paginação dos comentarios
 modal em botoes excluir
 posicao da mensagem de erro nos forms
-contador que tras quantidade de itens de resultado de uma pesquisa
 ordenacao nas tabelas de produtos e de usuarios - datatables jquery
 form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
 compensa fazer um filtro de data que busque somente pelo ano ou somente pelo mes?
@@ -63,11 +68,13 @@ produto com mais de 5 fotos
 
 - Antes do deploy:
 colocar content de categorias/lista de desejo em todas as paginas (somente nas que o usuario interage ?)
+colocar contador que tras quantidade de itens de resultado em todas as paginas de pesquisa
 verificar mensagens de erro e de sucesso nas funcões
 Tratamento de erros try/except em todas as funcoes
 Testes automatizados
 .strip() nos forms de busca
 apagar imagens usadas para teste/ as imagens das especificações(tera uma funcao para deleta-las?)
+deletar teste url/view/template
 
 
 

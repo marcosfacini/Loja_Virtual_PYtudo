@@ -5,7 +5,7 @@ from django.forms.widgets import ClearableFileInput
 from ckeditor_uploader.fields import RichTextUploadingFormField
 
 class CadastrarProduto(forms.Form):
-    nome = forms.CharField(max_length=50)
+    nome = forms.CharField(max_length=40)
     descricao = forms.CharField(max_length=100000)
     preco_de_custo = forms.CharField(max_length=11)
     preco = forms.CharField(max_length=11)
