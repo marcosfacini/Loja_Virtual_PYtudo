@@ -57,8 +57,9 @@ personalizar footer
 paginação dos comentarios
 modal em botoes excluir
 posicao da mensagem de erro nos forms
-ordenacao nas tabelas de produtos e de usuarios - datatables jquery
-form nao apaga a pesquisa quando a pagina e recarregada, mas mantem os pametros ate que sejam excluidos no botao limpar pesquisa
+ordenacao por setas nas tabelas de produtos/usuarios - datatables jquery
+ordenação fora do form de pesquisa
+quando a pagina e recarregada/atualizada o form mantem no placeholder os pametros ate que sejam excluidos no botao limpar pesquisa
 compensa fazer um filtro de data que busque somente pelo ano ou somente pelo mes?
 slugs nas urls que tem id dos produtos
 seo do site

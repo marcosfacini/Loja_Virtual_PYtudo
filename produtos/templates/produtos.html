@@ -9,54 +9,63 @@
 {% endblock %}
 
 {% block 'body' %}
-    <form action="#" method="GET"> 
-        <div class="row">
-                <div class="col-md-5">
-                    <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+    <div class="container mt-3">
+        <form action="#" method="GET">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group m-2">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" class="form-control" placeholder="Busque pelo nome" name="nome">
+                    </div>
+                    <div class="form-group m-2">
+                        <label for="categoria">Categoria:</label>
+                        <select class="form-select" id="categoria" name="categoria">
+                            <option value="" disabled selected hidden>Escolha uma categoria</option>
+                            {% for categoria in categorias %}
+                                <option value="{{categoria.id}}">{{categoria}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group m-2">
+                        <label for="marca">Marca:</label>
+                        <input type="text" id="marca" class="form-control" placeholder="Busque pela marca" name="marca">
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                    <select class="form-select" name="categoria">
-                        <option value="" disabled selected hidden>Escolha uma categoria</option>
-                        {% for categoria in categorias %}
-                            <option value="{{categoria.id}}">{{categoria}} </option>
-                        {% endfor %}
-                    </select>
+                <div class="col-md-6">
+                    <div class="form-group m-2">
+                        <label for="preco_menor_filtrar">Menor que:</label>
+                        <input type="text" id="preco_menor_filtrar" class="form-control" name="preco_menor_filtrar" placeholder="R$">
+                    </div>
+                    <div class="form-group m-2">
+                        <label for="preco_maior_filtrar">Maior que:</label>
+                        <input type="text" id="preco_maior_filtrar" class="form-control" name="preco_maior_filtrar" placeholder="R$">
+                    </div>
+                    <div class="form-group m-2">
+                        <label for="cor">Cor:</label>
+                        <input type="text" id="cor" class="form-control" placeholder="Busque pela cor" name="cor">
+                    </div>
                 </div>
+            </div>
 
-                <div>
-                    <label>Menor que:</label>
-                    <input type="text" name="preco_menor_filtrar">
-
-                    <label> Maior que:</label>
-                    <input type="text" name="preco_maior_filtrar">
-                </div>
-
-                <input type="text" placeholder="Busque pela marca"  name="marca">
-
-                <input type="text" placeholder="Busque pela cor"  name="cor">
-
-                <select class="form-select" aria-label="Default select example" name="ordenacao">
+            <div class="form-group m-2">
+                <label for="ordenacao">Ordenação:</label>
+                <select class="form-select" id="ordenacao" aria-label="Default select example" name="ordenacao">
                     <option value="" disabled selected hidden>Ordenar por:</option>
                     <option value="maior">Maior preço</option>
                     <option value="menor">Menor preço</option>
                 </select>
-            
-            <div class="col-md-3">
-                <input type="submit" value="FILTRAR" class="btn btn-primary">
             </div>
-        </div>
-    </form>
-        
-        <br>
-        <br>
 
-    
+            <div class="text-center mt-3">
+                <input type="submit" value="FILTRAR" class="btn">
+            </div>
+        </form>
+    </div>
 
-<!-- produtos -->
-<section class = "py-5">
-    <div class = "container">
-        <div class = "title text-center py-5">
+    <!-- produtos -->
+    <div class = "container py-3">
+        <div class = "title text-center py-2">
             <h2 class = "position-relative d-inline-block">Resultados: {{total_produtos}}</h2>
         </div>
 
@@ -82,11 +91,9 @@
             {% endfor %}
         </div>
     </div>
-</section>
-<!-- fim dos produtos -->
+    <!-- fim dos produtos -->
 
     
-
     {% if total_produtos > 3 %}
         <div class="pagination">
             {% if produtos_paginados.has_previous %}
@@ -114,5 +121,18 @@
         </div>
     {% endif %}
 
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     
+    <script> 
+        $(document).ready(function(){
+          $('#preco_menor_filtrar').mask('000000,00', {reverse: true});
+          $('#preco_maior_filtrar').mask('000000,00', {reverse: true});
+
+        });
+
+    </script>
 {% endblock %}
