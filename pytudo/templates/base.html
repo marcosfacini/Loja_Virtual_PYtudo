@@ -47,11 +47,11 @@
                         <div class="dropdown">
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="PainelDropdown">
                             {% if request.user.is_authenticated %}
+                                <li><a class="dropdown-item" href="{% url 'painel_controle' %}">Painel de controle</a></li>
                                 <li><a class="dropdown-item" href="{% url 'account_logout' %}">Deslogar</a></li>
                             {% else %}
                                 <li><a class="dropdown-item" href="{% url 'account_login' %}">Entrar</a></li>
                             {% endif %}
-                                <li><a class="dropdown-item" href="{% url 'painel_controle' %}">Painel de controle</a></li>
                             </ul>
                         </div>
 

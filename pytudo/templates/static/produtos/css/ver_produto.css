@@ -1,18 +1,63 @@
-.card{border: none;overflow: hidden}
+.card {
+    border: none;
+    overflow: hidden
+}
 
-.thumbnail_images ul{list-style: none;justify-content: center;display: flex;align-items: center;margin-top:10px}
+.thumbnail_images {
+    max-width: 100%; 
+    overflow-x: auto;
+}
 
-.thumbnail_images ul li{margin: 5px;padding: 10px;border: 2px solid #eee;cursor: pointer;transition: all 0.5s}
+.thumbnail_images ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-top:10px
+}
 
-.thumbnail_images ul li:hover{border: 2px solid #000}
+.thumbnail_images ul li {
+    margin: 5px;
+    padding: 10px;
+    border: 2px solid #eee;
+    cursor: pointer;
+    transition: all 0.5s
+}
 
-.main_image{display: flex;justify-content: center;align-items: center;border-bottom: 1px solid #eee;height: 400px;width: 100%;overflow: hidden}
+.thumbnail_images ul li:hover {
+    border: 2px solid #000
+}
 
-.content p{font-size: 12px}
+.thumbnail_images ul img {
+    width: auto; 
+    height: 50px;
+}
 
-.ratings span{font-size: 14px;margin-left: 12px}
+.main_image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    height: 400px;
+    width: 100%;
+    overflow: hidden}
 
-.right-side{position: relative}
+.main_image img {
+    height: 400px;
+    width: auto;
+}
+
+.content p {
+    font-size: 12px
+}
+
+.ratings span {
+    font-size: 14px;
+    margin-left: 12px
+}
+
+.right-side {
+    position: relative
+}
 
 .comment{
     margin-right: 20px;
@@ -92,6 +137,21 @@
     -webkit-transform: scale(1.2);
         -ms-transform: scale(1.2);
             transform: scale(1.2);
+}
+
+/* media queries */
+@media (max-width: 768px) {
+    .main_image{
+        height: 200px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
+    .main_image img {
+        height: 200px;
+        width: auto;
+    }
 }
 
 

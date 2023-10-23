@@ -14,25 +14,25 @@
 <div class="container mt-5 mb-5">	
     <div class="card">	
         <div class="row g-0">	
-            <div class="col-md-6 border-end">	
+            <div class="col-md-6 border-end">	 
                 <div class="d-flex flex-column justify-content-center">	
                     <div class="main_image">	
                         {% if produto.imagem_principal %}
-                            <img src="{{produto.imagem_principal.url}}" width="350" id="main_product_image">
+                            <img src="{{produto.imagem_principal.url}}" id="main_product_image">
                         {% else %}
-                            <img src="{% static 'produtos\img\sem foto.jpg' %}" width="350" id="main_product_image">
+                            <img src="{% static 'produtos\img\sem foto.jpg' %}"  id="main_product_image">
                         {% endif %}
                     </div>	
                     <div class="thumbnail_images">	
                         <ul id="thumbnail">	
                             {% for imagem in imagens %}
                                 <li>
-                                    <img src="{{imagem.foto.url}}" onclick="changeImage(this)" width="70"> 
+                                    <img src="{{imagem.foto.url}}" onclick="changeImage(this)" > 
                                 </li>
                             {% endfor %}
                             {% if produto.imagem_principal %}
                                 <li>
-                                    <img src="{{produto.imagem_principal.url}}" width="70" id="main_product_image" onclick="changeImage(this)">
+                                    <img src="{{produto.imagem_principal.url}}"  id="main_product_image" onclick="changeImage(this)">
                                 </li>
                             {% endif %}
                         </ul>	
@@ -211,7 +211,7 @@
     <hr class="mt-0">
 
     {% if request.user.is_authenticated %}
-        <div class="container">
+        <div class="container mb-2">
             <form action="{% url 'salvar_avaliacao' produto.id %}" method="POST"> {% csrf_token %}
                 <div class="rating"> 
                     <input type="radio" name="estrelas" value="5" id="5"><label for="5">☆</label> 
