@@ -41,17 +41,17 @@ verificar antes de finalizar a compra se o cadastro do usuario está completo
 Pagina de perfil e botão atualizar/excluir só o usuario do perfil tem acesso 
 função de usuario excluir sua propria conta - da pra reutilizar a função excluir_usuario ?
 
-Desabilitar urls do accounts que não vou usar
-
 validacao formularios do app gestao 
 
-PERMITIR USUARIO MUDAR EMAIL? 
-ENVIO DE VALIDAÇÃO DE CADASTRO SERÁ VIA EMAL
+TERÁ VALIDAÇÃO DE CADASTRO VIA EMAL ?
+validar se a opcao do allauth-acounts de trocar/recuperar senha funciona
+
 função newsletter
 
 - Front:
-Templates do accounts/404
-cores = Navbar/banner
+Templates do accounts/404 (messages)
+cores = Navbar/botoes/hoover
+banner (dimensao em telas pequenas)
 Css das paginas 
 personalizar footer 
 paginação dos comentarios

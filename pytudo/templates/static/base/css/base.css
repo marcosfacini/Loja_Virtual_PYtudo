@@ -71,16 +71,23 @@ body{
     color: #fff!important;
 }
 
+/* Links */
+.custom-link {
+    text-decoration: none; 
+    color: black;
+    font-weight: bold;          
+}
+
+.custom-link:hover {
+    color: var(--pink);            
+}
+
 /* footer */
 footer .brand{
     font-family: var(--lg-font);
     letter-spacing: 2px;
 }
-footer a{
-    -webkit-transition: color 0.3s ease;
-    -o-transition: color 0.3s ease;
-    transition: color 0.3s ease;
-}
+
 footer a:hover{
     color: var(--pink)!important;
 }
