@@ -49,7 +49,7 @@ validar se a opcao do allauth-acounts de trocar/recuperar senha funciona
 função newsletter
 
 - Front:
-Templates do accounts/404 (messages)
+Templates 404 
 cores = Navbar/botoes/hoover
 banner (dimensao em telas pequenas)
 Css das paginas 

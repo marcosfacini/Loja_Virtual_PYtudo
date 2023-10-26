@@ -1,21 +1,42 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
+{% load static %}
 
-{% load i18n %}
+{% block 'title' %}PYTudo{% endblock %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block 'head' %} 
+  <link href="{% static 'base/css/login.css' %}" rel="stylesheet">
+{% endblock %}
 
-{% block content %}
-<h1>{% trans "Sign Up" %}</h1>
+{% block 'body' %}
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+<div class="container py-5 h-100">
+  <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+      <div class="card" style="border-radius: 1rem;">
+        <div class="card-body p-5 text-center">
+          <div class="mb-md-3 mt-md-3 pb-1">
+            <h2 class="fw-bold mb-2 text-uppercase">Conta</h2>
+            <p class="mb-5">Por favor digite um email e uma senha</p>
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+            <form class="login" id="signup_form" method="post" action="{% url 'account_signup' %}">
+              {% csrf_token %}
+              {{ form.as_p }}
+            {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <button class="btn mb-2 btn-lg px-5" type="submit">Criar</button>
+          </form>
+          </div>
+
+          <div>
+            <p class="mb-0">Já tem uma conta? <a href="{{ login_url }}" class="custom-link">Logue-se aqui</a>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
