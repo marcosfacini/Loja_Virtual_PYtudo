@@ -61,3 +61,23 @@
     border-bottom-left-radius: 25px;
 }
 
+/* media queries */
+@media (max-width: 768px) {
+    .carousel-image {
+        height: 300px; 
+        width: auto; 
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-image {
+        height: 180px; 
+        width: auto; 
+    }
+    .carousel-inner h1{
+        font-size: 30px;
+        font-family: var(--lg-font);
+    }
+}
+
+

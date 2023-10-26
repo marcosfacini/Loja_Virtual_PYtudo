@@ -50,8 +50,8 @@ função newsletter
 
 - Front:
 Templates 404 
+tamanho margem dos cards
 cores = Navbar/botoes/hoover
-banner (dimensao em telas pequenas)
 Css das paginas 
 personalizar footer 
 paginação dos comentarios
