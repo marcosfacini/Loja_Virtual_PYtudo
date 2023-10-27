@@ -54,7 +54,7 @@
                     {% endif %}
                 </a>
                 </div>
-                <div class = "text-center ps-3 pe-3 pb-3 pt-1 border-start border-end border-bottom border-2 rounded-end">
+                <div class = "text-center ps-3 pe-3 pb-3 pt-1 border-start border-end border-bottom border-2 rounded-bottom">
                     <p class = "text-capitalize mb-1 d-flex justify-content-center align-items-center" style="height: 50px;">{{produto.produto.nome}}</p>
                     <span class = "fw-bold d-block">$ {{produto.produto.preco}}</span>
                     <a href ="{% url 'ver_produto' produto.produto.id %}" class = "btn mt-2">Comprar</a>

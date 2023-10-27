@@ -6,3 +6,6 @@
     width: 80%
 }
 
+.login input::placeholder {
+    text-align: center;
+}

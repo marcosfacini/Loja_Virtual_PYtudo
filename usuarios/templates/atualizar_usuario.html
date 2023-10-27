@@ -4,25 +4,27 @@
 {% block 'title' %}PYTudo{% endblock %}
 
 {% block 'head' %} 
-    <link href="{% static 'usuarios/css/atualizar_usuario.css' %}" rel="stylesheet">
+    <link href="{% static 'usuarios/css/info_adicional_usuario.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block 'body' %}
 
-    <div class="wrapper">
-        <form action="{% url 'atualizar_usuario' usuario.id %}" method="POST">{% csrf_token %}
-            <table>
-                {{form.as_table}} 
-                {{ form.non_field_errors }}
-                
-            </table>
-        <input class="btn btn-success" type="submit" value="Enviar">
+    <div class="text-center mt-5">
+        <h2>Atualizar Cadastro:</h2>
+    </div>
+    <div class="container d-flex justify-content-center my-3">
+        <form action="{% url 'atualizar_usuario' usuario.id %}" class="cadastro p-3 border" method="POST">{% csrf_token %}
+            {{form.as_p}}
+            {{ form.non_field_errors }}
+            <div class="text-center my-3">
+                <button class="btn px-5" type="submit">Enviar</button>
+            </div>
         </form>
     </div>
     
-    
-    ATUALIZADO ULTIMA VEZ EM: {{usuario.data_atualizacao|date:"d/m/Y" }} às {{usuario.data_atualizacao|time:"H:i" }}
-
+    <div class="text-center my-2">
+        ATUALIZADO ULTIMA VEZ EM: {{usuario.data_atualizacao|date:"d/m/Y" }} às {{usuario.data_atualizacao|time:"H:i" }}
+    </div>
     
 
 {% endblock %}

@@ -8,14 +8,16 @@
 {% endblock %}
 
 {% block 'body' %}
-
-    <div class="wrapper">
-        <form action="{% url 'info_adicional_usuario' %}" method="POST">{% csrf_token %}
-            <table>
-                {{form.as_table}}
-                {{ form.non_field_errors }}
-            </table>
-        <input class="btn btn-success" type="submit" value="Enviar">
+    <div class="text-center mt-5">
+        <h2>Cadastro:</h2>
+    </div>
+    <div class="container d-flex justify-content-center my-3">
+        <form action="{% url 'info_adicional_usuario' %}" class="cadastro p-3 border" method="POST">{% csrf_token %}
+            {{form.as_p}}
+            {{ form.non_field_errors }}
+            <div class="text-center my-3">
+                <button class="btn px-5" type="submit">Enviar</button>
+            </div>
         </form>
     </div>
 
