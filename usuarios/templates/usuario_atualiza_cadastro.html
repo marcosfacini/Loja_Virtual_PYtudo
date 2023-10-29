@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'usuarios/css/perfil_usuario.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+<div class="container-fluid d-sm-flex align-items-stretch px-0">
+  <nav class="sidebar bg-dark">
+  <div class="p-4">
+    <h1 class="m-0 text-white">Menu</h1>
+    <hr class="mt-0 mb-4 text-white">
+    <ul class="list-unstyled mb-2">
+    <li class="my-3">
+    <a href="{% url 'perfil_usuario' request.user.id %}"><span class="fa fa-user mr-3"></span> Perfil</a>
+    </li>
+    <li class="my-3">
+    <a href="#"><span class="fa fa-envelope mr-3"></span> Meus pedidos</a>
+    </li>
+    <li class="my-3">
+    <a href="{% url 'usuario_atualiza_cadastro' usuario.id %}"><span class="fa fa-spinner mr-3"></span> Atualizar Cadastro</a>
+    </li>
+    <li class="my-3">
+    <a href="{% url 'account_logout' %}"><span class="fa fa-power-off mr-3"></span> Sair</a>
+    </li>
+    </ul>
+  </div>
+  </nav>
+  
+  <div class="conteudo p-4 w-100">
+    <div class="text-center mt-1">
+        <h2>Atualizar Cadastro:</h2>
+    </div>
+    <div class="container d-flex justify-content-center my-3">
+        <form action="{% url 'usuario_atualiza_cadastro' usuario.id %}" class="cadastro p-3 border" method="POST">{% csrf_token %}
+            {{form.as_p}}
+            {{ form.non_field_errors }}
+            <div class="text-center my-3">
+                <button class="btn px-5" type="submit">Enviar</button>
+            </div>
+        </form>
+    </div>
+    
+    <div class="text-center my-2">
+        ATUALIZADO ULTIMA VEZ EM: {{usuario.data_atualizacao|date:"d/m/Y" }} às {{usuario.data_atualizacao|time:"H:i" }}
+    </div>
+  </div>
+</div>
+
+{% endblock %} 
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    
+    <script> 
+        $(document).ready(function(){
+            $('#id_cpf').mask('000.000.000-00', {reverse: true});
+            $('#id_data_de_nascimento').mask('00/00/0000');
+            var SPMaskBehavior = function (val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+              },
+              spOptions = {
+                onKeyPress: function(val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                  }
+              };
+              
+              $('#id_celular').mask(SPMaskBehavior, spOptions);
+
+        });
+
+    </script>
+{% endblock %}

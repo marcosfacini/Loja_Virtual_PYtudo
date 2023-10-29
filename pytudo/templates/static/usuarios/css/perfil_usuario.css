@@ -7,6 +7,18 @@
     color: var(--pink); 
 }
 
+.cadastro {
+    width: 80%
+}
+
+.cadastro label{
+    display: block;
+}
+
+.cadastro input{
+    width: 100%
+}
+
 
 /* media queries */
 @media (max-width: 576px) {
@@ -14,4 +26,3 @@
         text-align: center;
     }
 }
-

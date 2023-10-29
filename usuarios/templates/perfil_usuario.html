@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'usuarios/css/perfil_usuario.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+
+<div class="container-fluid d-sm-flex align-items-stretch px-0">
+  <nav class="sidebar bg-dark">
+  <div class="p-4">
+    <h1 class="m-0 text-white">Menu</h1>
+    <hr class="mt-0 mb-4 text-white">
+    <ul class="list-unstyled mb-2">
+    <li class="my-3">
+    <a href="{% url 'perfil_usuario' request.user.id %}"><span class="fa fa-user mr-3"></span> Perfil</a>
+    </li>
+    <li class="my-3">
+    <a href="#"><span class="fa fa-envelope mr-3"></span> Meus pedidos</a>
+    </li>
+    <li class="my-3">
+    <a href="{% url 'usuario_atualiza_cadastro' usuario.id %}"><span class="fa fa-spinner mr-3"></span> Atualizar Cadastro</a>
+    </li>
+    <li class="my-3">
+    <a href="{% url 'account_logout' %}"><span class="fa fa-power-off mr-3"></span> Sair</a>
+    </li>
+    </ul>
+  </div>
+  </nav>
+  
+  <div class="conteudo p-4 w-100">
+    igual def ver_usuario
+  </div>
+</div>
+
+
+{% endblock %} 
