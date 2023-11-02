@@ -20,35 +20,33 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col" class="h5">Carrinho</th>
-                <th scope="col">Nome</th>
+                <th scope="col" class="h5 text-center">Carrinho</th>
+                <th scope="col" class="text-center">Nome</th>
                 <th scope="col">Quantidade</th>
-                <th scope="col">Total</th>
-                <th scope="col">Remover</th>
+                <th scope="col" class="text-center">Total</th>
+                <th scope="col" class="text-center">Remover</th>
               </tr>
             </thead>
             <tbody>
               {% for produto in carrinho %}
               <tr>
                 <th scope="row">
-                  <div class="d-flex align-items-center">
+                  <div class=" imagem_carrinho d-flex justify-content-center align-items-center">
                       {% if produto.imagem_principal %}
-                            <img src="{{produto.imagem_principal.url}}" class="img-fluid rounded-3"
-                            style="width: 120px;" alt="Book">
-                        {% else %}
-                            <img src="{% static 'produtos\img\sem foto.jpg' %}" class="img-fluid rounded-3"
-                            style="width: 120px;" alt="Book">
-                        {% endif %}
+                          <img src="{{produto.imagem_principal.url}}" alt="Imagem_produto">
+                      {% else %}
+                          <img src="{% static 'produtos\img\sem foto.jpg' %}" alt="Imagem_produto">
+                      {% endif %}
                   </div>
                 </th>
 
-                <td class="align-middle">
+                <td class="align-middle text-center">
                   <div class="flex-column">
                       <p>{{ produto.nome }}</p>
                     </div>
                 </td>
                 
-                <td class="align-middle">
+                <td class="align-middle text-center">
                   <div class="d-flex flex-row">
                     <a href="{% url 'remover_do_carrinho' produto.id %}">
                     <button class="btn btn-link px-2 me-1">
@@ -56,9 +54,9 @@
                     </button>
                   </a>
 
-                      <form action="{% url 'adicionar_quantidade_no_carrinho'%}" method="POST" class="form-control form-control-sm p-0" style="width: 50px;"> {% csrf_token %} 
-                        <input placeholder="{{request.session.carrinho|get_item:produto.id}}"  name="quantidade_{{produto.id}}" class="text-center h-100 w-100">
-                      </form>
+                    <form action="{% url 'adicionar_quantidade_no_carrinho'%}" method="POST" class="form-control form-control-sm p-0" style="width: 50px;"> {% csrf_token %} 
+                      <input placeholder="{{request.session.carrinho|get_item:produto.id}}"  name="quantidade_{{produto.id}}" class="text-center h-100 w-100">
+                    </form>
 
                       <a href="{% url 'adicionar_ao_carrinho' produto.id %}">
                     <button class="btn btn-link px-2 ms-1">
@@ -68,11 +66,11 @@
                   </div>
                 </td>
  
-                <td class="align-middle">
+                <td class="align-middle text-center">
                   <p class="mb-0" style="font-weight: 500;">R$ {{request.session.carrinho|get_item:produto.id|multiply_item:produto.preco}}</p>
                 </td>
 
-                <td class="align-middle">
+                <td class="align-middle text-center">
                   <a href="{% url 'excluir_do_carrinho' produto.id %}" class="lixeira"><i class="fas fa-trash fa-lg"></i></a>
                 </td>
               </tr>
@@ -80,6 +78,7 @@
               
             </tbody>
           </table>
+        </div>
 
           <div class="container d-flex mt-5 mb-5 justify-content-center">
             <form class="input-group" action="{% url 'validar_cupom' %}" method="POST" style="width: 70%;">{% csrf_token %}

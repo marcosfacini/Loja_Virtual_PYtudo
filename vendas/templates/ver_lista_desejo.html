@@ -18,43 +18,41 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col" class="h5">Lista de Desejo</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Preço</th>
-                <th scope="col">Comprar</th>
-                <th scope="col">Remover</th>
+                <th scope="col" class="h5 text-center">Lista de Desejo</th>
+                <th scope="col" class="text-center">Nome</th>
+                <th scope="col" class="text-center">Preço</th>
+                <th scope="col" class="text-center">Comprar</th>
+                <th scope="col" class="text-center">Remover</th>
               </tr>
             </thead>
             <tbody>
               {% for produto in lista.produtos.all %}
               <tr>
                 <th scope="row">
-                  <div class="d-flex align-items-center">
+                  <div class="imagem_carrinho d-flex justify-content-center align-items-center"> 
                       {% if produto.imagem_principal %}
-                            <img src="{{produto.imagem_principal.url}}" class="img-fluid rounded-3"
-                            style="width: 120px;" alt="Book">
+                            <img src="{{produto.imagem_principal.url}}" alt="Imagem_produto">
                         {% else %}
-                            <img src="{% static 'produtos\img\sem foto.jpg' %}" class="img-fluid rounded-3"
-                            style="width: 120px;" alt="Book">
+                            <img src="{% static 'produtos\img\sem foto.jpg' %}" alt="Imagem_produto">
                         {% endif %}
                   </div>
                 </th>
 
-                <td class="align-middle">
+                <td class="align-middle text-center">
                   <div class="flex-column">
                       <p>{{ produto.nome }}</p>
                     </div>
                 </td>
                 
-                <td class="align-middle">
+                <td class="align-middle text-center">
                   <p class="mb-0" style="font-weight: 500;">{{produto.preco}}</p>
                 </td>
 
-                <td class="align-middle">
+                <td class="align-middle text-center">
                     <a href="{% url 'adicionar_ao_carrinho' produto.id %}" class="lixeira"><i class="fa fa-check fa-lg"></i></a>
                 </td>
 
-                <td class="align-middle">
+                <td class="align-middle text-center">
                   <a href="{% url 'excluir_item_da_lista' produto.id %}" class="lixeira"><i class="fas fa-trash fa-lg"></i></a>
                 </td>
               </tr>

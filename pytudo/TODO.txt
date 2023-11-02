@@ -53,7 +53,6 @@ função newsletter
 - Front:
 Templates dos erros (404/query dosent exist) com debug=false
 cores = Navbar/botoes/hoover/cards
-responsividade das imagens no carrinho e na lista de desejo
 sidebar nas paginas do painel de controle
 Css das paginas 
 personalizar footer 

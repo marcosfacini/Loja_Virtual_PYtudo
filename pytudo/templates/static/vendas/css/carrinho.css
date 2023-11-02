@@ -1,13 +1,15 @@
 .lixeira {
     color: #dc3545;
-    margin-left: 20px;
 }
 
 .lixeira:hover{
     color: #000;
 }
 
-
+.imagem_carrinho img {
+    height: 120px;
+    width: auto;
+}
 
 
       
