@@ -38,53 +38,49 @@
     <div class="table-responsive">
       <table class="table">
           <tr>
-            <th>Campo</th>
-            <th>Dados</th>
-          </tr>
-          <tr>
-            <td>Nome</td>
+            <td class="fw-bold">Nome</td>
             <td>{{usuario.nome}}</td>
           </tr>
           <tr>
-            <td>Usuário</td>
+            <td class="fw-bold">Usuário</td>
             <td>{{usuario.usuario}}</td>
           </tr>
           <tr>
-            <td>Celular</td>
+            <td class="fw-bold">Celular</td>
             <td>{{usuario.celular.as_national}}</td>
           </tr>
           <tr>
-            <td>CPF</td>
+            <td class="fw-bold">CPF</td>
             <td>{{usuario.cpf}}</td>
           </tr>
           <tr>
-            <td>Data de Nascimento</td>
+            <td class="fw-bold">Data de Nascimento</td>
             <td>{{usuario.data_de_nascimento|date:"d/m/Y"}}</td>
           </tr>
           <tr>
-            <td>Endereço</td>
+            <td class="fw-bold">Endereço</td>
             <td>{{usuario.endereco}}</td>
           </tr>
           <tr>
-            <td>Número</td>
+            <td class="fw-bold">Número</td>
             <td>{{usuario.numero_endereco}}</td>
           </tr>
           {% if usuario.complemento %}
           <tr>
-            <td>Complemento</td>
+            <td class="fw-bold">Complemento</td>
             <td>{{usuario.complemento}}</td>
           </tr>
           {% endif %}
           <tr>
-            <td>Bairro</td>
+            <td class="fw-bold">Bairro</td>
             <td>{{usuario.bairro}}</td>
           </tr>
           <tr>
-            <td>Cidade</td>
+            <td class="fw-bold">Cidade</td>
             <td>{{usuario.cidade}}</td>
           </tr>
           <tr>
-            <td>Estado</td>
+            <td class="fw-bold">Estado</td>
             <td>{{usuario.get_estado_display}}</td>
           </tr>
       </table>
