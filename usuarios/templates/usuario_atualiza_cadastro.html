@@ -25,13 +25,16 @@
     <a href="{% url 'usuario_atualiza_cadastro' usuario.id %}"><span class="fa fa-spinner mr-3"></span> Atualizar Cadastro</a>
     </li>
     <li class="my-3">
+    <a href="{% url 'alteracoes_usuario' usuario.id %}"><span class="fa fa-history mr-3"></span> Histórico de Alterações</a>
+    </li>
+    <li class="my-3">
     <a href="{% url 'account_logout' %}"><span class="fa fa-power-off mr-3"></span> Sair</a>
     </li>
     </ul>
   </div>
   </nav>
   
-  <div class="conteudo p-4 w-100">
+  <div class="p-4 w-100">
     <div class="text-center mt-1">
         <h2>Atualizar Cadastro:</h2>
     </div>
@@ -45,9 +48,6 @@
         </form>
     </div>
     
-    <div class="text-center my-2">
-        ATUALIZADO ULTIMA VEZ EM: {{usuario.data_atualizacao|date:"d/m/Y" }} às {{usuario.data_atualizacao|time:"H:i" }}
-    </div>
   </div>
 </div>
 

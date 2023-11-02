@@ -25,14 +25,70 @@
     <a href="{% url 'usuario_atualiza_cadastro' usuario.id %}"><span class="fa fa-spinner mr-3"></span> Atualizar Cadastro</a>
     </li>
     <li class="my-3">
+    <a href="{% url 'alteracoes_usuario' usuario.id %}"><span class="fa fa-history mr-3"></span> Histórico de Alterações</a>
+    </li>
+    <li class="my-3">
     <a href="{% url 'account_logout' %}"><span class="fa fa-power-off mr-3"></span> Sair</a>
     </li>
     </ul>
   </div>
   </nav>
   
-  <div class="conteudo p-4 w-100">
-    igual def ver_usuario
+  <div class="container px-5 py-4">
+    <div class="table-responsive">
+      <table class="table">
+          <tr>
+            <th>Campo</th>
+            <th>Dados</th>
+          </tr>
+          <tr>
+            <td>Nome</td>
+            <td>{{usuario.nome}}</td>
+          </tr>
+          <tr>
+            <td>Usuário</td>
+            <td>{{usuario.usuario}}</td>
+          </tr>
+          <tr>
+            <td>Celular</td>
+            <td>{{usuario.celular.as_national}}</td>
+          </tr>
+          <tr>
+            <td>CPF</td>
+            <td>{{usuario.cpf}}</td>
+          </tr>
+          <tr>
+            <td>Data de Nascimento</td>
+            <td>{{usuario.data_de_nascimento|date:"d/m/Y"}}</td>
+          </tr>
+          <tr>
+            <td>Endereço</td>
+            <td>{{usuario.endereco}}</td>
+          </tr>
+          <tr>
+            <td>Número</td>
+            <td>{{usuario.numero_endereco}}</td>
+          </tr>
+          {% if usuario.complemento %}
+          <tr>
+            <td>Complemento</td>
+            <td>{{usuario.complemento}}</td>
+          </tr>
+          {% endif %}
+          <tr>
+            <td>Bairro</td>
+            <td>{{usuario.bairro}}</td>
+          </tr>
+          <tr>
+            <td>Cidade</td>
+            <td>{{usuario.cidade}}</td>
+          </tr>
+          <tr>
+            <td>Estado</td>
+            <td>{{usuario.get_estado_display}}</td>
+          </tr>
+      </table>
+  </div>
   </div>
 </div>
 

@@ -79,7 +79,7 @@ class Usuarios(models.Model):
             old_estado = old_obj.estado
             detalhes = f"Usuario atualizado - {self.comparar_alteracoes_usuario(old_nome, old_cpf, old_data_de_nascimento, old_celular, old_endereco, old_numero_endereco, old_complemento, old_bairro, old_cidade, old_estado)}"
         else:
-            detalhes = f"Usuario {self.nome} criado"
+            detalhes = f"Usuario {self.nome} completou seu perfil"
 
         super().save(*args, **kwargs)
             

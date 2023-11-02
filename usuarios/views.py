@@ -11,11 +11,12 @@ from rolepermissions.decorators import has_role_decorator, has_permission_decora
 from django.core.paginator import Paginator
 from datetime import datetime
 from cpf_field.validators import validate_cpf
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 
 
 
-# @login required
+@login_required
 def info_adicional_usuario(request):
     if request.method == 'POST':
         form = CadastroUsuario(request.POST)
@@ -138,12 +139,16 @@ def atualizar_usuario(request, id):
     return render(request, 'atualizar_usuario.html', {'form': form,
                                                       'usuario': usuario})
 
+@login_required
 def perfil_usuario(request, user_id):
-    usuario = Usuarios.objects.get(usuario_id=user_id)
-    registros = RegistroAlteracaoUsuario.objects.filter(usuario_id=usuario.id)
-    return render(request, 'perfil_usuario.html', {'usuario': usuario, 'registros': registros})
+    try:
+        usuario = Usuarios.objects.get(usuario_id=user_id)
+    except ObjectDoesNotExist:
+        messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para criar um perfil.')
+        return redirect(f'/usuarios/info_adicional_usuario')
+    return render(request, 'perfil_usuario.html', {'usuario': usuario})
      
-
+@login_required
 def usuario_atualiza_cadastro(request, id):
     usuario = Usuarios.objects.get(id=id)
     if request.method == 'POST':
@@ -191,6 +196,10 @@ def usuario_atualiza_cadastro(request, id):
     return render(request, 'usuario_atualiza_cadastro.html', {'form': form,
                                                       'usuario': usuario})
 
+def alteracoes_usuario(request, id):
+    usuario = Usuarios.objects.get(id=id)
+    registros = RegistroAlteracaoUsuario.objects.filter(usuario_id=id)
+    return render(request, 'alteracoes_usuario.html', {'usuario': usuario, 'registros': registros})
 
 
 

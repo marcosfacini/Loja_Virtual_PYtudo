@@ -2,7 +2,7 @@ Calculo de frete api
 campo boleano chamado frete_gratis na model produto
 form do frete na pagina de detalhes do produto e no carrinho
 if frete_gratis não apresenta o form e não faz o calculo
-funcao retirar_na_loja que anula a opcao/form de calculo de frete
+funcoes retirar_na_loja/pagar na entrega que anulam a opcao/form de calculo de frete
 
 Metodos de pagamento
 debita do estoque e dos cupons (e deleta cupom usado da session)
@@ -25,6 +25,7 @@ painel de busca e criação de relatorio de historicos
 alteracao produtos/alteracao usuarios/estoque/vendas/compras de um determinado usuario/cupons
 é necessário funcao que limpe os historicos?
 campo que mostre que usuario que fez as alterações
+historico de alteracoes do usuario que o gestor tem acesso tem que trazer a informacao de quando o usuario foi excluido
 
 - Segurança:
 ter role de gestor e de gerente?
@@ -39,7 +40,8 @@ depois que logar ou de criar a conta para onde é redirecionado? ele perde as in
 verificar antes de finalizar a compra se o cadastro do usuario está completo
 
 Pagina de perfil e botão atualizar/excluir só o usuario do perfil tem acesso 
-função de usuario excluir sua propria conta - da pra reutilizar a função excluir_usuario ?
+outro ususario logado passa pela decorador login_required
+função de usuario excluir sua propria conta - da pra reutilizar a função excluir_usuario ? 
 
 validacao formularios do app gestao 
 
@@ -51,6 +53,9 @@ função newsletter
 - Front:
 Templates dos erros (404/query dosent exist) com debug=false
 cores = Navbar/botoes/hoover/cards
+tabelas do usuario terão cabecalho?
+responsividade das imagens no carrinho e na lista de desejo
+sidebar nas paginas do painel de controle
 Css das paginas 
 personalizar footer 
 paginação dos comentarios
