@@ -9,6 +9,7 @@ debita do estoque e dos cupons (e deleta cupom usado da session)
 registro no relatorio de venda/historico cupom
 
 django debug toolbar
+teste de gitingnote sqlite
 
 Historico de compras do usuario 
 
