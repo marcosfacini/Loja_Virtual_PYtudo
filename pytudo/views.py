@@ -5,8 +5,14 @@ from gestao.models import Banner
 from vendas.models import ListaDesejo
 
 def home(request):
-    categorias = Categoria.objects.all()
-    produtos = DestacadosHome.objects.all()
+    try:
+        categorias = Categoria.objects.all()
+    except:
+        categorias = []
+    try:
+        produtos = DestacadosHome.objects.all()
+    except:
+        produtos = []
     banners = Banner.objects.filter(home=True)
     lista = ListaDesejo.objects.filter(usuario_id=request.user.id).first()
     num_lista_desejo = 0
