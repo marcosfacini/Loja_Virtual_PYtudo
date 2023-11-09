@@ -9,7 +9,9 @@ debita do estoque e dos cupons (e deleta cupom usado da session)
 registro no relatorio de venda/historico cupom
 
 django debug toolbar
-teste de gitingnote sqlite /criar superuser de novo
+criar superuser de novo
+debug = true para staticos no ambiente de desenvolvimento
+usar sqlite no DEVELOPMENT_MODE
 
 Historico de compras do usuario 
 
