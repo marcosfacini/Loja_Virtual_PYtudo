@@ -43,6 +43,7 @@
         </div>
 
         <div class = "special-list row g-0">
+            {% if produtos %}
             {% for produto in produtos %}
             <div class = "col-md-6 col-lg-4 col-xl-3 p-2">
                 <a href="{% url 'ver_produto' produto.produto.id %}">
@@ -62,6 +63,7 @@
             </div>
         
             {% endfor %}
+            {% endif %}
         </div>
     </div>
 </section>
