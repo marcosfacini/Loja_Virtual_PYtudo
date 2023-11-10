@@ -50,8 +50,6 @@ função de usuario excluir sua propria conta - da pra reutilizar a função exc
 
 validacao formularios do app gestao 
 
-passar todas as models para o admin
-
 configurar email
 dispara email de criação de cadastro/compre finalizada etc..
 TERÁ VALIDAÇÃO DE CADASTRO VIA EMAL ?
