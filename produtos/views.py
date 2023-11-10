@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import Produtos, Categoria, Avaliacao, Imagens
 from django.contrib import messages
@@ -9,6 +9,8 @@ from django.core.paginator import Paginator
 from .forms import CadastrarProduto, AtualizarEspecificacao
 from usuarios.models import Usuarios
 import random 
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -199,9 +201,14 @@ def alterar_produto(request, id):
         produto.save()
         messages.add_message(request, constants.SUCCESS, 'Produto atualizado com sucesso.')
         return redirect(f'/produtos/alterar_produto/{id}')
-    
+
+@login_required
 def salvar_avaliacao(request, id_produto):
-    usuario = Usuarios.objects.get(usuario=request.user)
+    try:
+        usuario = Usuarios.objects.get(usuario=request.user)
+    except ObjectDoesNotExist:
+        messages.add_message(request, constants.ERROR, 'Complete o cadastro para poder comentar.')
+        return redirect('/usuarios/info_adicional_usuario')
     estrelas = request.POST.get('estrelas')
     comentario = request.POST.get('comentario')
     if estrelas == None:

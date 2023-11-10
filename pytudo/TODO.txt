@@ -10,9 +10,12 @@ registro no relatorio de venda/historico cupom
 
 django debug toolbar
 
-criar superuser/sqlite de novo
-debug = true para staticos no ambiente de desenvolvimento
-usar sqlite no DEVELOPMENT_MODE
+media files
+gitignore antes do deploy?
+restringir tamanho de mb para upload - atraves da requisicao do servidor
+on cascade nao deleta imagens apenas a url delas no banco - como vai ficar no deploy?
+
+DEVELOPMENT_MODE e DEBUG = True no ambiente de desenvolvimento
 
 Historico de compras do usuario 
 
@@ -37,18 +40,21 @@ Gestao desabilita/habilita contas de  usuarios e gerentes
 
 repassar permissões em todas as views visando possiveis ataques 
 
-apos criar cadastro ser redirecionado para a pagina de completar o cadastro, e não poder sair dela sem finalizar o cadastro
-
 usuario deslogado não pode efetuar a compra - precisa ser redirecionado para pagina de login, 
 depois que logar ou de criar a conta para onde é redirecionado? ele perde as informações da compra que já tinha preenchido?
 verificar antes de finalizar a compra se o cadastro do usuario está completo
 
 Pagina de perfil e botão atualizar/excluir só o usuario do perfil tem acesso 
-outro ususario logado passa pela decorador login_required
+outro ususario logado passa pela decorador login_required 
+verificar nas funções se tem perfil completo e se condiz com o request.user
 função de usuario excluir sua propria conta - da pra reutilizar a função excluir_usuario ? 
 
 validacao formularios do app gestao 
 
+passar todas as models para o admin
+
+configurar email
+dispara email de criação de cadastro/compre finalizada etc..
 TERÁ VALIDAÇÃO DE CADASTRO VIA EMAL ?
 validar se a opcao do allauth-acounts de trocar/recuperar senha funciona
 
@@ -85,14 +91,7 @@ deletar teste url/view/template
 
 
 - Deploy:
-integracao com bd
-containers - docker/kubernets
-configuracao emails 
 armazenar session em cokkies? vao ser ecerradas quando? e vao durar quanto tempo?
 
-restringir tamanho de mb para upload - atraves da requisicao do servidor
-on cascade nao deleta imagens apenas a url delas no banco - como vai ficar no deploy?
-
 # admin:
-# marcola@gmail.com 
-# marcola
+# marcosfacini5@gmail.com 

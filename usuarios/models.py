@@ -111,7 +111,9 @@ class Usuarios(models.Model):
             alteracoes.append(f"Número de endereço alterado de '{old_numero_endereco}' para '{self.numero_endereco}'")
 
         if old_complemento != self.complemento:
-            if old_complemento != None:
+            if old_complemento == '' or self.complemento == '':
+                alteracoes.append(f"Complemento alterado para '{self.complemento}'")
+            else:
                 alteracoes.append(f"Complemento alterado de '{old_complemento}' para '{self.complemento}'")
 
         if old_bairro != self.bairro:
