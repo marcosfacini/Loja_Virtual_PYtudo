@@ -5,3 +5,6 @@ class Banner(models.Model):
     home = models.BooleanField(default=False)
     titulo = models.CharField(max_length=50, blank=True, null=True)
     subtitulo = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.imagem}"

@@ -103,6 +103,9 @@ class Produtos(models.Model):
 class Imagens(models.Model):
     produto = models.ForeignKey(Produtos, on_delete=models.CASCADE) 
     foto = models.ImageField(upload_to ='produtos/')
+
+    def __str__(self):
+        return f"{self.foto}"
     
 class Avaliacao(models.Model):
     choices = (
@@ -120,7 +123,7 @@ class Avaliacao(models.Model):
     data_atualizacao = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return self.usuario
+        return f"{self.produto} - {self.usuario.nome} - {self.data_atualizacao}"
     
 class DestacadosHome(models.Model):
     produto = models.ForeignKey(Produtos, on_delete=models.CASCADE)
