@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'cpf_field',
     'ckeditor',
     'ckeditor_uploader',
+    'storages',
 ]
 
 SITE_ID = 1
