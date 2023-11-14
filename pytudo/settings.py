@@ -147,9 +147,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles") 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'pytudo/templates/static'),)
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
 CKEDITOR_UPLOAD_PATH = "especificacoes/"
 
 # Default primary key field type
@@ -183,3 +180,30 @@ ACCOUNT_UNIQUE_EMAIL = True
 
 PHONENUMBER_DEFAULT_REGION = 'BR'
 
+
+
+# Media Storage
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/' 
+
+
+# aws
+AWS_ACCESS_KEY_ID = 'DO00HGZ7YX7KD2Q9FUXM'
+
+AWS_SECRET_ACCESS_KEY = '0jriDAvSeiXNkjx1AgDG1Pyx9CTw0UJoPPDHZ0+Ckxc'
+
+AWS_STORAGE_BUCKET_NAME = 'arquivos-de-upload'
+
+AWS_S3_ENDPOINT_URL = 'https://arquivos-de-upload.nyc3.digitaloceanspaces.com'
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_DEFAULT_ACL = 'public-read'
+
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+MEDIA_URL = f"https://{AWS_S3_ENDPOINT_URL}/{MEDIA_URL}/"
+
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
