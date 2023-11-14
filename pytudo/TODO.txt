@@ -8,13 +8,11 @@ Metodos de pagamento
 debita do estoque e dos cupons (e deleta cupom usado da session)
 registro no relatorio de venda/historico cupom
 
-django debug toolbar
-
-media files
+media files - secret key esta publica
 restringir tamanho de mb para upload - atraves da requisicao do servidor
 on cascade nao deleta imagens apenas a url delas no banco - como vai ficar no deploy?
 
-DEVELOPMENT_MODE e DEBUG = True no ambiente de desenvolvimento
+DEVELOPMENT_MODE/DEBUG/MEDIA_URL/DEFAULT_FILE_STORAGE = Tem que ser alteradas entre o ambiente de desenvolvimento e de prodicao
 
 Historico de compras do usuario 
 
@@ -56,6 +54,8 @@ validar se a opcao do allauth-acounts de trocar/recuperar senha funciona
 
 função newsletter
 
+django debug toolbar
+
 - Front:
 Templates dos erros (404/query dosent exist) com debug=false
 cores = Navbar/botoes/hoover/cards
@@ -81,7 +81,7 @@ verificar mensagens de erro e de sucesso nas funcões
 Tratamento de erros try/except em todas as funcoes
 Testes automatizados
 .strip() nos forms de busca
-apagar imagens usadas para teste/ as imagens das especificações(tera uma funcao para deleta-las?)
+as imagens das especificações(tera uma funcao para deleta-las?)
 deletar teste url/view/template
 
 
