@@ -16,8 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
-#DEBUG = True
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
@@ -83,8 +82,7 @@ WSGI_APPLICATION = 'pytudo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True" 
-#DEVELOPMENT_MODE = True
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "True") == "True" 
 
 if DEVELOPMENT_MODE is True:
     DATABASES = {
@@ -186,7 +184,7 @@ PHONENUMBER_DEFAULT_REGION = 'BR'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/' 
 
-AWS_ACCESS_KEY_ID = 'DO00HGZ7YX7KD2Q9FUXM'
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
