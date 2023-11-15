@@ -188,9 +188,9 @@ AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
-AWS_STORAGE_BUCKET_NAME = 'arquivos-de-upload'
+AWS_STORAGE_BUCKET_NAME = 'pytudo-media'
 
-AWS_S3_ENDPOINT_URL = 'https://arquivos-de-upload.nyc3.digitaloceanspaces.com'
+AWS_S3_ENDPOINT_URL = 'https://pytudo-media.nyc3.digitaloceanspaces.com'
 
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
