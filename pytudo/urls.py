@@ -15,6 +15,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('gestao/', include('gestao.urls')),
     path('vendas/', include('vendas.urls')),
+    path('checkout/', include('checkout.urls')),
     path('ckeditor/upload/', login_required(ckeditor_views.upload), name='ckeditor_upload'),
     path('ckeditor/browse/', never_cache(login_required(ckeditor_views.browse)), name='ckeditor_browse'),
     

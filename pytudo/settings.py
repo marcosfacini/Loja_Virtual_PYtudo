@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rolepermissions',
     'gestao',
     'vendas',
+    'checkout',
     "phonenumber_field",
     'cpf_field',
     'ckeditor',

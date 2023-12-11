@@ -169,17 +169,24 @@ def exibicao_home(request):
         return redirect('/gestao/produtos_home')
 
     if acao == 'incluir':
-        for produto in produtos:
-            home = DestacadosHome(produto_id=produto)
-            home.save()
-        messages.add_message(request, constants.SUCCESS, 'Produtos adicionados na home com sucesso')
+        try:
+            for produto in produtos:
+                if DestacadosHome.objects.filter(produto_id=produto).exists() == False:
+                    home = DestacadosHome(produto_id=produto) 
+                    home.save()
+            messages.add_message(request, constants.SUCCESS, 'Produtos adicionados na home com sucesso')
+        except:
+            messages.add_message(request, constants.ERROR, 'Erro ao adicionar produtos. Tente novamente mais tarde')
 
     if acao == 'excluir':
-        for produto in produtos:
-            home = DestacadosHome.objects.filter(produto_id=produto)
-            for obj in home:
-                obj.delete()
-        messages.add_message(request, constants.SUCCESS, 'Produtos deletados da home com sucesso')
+        try:
+            for produto in produtos:
+                home = DestacadosHome.objects.filter(produto_id=produto)
+                for obj in home:
+                    obj.delete()
+            messages.add_message(request, constants.SUCCESS, 'Produtos deletados da home com sucesso')
+        except:
+            messages.add_message(request, constants.ERROR, 'Erro ao deletar produtos. Tente novamente mais tarde')
 
     return redirect('/gestao/produtos_home')
 

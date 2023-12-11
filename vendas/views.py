@@ -72,8 +72,6 @@ def remover_do_carrinho(request, produto_id):
 
 def carrinho(request):
     carrinho = []
-    total = 0
-    total_com_desconto = None
 
     if 'carrinho' in request.session:
         carrinho_session = request.session['carrinho']
@@ -84,6 +82,8 @@ def carrinho(request):
             soma = produto.preco * carrinho_session[str(produto.id)]
             soma_unidades.append(soma)
         total = sum(soma_unidades)
+        request.session['total'] = round(float(total), 2)
+        request.session.modified = True
  
     if 'cupom' in request.session:
         cupom = request.session['cupom']
@@ -97,10 +97,10 @@ def carrinho(request):
             total_com_desconto = round(float(total) - (float(total) * valor_desconto / 100),2)
             if total_com_desconto <= 0:
                 total_com_desconto = 0
+        request.session['total_com_desconto'] = round(float(total_com_desconto), 2)
+        request.session.modified = True
 
-    return render(request, 'carrinho.html', {'carrinho': carrinho, 
-                                             'total': total, 
-                                             'total_com_desconto': total_com_desconto,})
+    return render(request, 'carrinho.html', {'carrinho': carrinho})
 
 def adicionar_quantidade_no_carrinho(request):
     carrinho = request.session['carrinho']

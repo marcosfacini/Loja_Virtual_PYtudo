@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filtros %}
+
+{% block 'title' %}PYTudo{% endblock %}
+
+{% block 'head' %} 
+    <link href="{% static 'checkout/css/checkout.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block 'body' %}
+<div class="container my-3">
+    <h2 class="text-center mb-3">Dados de Pagamento</h2>
+  {% if request.session.carrinho %}
+    <form method="POST" name="formCard" id="formCard" action="{% url 'processar_metodo_pagamento' %}">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-6 p-3 border">
+            <h4 class="text-center mb-1">Resumo da Compra</h4>
+            <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="h5">Resumo</th>
+                      <th scope="col" class="h5 align-middle text-end">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td class="align-middle">
+                      <p class="mb-0" style="font-weight: 500;">{{request.session.carrinho|total_itens}} itens</p>
+                    </td>
+                      <td class="align-middle text-end">
+                        <p class="mb-0" style="font-weight: 500;">R$ {{request.session.total}}</p>
+                      </td>
+                    </tr>
+    
+                    {% if request.session.cupom %}
+                      <tr>
+                        <td class="align-middle">
+                          <p class="mb-0" style="font-weight: 500;">Cupom de desconto 
+                          </p>
+                        </td>
+                        <td class="align-middle text-end">
+                            <p class="mb-0" style="font-weight: 500;">
+                              {{request.session.cupom|get_cupom_type:'desconto'}} 
+                            </p>
+                        </td>
+                      </tr>
+                    {% endif %}
+    
+                      <tr>
+                        <td class="align-middle">
+                          <p class="mb-0" style="font-weight: 500;">Frete</p>
+                        </td>
+                          <td class="align-middle text-end">
+                            <p class="mb-0" style="font-weight: 500;">R$ frete</p>
+                          </td>
+                        </tr>
+    
+                        <tr>
+                          <td class="align-middle">
+                            <p class="mb-0" style="font-weight: 500;">TOTAL</p>
+                          </td>
+                          {% if request.session.cupom %}
+                            <td class="align-middle text-end">
+                              <p class="mb-0" style="font-weight: 500;">R$ {{request.session.total_com_desconto}}</p>
+                            </td>
+                            </tr>
+                          {% else %}
+                            <td class="align-middle text-end">
+                              <p class="mb-0" style="font-weight: 500;">R$ {{request.session.total}}</p>
+                            </td>
+                            </tr>
+                          {% endif%}
+                  </tbody>
+                </table>
+            </div>
+
+            <h4 class="text-center mb-1">Endereço de entrega</h4>
+            <div class="mb-3">
+                <label for="cep" class="form-label">CEP</label>
+                <input type="text" class="form-control" id="cep" name="cep" required>
+            </div>
+        </div>
+
+        <div class="col-md-6 p-3 border">
+            <h4 class="text-center mb-3">Forma de Pagamento</h4>
+        
+            <div class="mb-3">
+                <label for="paymentMethod" class="form-label">Método de pagamento</label>
+                <select class="form-select" id="paymentMethod" name="paymentMethod" required>
+                <option value="" selected disabled>Selecione um método de pagamento</option>
+                <option value="creditCard">Cartão de Crédito</option>
+                <option value="boleto">Boleto</option>
+                <option value="pix">PIX</option>
+                </select>
+            </div>
+        
+            <div id="creditCardFields" class="mb-3 d-none">
+              <input type="hidden" name="publicKey" id="publicKey" value="{{chave_publica}}">
+              <input type="hidden" name="encriptedCard" id="encriptedCard">
+
+              <label for="cardNumber" class="form-label mb-0">Número do cartão de crédito</label>
+              <input type="text" class="form-control mb-2" name="cardNumber" id="cardNumber" maxlength="16" placeholder="Número do Cartão">
+              <label for="cardHolder" class="form-label mb-0">Nome do Titular do Cartão</label>
+              <input type="text" class="form-control mb-2" name="cardHolder" id="cardHolder" placeholder="Titular">
+              <label for="cardMonth" class="form-label mb-0">Mês de Validade do Cartão</label>
+              <input type="text" class="form-control mb-2" name="cardMonth" id="cardMonth" maxlength="2" placeholder="Mês de Validade">
+              <label for="cardYear" class="form-label mb-0">Ano de Validade do Cartão</label>
+              <input type="text" class="form-control mb-2" name="cardYear" id="cardYear" maxlength="4" placeholder="Ano do Cartão">
+              <label for="cardCvv" class="form-label mb-0">Código de Segurança do Cartão</label>
+              <input type="text" class="form-control mb-2" name="cardCvv" id="cardCvv" maxlength="4" placeholder="CVV do Cartão">
+            </div>
+        
+            <div id="boletoFields" class="mb-3 d-none">
+                <p>Preencha todos os dados e clique em Finalizar para gerar o seu boleto.</p>
+            </div>
+        
+            <div id="pixFields" class="mb-3 d-none">
+              <p>Preencha todos os dados e clique em Finalizar para gerar o QR Code do pix.</p>
+            </div>
+        </div>
+    
+    </div>
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn my-3">Finalizar</button>
+    </div>
+    </form>
+    <a href="{% url 'carrinho' %}" class="custom-link"><i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar para o carrinho</a>
+  {% else %}
+  <div class="container text-center my-5">
+    <p>O carrinho está vazio.</p>
+    <a class="btn mt-2" href="{% url 'home' %}" role="button">Começar as compras!</a>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://assets.pagseguro.com.br/checkout-sdk-js/rc/dist/browser/pagseguro.min.js"></script>
+    <script src="{% static 'checkout/js/checkout.js' %}"></script>
+{% endblock %}

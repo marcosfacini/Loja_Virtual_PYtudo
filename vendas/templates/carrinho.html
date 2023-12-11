@@ -14,13 +14,16 @@
 {% if carrinho %}
 <section class="h-100">
   <div class="container h-100 py-5">
+    <div class="mb-3">
+      <a href="{% url 'home' %}" class="custom-link"><i class="fa fa-arrow-left" aria-hidden="true"></i> Continuar comprando</a>
+    </div>
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col">
         <div class="table-responsive">
           <table class="table">
             <thead>
               <tr>
-                <th scope="col" class="h5 text-center">Carrinho</th>
+                <th scope="col" class="h5 text-center">Item</th>
                 <th scope="col" class="text-center">Nome</th>
                 <th scope="col">Quantidade</th>
                 <th scope="col" class="text-center">Total</th>
@@ -103,7 +106,7 @@
                   <p class="mb-0" style="font-weight: 500;">{{request.session.carrinho|total_itens}} itens</p>
                 </td>
                   <td class="align-middle text-end">
-                    <p class="mb-0" style="font-weight: 500;">R$ {{total}}</p>
+                    <p class="mb-0" style="font-weight: 500;">R$ {{request.session.total}}</p>
                   </td>
                 </tr>
 
@@ -137,28 +140,28 @@
                       </td>
                       {% if request.session.cupom %}
                         <td class="align-middle text-end">
-                          <p class="mb-0" style="font-weight: 500;">R$ {{total_com_desconto}}</p>
+                          <p class="mb-0" style="font-weight: 500;">R$ {{request.session.total_com_desconto}}</p>
                         </td>
                         </tr>
                       {% else %}
                         <td class="align-middle text-end">
-                          <p class="mb-0" style="font-weight: 500;">R$ {{total}}</p>
+                          <p class="mb-0" style="font-weight: 500;">R$ {{request.session.total}}</p>
                         </td>
                         </tr>
                       {% endif%}
               </tbody>
             </table>
         </div>
-        
-
       </div>
+      <a class="btn mt-2" href="{% url 'checkout' %}" role="button">Finalizar a compra</a>
     </div>
   </div>
 </section>
     
 {% else %}
-  <div class="container d-flex justify-content-center mt-5 mb-5">
-    O carrinho está vazio.
+  <div class="container text-center my-5">
+    <p>O carrinho está vazio.</p>
+    <a class="btn mt-2" href="{% url 'home' %}" role="button">Começar as compras!</a>
   </div>
 {% endif %}
 
