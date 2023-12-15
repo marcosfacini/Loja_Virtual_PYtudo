@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
 from produtos.models import Produtos
+from checkout.models import Pedido
 from django.conf import settings
 
 class ListaDesejo(models.Model):
@@ -9,23 +9,6 @@ class ListaDesejo(models.Model):
 
     def __str__(self):
         return str(self.usuario)
-    
-class Venda(models.Model):
-    produtos = models.ManyToManyField(Produtos, through='ItemVenda')
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    data = models.DateTimeField(auto_now_add=True)
-    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return str(self.id)
-
-class ItemVenda(models.Model):
-    venda = models.ForeignKey(Venda, on_delete=models.CASCADE)
-    produto = models.ForeignKey(Produtos, on_delete=models.SET_NULL, null=True)
-    quantidade = models.PositiveIntegerField()
-
-    def __str__(self):
-        return str(self.venda)
 
 class CupomDesconto(models.Model):
     choices = (('P', 'Porcentagem'),('R', 'Reais'))
@@ -42,7 +25,7 @@ class CupomDesconto(models.Model):
         return self.codigo
     
 class HistoricoCupomDesconto(models.Model):
-    venda = models.ForeignKey(Venda, on_delete=models.SET_NULL, null=True)
+    venda = models.ForeignKey(Pedido, on_delete=models.SET_NULL, null=True)
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     data = models.DateTimeField(auto_now_add=True)
 

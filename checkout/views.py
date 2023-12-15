@@ -5,8 +5,10 @@ from django.contrib.messages import constants
 from usuarios.models import Usuarios
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
-from phonenumber_field.phonenumber import PhoneNumber
 from produtos.models import Produtos
+from .models import Pedido, ItensPedido
+from decimal import Decimal
+from datetime import datetime, timedelta
 
 
 @login_required
@@ -56,6 +58,9 @@ def pagamento_credito(request):
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para finalizar a compra.')
         return redirect(f'/usuarios/info_adicional_usuario')
     
+    pedido = criar_pedido(request)
+    itens_pedidos(request, pedido)
+    
     cel = usuario.celular.as_e164
 
     url = 'https://sandbox.api.pagseguro.com/orders'
@@ -64,7 +69,7 @@ def pagamento_credito(request):
         'Authorization' : 'E27D533A220041F689D7C53BE6A84D74'
     }
     body = json.dumps({
-        "reference_id": "ex-00001",
+        "reference_id": str(pedido.id),
         "customer": {
             "name": usuario.nome,
             "email": usuario.usuario.email,
@@ -97,14 +102,14 @@ def pagamento_credito(request):
         ],
         "charges": [
             {
-                "reference_id": "referencia da cobranca",
-                "description": "descricao da cobranca",
+                "reference_id": str(pedido.id),
+                "description": f'Cobrança referente ao pedido: {str(pedido.id)}',
                 "amount": {
                     "value": total_carrinho(request),
                     "currency": "BRL"
                 },
                 "payment_method": {
-                    'soft_descriptor':'IntegraçãoPagBank',
+                    'soft_descriptor':'PytudoPagBank',
                     "type": "CREDIT_CARD",
                     "installments": 1,
                     "capture": True,
@@ -134,6 +139,9 @@ def pagamento_boleto(request):
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para finalizar a compra.')
         return redirect(f'/usuarios/info_adicional_usuario')
     
+    pedido = criar_pedido(request)
+    itens_pedidos(request, pedido)
+    
     cel = usuario.celular.as_e164
     
     url = 'https://sandbox.api.pagseguro.com/orders'
@@ -142,7 +150,7 @@ def pagamento_boleto(request):
         'Authorization' : 'E27D533A220041F689D7C53BE6A84D74'
     }
     body = json.dumps({
-        "reference_id": "ex-00001",
+        "reference_id": str(pedido.id),
         "customer": {
             "name": usuario.nome,
             "email": usuario.usuario.email,
@@ -175,8 +183,8 @@ def pagamento_boleto(request):
             ],
             "charges": [
                 {
-                    "reference_id": "referencia da cobranca",
-                    "description": "descricao da cobranca",
+                    "reference_id": str(pedido.id),
+                    "description": f'Boleto gerado referente ao pedido: {str(pedido.id)}',
                     "amount": {
                         "value": total_carrinho(request),
                         "currency": "BRL"
@@ -184,9 +192,9 @@ def pagamento_boleto(request):
           "payment_method": {
             "type": "BOLETO",
             "boleto": {
-              "due_date": "2023-12-30",
+              "due_date": data_vencimento(7),
               "instruction_lines": {
-                "line_1": "Pagamento processado para DESC Fatura",
+                "line_1": f'Boleto gerado referente ao pedido Nº: {str(pedido.id)}',
                 "line_2": "Via PagSeguro"
               },
               "holder": {
@@ -225,6 +233,9 @@ def pagamento_pix(request):
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para finalizar a compra.')
         return redirect(f'/usuarios/info_adicional_usuario')
     
+    pedido = criar_pedido(request)
+    itens_pedidos(request, pedido)
+
     cel = usuario.celular.as_e164
     
     url = 'https://sandbox.api.pagseguro.com/orders'
@@ -233,7 +244,7 @@ def pagamento_pix(request):
         'Authorization' : 'E27D533A220041F689D7C53BE6A84D74'
     }
     body = json.dumps({
-        "reference_id": "ex-00001",
+        "reference_id": str(pedido.id),
         "customer": {
           "name": usuario.nome,
           "email": usuario.usuario.email,
@@ -254,7 +265,7 @@ def pagamento_pix(request):
               "amount": {
                   "value": total_carrinho(request)
               },
-              "expiration_date": "2023-12-29T20:15:59-03:00",
+              
           }
         ],
         "shipping": {
@@ -315,5 +326,34 @@ def total_carrinho(request):
         total = int((request.session['total'] * 100))
     return total
 
+def criar_pedido(request):
+    metodo_de_pagamento = request.POST['paymentMethod']
+    if 'total_com_desconto' in request.session:
+        valor_total = Decimal(request.session['total_com_desconto'])
+    else:
+        valor_total = Decimal(request.session['total'])
+    pedido = Pedido(usuario_id=request.user.id, valor_total=valor_total, metodo_de_pagamento=metodo_de_pagamento)
+    pedido.save()
+    return pedido
+
+def itens_pedidos(request, pedido):
+    produtos_ids = list(request.session['carrinho'].keys())
+    quantidades = list(request.session['carrinho'].values())
+    for produto_id, quantidade in zip(produtos_ids, quantidades):
+        ItensPedido.objects.create(pedido=pedido, produto_id=int(produto_id), quantidade=quantidade)
+    return pedido
+
+def subtrair_produto_estoque(request, id):
+    produto = Produtos.objects.get(id=id)
+    unidades_vendidas = int(request.POST.get('quantidade'))
+    produto.quantidade  = produto.quantidade - unidades_vendidas
+    produto.save()
+    return produto.quantidade
+
+def data_vencimento(dias):
+    data_atual = datetime.now()
+    data_vencimento = data_atual + timedelta(days=dias)
+    data_vencimento_formatada = data_vencimento.strftime("%Y-%m-%d")
+    return data_vencimento_formatada
     
 

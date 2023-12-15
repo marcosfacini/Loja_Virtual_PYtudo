@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from produtos.models import Produtos
-from vendas.models import ListaDesejo, Venda, ItemVenda
+from vendas.models import ListaDesejo
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages import constants 
@@ -166,18 +166,5 @@ def retirar_cupom_da_session(request):
         messages.add_message(request, constants.SUCCESS, f'Cupom removido.')
     return redirect('carrinho')
     
-
-def vender_produto(request, id):
-    produto = Produtos.objects.get(id=id)
-    unidades_vendidas = int(request.POST.get('quantidade'))
-    produto.quantidade  = produto.quantidade - unidades_vendidas
-    produto.save()
-    return redirect(f'/produtos/ver_produto/{id}')
-
-def criar_historico_da_venda(request, produtos_ids, quantidades, valor_total):
-    venda = Venda(usuario=request.user.id, valor_total=valor_total)
-    venda.save()
-    for produto_id, quantidade in zip(produtos_ids, quantidades):
-        ItemVenda.objects.create(venda=venda, produto=produto_id, quantidade=int(quantidade))
 
 
