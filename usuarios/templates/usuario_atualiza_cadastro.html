@@ -16,16 +16,16 @@
     <hr class="mt-0 mb-4 text-white">
     <ul class="list-unstyled mb-2">
     <li class="my-3">
-    <a href="{% url 'perfil_usuario' request.user.id %}"><span class="fa fa-user mr-3"></span> Perfil</a>
+    <a href="{% url 'perfil_usuario' %}"><span class="fa fa-user mr-3"></span> Perfil</a>
     </li>
     <li class="my-3">
-    <a href="#"><span class="fa fa-envelope mr-3"></span> Meus pedidos</a>
+    <a href="{% url 'meus_pedidos' %}"><span class="fa fa-envelope mr-3"></span> Meus pedidos</a>
     </li>
     <li class="my-3">
-    <a href="{% url 'usuario_atualiza_cadastro' usuario.id %}"><span class="fa fa-spinner mr-3"></span> Atualizar Cadastro</a>
+    <a href="{% url 'usuario_atualiza_cadastro' %}"><span class="fa fa-spinner mr-3"></span> Atualizar Cadastro</a>
     </li>
     <li class="my-3">
-    <a href="{% url 'alteracoes_usuario' usuario.id %}"><span class="fa fa-history mr-3"></span> Histórico de Alterações</a>
+    <a href="{% url 'alteracoes_usuario' %}"><span class="fa fa-history mr-3"></span> Histórico de Alterações</a>
     </li>
     <li class="my-3">
     <a href="{% url 'account_logout' %}"><span class="fa fa-power-off mr-3"></span> Sair</a>
@@ -39,7 +39,7 @@
         <h2>Atualizar Cadastro:</h2>
     </div>
     <div class="container d-flex justify-content-center my-3">
-        <form action="{% url 'usuario_atualiza_cadastro' usuario.id %}" class="cadastro p-3 border" method="POST">{% csrf_token %}
+        <form action="{% url 'usuario_atualiza_cadastro' %}" class="cadastro p-3 border" method="POST">{% csrf_token %}
             {{form.as_p}}
             {{ form.non_field_errors }}
             <div class="text-center my-3">

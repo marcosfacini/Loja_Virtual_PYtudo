@@ -52,7 +52,7 @@
                                 <li><a class="dropdown-item" href="{% url 'painel_controle' %}">Painel de controle</a></li>
                             {% endif %}
                             {% if request.user.is_authenticated %}
-                                <li><a class="dropdown-item" href="{% url 'perfil_usuario' request.user.id %}">Perfil</a></li>
+                                <li><a class="dropdown-item" href="{% url 'perfil_usuario' %}">Perfil</a></li>
                                 <li><a class="dropdown-item" href="{% url 'account_logout' %}">Deslogar</a></li>
                             {% else %}
                                 <li><a class="dropdown-item" href="{% url 'account_login' %}">Entrar</a></li>

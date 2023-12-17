@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import CadastroUsuario, AtualizarUsuario
 from .models import Usuarios, RegistroAlteracaoUsuario
+from checkout.models import Pedido
 from django.contrib import messages
 from django.contrib.messages import constants 
 from django.urls import reverse
@@ -140,17 +141,17 @@ def atualizar_usuario(request, id):
                                                       'usuario': usuario})
 
 @login_required
-def perfil_usuario(request, user_id):
+def perfil_usuario(request):
     try:
-        usuario = Usuarios.objects.get(usuario_id=user_id)
+        usuario = Usuarios.objects.get(usuario_id=request.user.id)
     except ObjectDoesNotExist:
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para criar um perfil.')
         return redirect(f'/usuarios/info_adicional_usuario')
     return render(request, 'perfil_usuario.html', {'usuario': usuario})
      
 @login_required
-def usuario_atualiza_cadastro(request, id):
-    usuario = Usuarios.objects.get(id=id)
+def usuario_atualiza_cadastro(request):
+    usuario = Usuarios.objects.get(usuario_id=request.user.id)
     if request.method == 'POST':
         form = AtualizarUsuario(request.POST)
         try:
@@ -179,7 +180,7 @@ def usuario_atualiza_cadastro(request, id):
             if form.is_valid():
                 usuario.save()
                 messages.add_message(request, constants.SUCCESS, 'Usuario atualizado com sucesso.')
-                return redirect(f'/usuarios/usuario_atualiza_cadastro/{id}')
+                return redirect(f'/usuarios/usuario_atualiza_cadastro/')
             else:
                 messages.add_message(request, constants.ERROR, 'Não foi possível atualizar o formulário')
         except ValidationError as error:
@@ -196,11 +197,17 @@ def usuario_atualiza_cadastro(request, id):
     return render(request, 'usuario_atualiza_cadastro.html', {'form': form,
                                                       'usuario': usuario})
 
-def alteracoes_usuario(request, id):
-    usuario = Usuarios.objects.get(id=id)
-    registros = RegistroAlteracaoUsuario.objects.filter(usuario_id=id)
+@login_required
+def alteracoes_usuario(request):
+    usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    registros = RegistroAlteracaoUsuario.objects.filter(usuario_id=usuario.id)
     return render(request, 'alteracoes_usuario.html', {'usuario': usuario, 'registros': registros})
 
+@login_required
+def meus_pedidos(request):
+    usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    pedidos = Pedido.objects.filter(usuario_id=usuario.id)
+    return render(request, 'meus_pedidos.html', {'pedidos': pedidos})
 
 
 

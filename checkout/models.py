@@ -1,6 +1,6 @@
 from django.db import models
 from produtos.models import Produtos
-from django.conf import settings
+from usuarios.models import Usuarios
 
 class Pedido(models.Model):
     PARCELAS = [
@@ -27,8 +27,7 @@ class Pedido(models.Model):
     parcelas = models.CharField(choices=PARCELAS, default='1', max_length=100)
     status = models.CharField(choices=STATUS, default='WAITING', max_length=100)
     produtos = models.ManyToManyField(Produtos, through='ItensPedido')
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    data = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey(Usuarios, on_delete=models.SET_NULL, null=True)
     valor_total = models.DecimalField(max_digits=10, decimal_places=2)
     data_pedido = models.DateTimeField(auto_now_add=True)
     data_ultima_atualizacao_pedido = models.DateTimeField(auto_now=True, null=True)

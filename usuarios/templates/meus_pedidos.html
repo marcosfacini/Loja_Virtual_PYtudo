@@ -4,7 +4,7 @@
 {% block 'title' %}PYTudo{% endblock %}
 
 {% block 'head' %} 
-    <link href="{% static 'usuarios/css/perfil_usuario.css' %}" rel="stylesheet">
+  <link href="{% static 'usuarios/css/perfil_usuario.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block 'body' %}
@@ -34,32 +34,31 @@
   </div>
   </nav>
   
-  <div class="container p-4">
-    <div class="text-center mt-1">
-      <h2>Histórico de Alterações:</h2>
-    </div>
+  <div class="container px-5 py-4">
     <div class="table-responsive">
-      <table class="table">
-        <tr>
-          <th>Data</th>
-          <th>Hora</th>
-          <th>Informação</th>
-        </tr>
-        <tr>
-          <td>{{usuario.usuario.date_joined|date:"d/m/Y" }}</td>
-          <td>{{ usuario.usuario.date_joined|time:"H:i" }}</td>
-          <td>Conta criada</td>
-        </tr>
-        {% for registro in registros %}
-        <tr>
-          <td>{{registro.data_atualizacao|date:"d/m/Y"}}</td>
-          <td>{{registro.data_atualizacao|time:"H:i"}}</td>
-          <td>{{registro.detalhes}}</td>
-        </tr>
+      <table class="table table-striped border">
+        <thead>
+          <tr>
+            <th scope="col">Número</th>
+            <th scope="col">Data</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Pagamento</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for pedido in pedidos %}
+          <tr>
+            <td>{{pedido.id}}</td>
+            <td>{{pedido.data_pedido|date:"d/m/Y"}}</td>
+            <td>{{pedido.valor_total}}</td>
+            <td>{{pedido.metodo_de_pagamento}}</td>
+            <td>{{pedido.status}}</td>
+          </tr>
         {% endfor %}
-      </table>
-    </div> 
-    <p><b>DATA DO ULTIMO LOGIN:</b> {{usuario.usuario.last_login|date:"d/m/Y" }} às {{ usuario.usuario.last_login|time:"H:i" }}</p>
+      </tbody>
+    </table>
+  </div>
   </div>
 </div>
 

@@ -58,7 +58,7 @@ def pagamento_credito(request):
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para finalizar a compra.')
         return redirect(f'/usuarios/info_adicional_usuario')
     
-    pedido = criar_pedido(request)
+    pedido = criar_pedido(request, usuario.id)
     itens_pedidos(request, pedido)
     
     cel = usuario.celular.as_e164
@@ -139,7 +139,7 @@ def pagamento_boleto(request):
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para finalizar a compra.')
         return redirect(f'/usuarios/info_adicional_usuario')
     
-    pedido = criar_pedido(request)
+    pedido = criar_pedido(request, usuario.id)
     itens_pedidos(request, pedido)
     
     cel = usuario.celular.as_e164
@@ -218,9 +218,7 @@ def pagamento_boleto(request):
     ]
     })
     reqs = requests.post(url,headers=headers,data=body)
-    # tratar erros da requisicao
-    # link do boleto
-    # return redirect(reqs.json()["charges"][0]['links'][0]['href'])
+    link_boleto = reqs.json()["charges"][0]['links'][0]['href']
     return HttpResponse(reqs)
 
 def pagamento_pix(request):
@@ -233,7 +231,7 @@ def pagamento_pix(request):
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para finalizar a compra.')
         return redirect(f'/usuarios/info_adicional_usuario')
     
-    pedido = criar_pedido(request)
+    pedido = criar_pedido(request, usuario.id)
     itens_pedidos(request, pedido)
 
     cel = usuario.celular.as_e164
@@ -285,8 +283,7 @@ def pagamento_pix(request):
         ]
     })
     reqs = requests.post(url,headers=headers,data=body)
-    # link do qr code
-    #return redirect(reqs.json()['qr_codes'][0]['links'][0]['href']) 
+    link_qrcode = reqs.json()['qr_codes'][0]['links'][0]['href']
     return HttpResponse(reqs)
 
 def itens_carrinho(request):
@@ -326,13 +323,13 @@ def total_carrinho(request):
         total = int((request.session['total'] * 100))
     return total
 
-def criar_pedido(request):
+def criar_pedido(request, id_usuario):
     metodo_de_pagamento = request.POST['paymentMethod']
     if 'total_com_desconto' in request.session:
         valor_total = Decimal(request.session['total_com_desconto'])
     else:
         valor_total = Decimal(request.session['total'])
-    pedido = Pedido(usuario_id=request.user.id, valor_total=valor_total, metodo_de_pagamento=metodo_de_pagamento)
+    pedido = Pedido(usuario_id=id_usuario, valor_total=valor_total, metodo_de_pagamento=metodo_de_pagamento)
     pedido.save()
     return pedido
 
