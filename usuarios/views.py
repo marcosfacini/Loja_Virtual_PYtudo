@@ -19,17 +19,22 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def info_adicional_usuario(request):
-    if request.method == 'POST':
-        form = CadastroUsuario(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, constants.SUCCESS, 'Cadastro completo com sucesso.')
-            return redirect('home')
+    try: 
+        usuario = Usuarios.objects.get(usuario_id=request.user.id)
+        messages.add_message(request, constants.SUCCESS, 'Bem vindo ao seu perfil.')
+        return redirect('perfil_usuario')
+    except ObjectDoesNotExist:
+        if request.method == 'POST':
+            form = CadastroUsuario(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, constants.SUCCESS, 'Cadastro completo com sucesso.')
+                return redirect('home')
+            else:
+                messages.add_message(request, constants.ERROR, 'Não foi possível cadastrar o usuário.')
         else:
-            messages.add_message(request, constants.ERROR, 'Não foi possível cadastrar o usuário.')
-    else:
-        form = CadastroUsuario(initial={'usuario': request.user})
-    return render(request, 'info_adicional_usuario.html', {'form': form})
+            form = CadastroUsuario(initial={'usuario': request.user})
+        return render(request, 'info_adicional_usuario.html', {'form': form})
     
 @has_permission_decorator('gerenciar_usuarios') 
 def listar_usuarios(request):
@@ -88,11 +93,13 @@ def excluir_usuario(request, id):
     messages.add_message(request, constants.SUCCESS, 'Usuario excluído com sucesso.')
     return redirect('/usuarios/listar_usuarios')
 
+@has_permission_decorator('gerenciar_usuarios')
 def ver_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
     registros = RegistroAlteracaoUsuario.objects.filter(usuario_id=id)
     return render(request, 'ver_usuario.html', {'usuario': usuario, 'registros': registros}) 
-    
+
+@has_permission_decorator('gerenciar_usuarios')
 def atualizar_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
     if request.method == 'POST':
@@ -151,7 +158,11 @@ def perfil_usuario(request):
      
 @login_required
 def usuario_atualiza_cadastro(request):
-    usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    try:
+        usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    except ObjectDoesNotExist:
+        messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para criar um perfil.')
+        return redirect(f'/usuarios/info_adicional_usuario')
     if request.method == 'POST':
         form = AtualizarUsuario(request.POST)
         try:
@@ -199,13 +210,21 @@ def usuario_atualiza_cadastro(request):
 
 @login_required
 def alteracoes_usuario(request):
-    usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    try:
+        usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    except ObjectDoesNotExist:
+        messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para criar um perfil.')
+        return redirect(f'/usuarios/info_adicional_usuario')
     registros = RegistroAlteracaoUsuario.objects.filter(usuario_id=usuario.id)
     return render(request, 'alteracoes_usuario.html', {'usuario': usuario, 'registros': registros})
 
 @login_required
 def meus_pedidos(request):
-    usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    try:
+        usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    except ObjectDoesNotExist:
+        messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para criar um perfil.')
+        return redirect(f'/usuarios/info_adicional_usuario')
     pedidos = Pedido.objects.filter(usuario_id=usuario.id)
     return render(request, 'meus_pedidos.html', {'pedidos': pedidos})
 
