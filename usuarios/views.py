@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import CadastroUsuario, AtualizarUsuario
 from .models import Usuarios, RegistroAlteracaoUsuario
-from checkout.models import Pedido
+from checkout.models import Pedido, ItensPedido
 from django.contrib import messages
 from django.contrib.messages import constants 
 from django.urls import reverse
@@ -228,6 +228,16 @@ def meus_pedidos(request):
     pedidos = Pedido.objects.filter(usuario_id=usuario.id)
     return render(request, 'meus_pedidos.html', {'pedidos': pedidos})
 
+@login_required
+def ver_pedido(request, id):
+    try:
+        usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    except ObjectDoesNotExist:
+        messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para criar um perfil.')
+        return redirect(f'/usuarios/info_adicional_usuario')
+    pedido = Pedido.objects.filter(usuario=usuario).filter(id=id).first()
+    itens = ItensPedido.objects.filter(pedido=pedido)
+    return render(request, 'ver_pedido.html', {'pedido': pedido, 'itens': itens})
 
 
 
