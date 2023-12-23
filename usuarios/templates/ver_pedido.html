@@ -87,6 +87,12 @@
         </tbody>
       </table>
     </div>
+    {% if pedido.mensagem_de_erro %}
+      <div class="container my-3 text-center">
+        <p><b>Erro do pedido:</b></p>
+        {{pedido.mensagem_de_erro}}
+      </div>
+    {% endif %}
   </div>
 </div>
 

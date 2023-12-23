@@ -125,9 +125,13 @@ def pagamento_credito(request):
             }
         ]
     })
+    
     reqs = requests.post(url,headers=headers,data=body)
-    return HttpResponse(reqs)
-    #return redirect('/checkout/checkout')
+    erro, string_do_erro = validar_erro_pedido(reqs, pedido.id)
+    if erro:
+        messages.add_message(request, constants.ERROR, string_do_erro)
+        return redirect(f'/checkout/checkout')
+    return redirect('meus_pedidos')
 
 def pagamento_boleto(request):
     if not request.user.is_authenticated:
@@ -217,9 +221,15 @@ def pagamento_boleto(request):
         }
     ]
     })
+
     reqs = requests.post(url,headers=headers,data=body)
+    erro, string_do_erro = validar_erro_pedido(reqs, pedido.id)
+    if erro:
+        messages.add_message(request, constants.ERROR, string_do_erro)
+        return redirect(f'/checkout/checkout')
     link_boleto = reqs.json()["charges"][0]['links'][0]['href']
-    return HttpResponse(reqs)
+    #return HttpResponse(reqs)
+    return redirect('meus_pedidos')
 
 def pagamento_pix(request):
     if not request.user.is_authenticated:
@@ -282,9 +292,15 @@ def pagamento_pix(request):
           "https://meusite.com/notificacoes"
         ]
     })
+
     reqs = requests.post(url,headers=headers,data=body)
+    erro, string_do_erro = validar_erro_pedido(reqs, pedido.id)
+    if erro:
+        messages.add_message(request, constants.ERROR, string_do_erro)
+        return redirect(f'/checkout/checkout')
     link_qrcode = reqs.json()['qr_codes'][0]['links'][0]['href']
-    return HttpResponse(reqs)
+    #return HttpResponse(reqs)
+    return redirect('meus_pedidos')
 
 def itens_carrinho(request):
     if 'carrinho' in request.session:
@@ -353,4 +369,21 @@ def data_vencimento(dias):
     data_vencimento_formatada = data_vencimento.strftime("%Y-%m-%d")
     return data_vencimento_formatada
     
-
+def validar_erro_pedido(response_do_pedido, id_pedido):
+    pedido = Pedido.objects.get(id=id_pedido)
+    string_do_erro = ''
+    try:
+        response_do_pedido.raise_for_status()
+    except:
+        pedido.status = 'DECLINED'
+        pedido.save()
+        if response_do_pedido.json()["error_messages"]:
+            pedido.mensagem_de_erro = str(response_do_pedido.json()["error_messages"])
+            pedido.save()
+            string_do_erro = f'Erro ao realizar a cobrança: {str(response_do_pedido.json()["error_messages"][0]["description"])}. Por favor revise os dados e tente novamente.'
+        else:
+            pedido.mensagem_de_erro = 'Erro ao realizar o pedido. Por favor revise os dados e tente novamente.'
+            pedido.save()
+            string_do_erro = 'Erro ao realizar o pedido. Por favor revise os dados e tente novamente.'
+        return True, string_do_erro
+    return False, string_do_erro
