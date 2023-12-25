@@ -33,6 +33,7 @@ class Pedido(models.Model):
     data_ultima_atualizacao_pedido = models.DateTimeField(auto_now=True, null=True)
     metodo_de_pagamento = models.CharField(choices=METODO_DE_PAGAMENTO, max_length=100)
     mensagem_de_erro = models.CharField(max_length=500, blank=True, null= True)
+    link_pagamento = models.URLField(blank=True, null= True)
 
     def __str__(self):
         return str(self.id)

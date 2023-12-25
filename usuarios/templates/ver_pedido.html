@@ -93,6 +93,15 @@
         {{pedido.mensagem_de_erro}}
       </div>
     {% endif %}
+
+    {% if pedido.link_pagamento %}
+      <div class="container my-3 text-center">
+        <p><b>Clique no botão para pagar:</b></p>
+        <a href={{pedido.link_pagamento}} target="_blank" rel="noopener noreferrer">
+          <button class="btn">Pagar</button>
+        </a>
+      </div>
+    {% endif %}
   </div>
 </div>
 

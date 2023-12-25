@@ -131,7 +131,7 @@ def pagamento_credito(request):
     if erro:
         messages.add_message(request, constants.ERROR, string_do_erro)
         return redirect(f'/checkout/checkout')
-    return redirect('meus_pedidos')
+    return redirect(f'/usuarios/ver_pedido/{pedido.id}')
 
 def pagamento_boleto(request):
     if not request.user.is_authenticated:
@@ -227,9 +227,9 @@ def pagamento_boleto(request):
     if erro:
         messages.add_message(request, constants.ERROR, string_do_erro)
         return redirect(f'/checkout/checkout')
-    link_boleto = reqs.json()["charges"][0]['links'][0]['href']
-    #return HttpResponse(reqs)
-    return redirect('meus_pedidos')
+    pedido.link_pagamento = reqs.json()["charges"][0]['links'][0]['href']
+    pedido.save()
+    return redirect(f'/usuarios/ver_pedido/{pedido.id}')
 
 def pagamento_pix(request):
     if not request.user.is_authenticated:
@@ -298,9 +298,9 @@ def pagamento_pix(request):
     if erro:
         messages.add_message(request, constants.ERROR, string_do_erro)
         return redirect(f'/checkout/checkout')
-    link_qrcode = reqs.json()['qr_codes'][0]['links'][0]['href']
-    #return HttpResponse(reqs)
-    return redirect('meus_pedidos')
+    pedido.link_pagamento = reqs.json()['qr_codes'][0]['links'][0]['href']
+    pedido.save()
+    return redirect(f'/usuarios/ver_pedido/{pedido.id}')
 
 def itens_carrinho(request):
     if 'carrinho' in request.session:
