@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.messages import constants 
 from rolepermissions.roles import assign_role
-from rolepermissions.permissions import grant_permission, revoke_permission
 from django.contrib.auth.models import User
 from rolepermissions.decorators import has_role_decorator
 from produtos.models import Produtos, Categoria, DestacadosHome
@@ -10,37 +9,33 @@ from django.core.paginator import Paginator
 from decimal import Decimal
 from .models import Banner
 from vendas.models import CupomDesconto
+from django.contrib.auth.decorators import login_required
 
-@has_role_decorator('gestor')
+@login_required
 def criar_gerente(request):
-    return render(request, 'criar_gerente.html')
+    if request.user.is_superuser:
+        return render(request, 'criar_gerente.html')
+    else:
+        messages.add_message(request, constants.ERROR, 'Você não tem permissão para executar essa função.')
+        return redirect('home')
 
-@has_role_decorator('gestor')
+
+@login_required
 def salvar_gerente(request):
-    email = request.POST.get('email')
-    senha_provisoria = request.POST.get('senha_provisoria')
-    gerente = User.objects.create_user(username=email,
-                                 email=email,
-                                 password=senha_provisoria)
-    assign_role(gerente, 'gerente')
-    messages.add_message(request, constants.SUCCESS, 'Gerente cadastrado com sucesso')
-    return redirect('/gestao/criar_gerente')
+    if request.user.is_superuser:
+        email = request.POST.get('email')
+        senha_provisoria = request.POST.get('senha_provisoria')
+        gerente = User.objects.create_user(username=email,
+                                    email=email,
+                                    password=senha_provisoria)
+        assign_role(gerente, 'gerente')
+        messages.add_message(request, constants.SUCCESS, 'Gerente cadastrado com sucesso')
+        return redirect('home')
+    else:
+        messages.add_message(request, constants.ERROR, 'Você não tem permissão para executar essa função.')
+        return redirect('home')
 
-# @has_role_decorator('gestor')
-def criar_gestor(request):
-    return render(request, 'criar_gestor.html')
-
-# @has_role_decorator('gestor')
-def salvar_gestor(request):
-    email = request.POST.get('email')
-    senha_provisoria = request.POST.get('senha_provisoria')
-    gestor = User.objects.create_user(username=email,
-                                 email=email,
-                                 password=senha_provisoria)
-    assign_role(gestor, 'gestor')
-    messages.add_message(request, constants.SUCCESS, 'Gestor cadastrado com sucesso')
-    return redirect('home')
-
+@has_role_decorator('gerente')
 def adm_estoque(request):
     produtos = Produtos.objects.all()
     categorias = Categoria.objects.all()
@@ -98,14 +93,16 @@ def adm_estoque(request):
     return render(request, 'adm_estoque.html', {'produtos_paginados': produtos_paginados,
                                                 'categorias': categorias})
 
-@has_role_decorator('gestor')
+@has_role_decorator('gerente')
 def detalhes_produto(request, id):
     produto = Produtos.objects.get(id=id)
     return render(request, 'detalhes_produto.html', {'produto': produto})
 
+@has_role_decorator('gerente')
 def painel_controle(request):
     return render(request, 'painel_controle.html')
 
+@has_role_decorator('gerente')
 def produtos_home(request):
     produtos = Produtos.objects.all()
     categorias = Categoria.objects.all()
@@ -161,6 +158,7 @@ def produtos_home(request):
     return render(request, 'produtos_home.html', {'produtos_paginados': produtos_paginados,
                                                   'categorias': categorias}) 
 
+@has_role_decorator('gerente')
 def exibicao_home(request):
     produtos = request.POST.getlist('selecionados[]')
     acao = request.POST.get('acao')
@@ -190,10 +188,12 @@ def exibicao_home(request):
 
     return redirect('/gestao/produtos_home')
 
+@has_role_decorator('gerente')
 def gerenciar_banners(request):
     banners = Banner.objects.all()
     return render(request, 'gerenciar_banners.html', {'banners': banners})
 
+@has_role_decorator('gerente')
 def adicionar_banner(request):
     img = request.FILES.get('banner')
     titulo = request.POST.get('titulo')
@@ -207,7 +207,7 @@ def adicionar_banner(request):
         messages.add_message(request, constants.ERROR, 'Selecione uma imagem válida')
         return redirect('/gestao/gerenciar_banners')
 
-
+@has_role_decorator('gerente')
 def selecionar_banner(request, id_banner):
     banner = Banner.objects.get(id=id_banner)
     banner.home = True
@@ -215,13 +215,14 @@ def selecionar_banner(request, id_banner):
     messages.add_message(request, constants.SUCCESS, 'Banner adicionado na home com sucesso.')
     return redirect('/gestao/gerenciar_banners')
 
-
+@has_role_decorator('gerente')
 def deletar_banner(request, id_banner):
     banner = Banner.objects.get(id=id_banner)
     banner.delete()
     messages.add_message(request, constants.SUCCESS, 'Banner deletado com sucesso')
     return redirect('/gestao/gerenciar_banners')
 
+@has_role_decorator('gerente')
 def tirar_banner_home(request, id_banner):
     banner = Banner.objects.get(id=id_banner)
     banner.home = False
@@ -229,6 +230,7 @@ def tirar_banner_home(request, id_banner):
     messages.add_message(request, constants.SUCCESS, 'Banner retirado com sucesso')
     return redirect('/gestao/gerenciar_banners')
 
+@has_role_decorator('gerente')
 def gerenciar_cupons(request):
     cupons = CupomDesconto.objects.all()
     codigo_filtrar = request.GET.get('nome')
@@ -241,6 +243,7 @@ def gerenciar_cupons(request):
     cupons_paginados = paginacao.get_page(page)
     return render(request, 'gerenciar_cupons.html', {'cupons_paginados': cupons_paginados,}) 
 
+@has_role_decorator('gerente')
 def alterar_cupons(request):
     cupons = request.POST.getlist('selecionados[]')
     acao = request.POST.get('acao')

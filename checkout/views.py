@@ -36,7 +36,13 @@ def get_chave_publica():
     reqs = requests.post(url,headers=headers,data=body)
     return reqs.json()['public_key']
 
+@login_required
 def processar_metodo_pagamento(request):
+    try:
+        usuario = Usuarios.objects.get(usuario_id=request.user.id)
+    except ObjectDoesNotExist:
+        messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para comprar.')
+        return redirect(f'/usuarios/info_adicional_usuario')
     metodo_de_pagamento = request.POST['paymentMethod']
     if metodo_de_pagamento == 'creditCard':
         return pagamento_credito(request)

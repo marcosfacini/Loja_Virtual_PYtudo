@@ -4,16 +4,15 @@ from .models import Usuarios, RegistroAlteracaoUsuario
 from checkout.models import Pedido, ItensPedido
 from django.contrib import messages
 from django.contrib.messages import constants 
-from django.urls import reverse
-from rolepermissions.checkers import has_permission
-from rolepermissions.roles import assign_role
 from django.contrib.auth.models import User
-from rolepermissions.decorators import has_role_decorator, has_permission_decorator
+from rolepermissions.decorators import has_role_decorator
 from django.core.paginator import Paginator
 from datetime import datetime
 from cpf_field.validators import validate_cpf
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+from rolepermissions.checkers import has_role
+from pytudo.roles import Gerente
 
 
 
@@ -36,7 +35,7 @@ def info_adicional_usuario(request):
             form = CadastroUsuario(initial={'usuario': request.user})
         return render(request, 'info_adicional_usuario.html', {'form': form})
     
-@has_permission_decorator('gerenciar_usuarios') 
+@has_role_decorator('gerente') 
 def listar_usuarios(request):
     usuarios = Usuarios.objects.all()
 
@@ -84,7 +83,7 @@ def listar_usuarios(request):
 
     return render(request, 'listar_usuarios.html', {'usuarios_paginados': usuarios_paginados}) 
 
-@has_permission_decorator('gerenciar_usuarios')
+@has_role_decorator('gerente')
 def excluir_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
     user = User.objects.get(username=usuario.usuario)
@@ -93,13 +92,14 @@ def excluir_usuario(request, id):
     messages.add_message(request, constants.SUCCESS, 'Usuario excluído com sucesso.')
     return redirect('/usuarios/listar_usuarios')
 
-@has_permission_decorator('gerenciar_usuarios')
+@has_role_decorator('gerente')
 def ver_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
     registros = RegistroAlteracaoUsuario.objects.filter(usuario_id=id)
-    return render(request, 'ver_usuario.html', {'usuario': usuario, 'registros': registros}) 
+    pedidos = Pedido.objects.filter(usuario_id=usuario.id)
+    return render(request, 'ver_usuario.html', {'usuario': usuario, 'registros': registros, 'pedidos': pedidos}) 
 
-@has_permission_decorator('gerenciar_usuarios')
+@has_role_decorator('gerente')
 def atualizar_usuario(request, id):
     usuario = Usuarios.objects.get(id=id)
     if request.method == 'POST':
@@ -230,14 +230,19 @@ def meus_pedidos(request):
 
 @login_required
 def ver_pedido(request, id):
-    try:
-        usuario = Usuarios.objects.get(usuario_id=request.user.id)
-    except ObjectDoesNotExist:
-        messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para criar um perfil.')
-        return redirect(f'/usuarios/info_adicional_usuario')
-    pedido = Pedido.objects.filter(usuario=usuario).filter(id=id).first()
-    itens = ItensPedido.objects.filter(pedido=pedido)
-    return render(request, 'ver_pedido.html', {'pedido': pedido, 'itens': itens})
+    if has_role(request.user, Gerente):
+        pedido = Pedido.objects.get(id=id)
+        itens = ItensPedido.objects.filter(pedido=pedido)
+        return render(request, 'ver_pedido.html', {'pedido': pedido, 'itens': itens})
+    else:
+        try:
+            usuario = Usuarios.objects.get(usuario_id=request.user.id)
+        except ObjectDoesNotExist:
+            messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para criar um perfil.')
+            return redirect(f'/usuarios/info_adicional_usuario')
+        pedido = Pedido.objects.filter(usuario=usuario).filter(id=id).first()
+        itens = ItensPedido.objects.filter(pedido=pedido)
+        return render(request, 'ver_pedido.html', {'pedido': pedido, 'itens': itens})
 
 
 

@@ -1,13 +1,6 @@
 from rolepermissions.roles import AbstractUserRole
 
 class Gerente(AbstractUserRole):
-    available_permissions = {
-        'alterar_produto': True,
-        'gerenciar_usuarios': True,
-    }
+    pass
 
-class Gestor(AbstractUserRole):
-    available_permissions = {
-    'alterar_produto': True,
-    'gerenciar_usuarios': True,
-    }
+

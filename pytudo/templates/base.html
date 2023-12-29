@@ -48,7 +48,7 @@
                     <div class="nav-btns">
                         <div class="dropdown">
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="PainelDropdown">
-                            {% if request.user|has_role:"gestor" %}
+                            {% if request.user|has_role:"gerente" %}
                                 <li><a class="dropdown-item" href="{% url 'painel_controle' %}">Painel de controle</a></li>
                             {% endif %}
                             {% if request.user.is_authenticated %}

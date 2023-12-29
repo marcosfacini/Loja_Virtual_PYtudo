@@ -343,7 +343,7 @@
         <div class="testo_comentario">
 	        <p>{{avaliacao.comentario}}</p>
         </div>
-        {% if request.user|has_role:"gestor" %}
+        {% if request.user|has_role:"gerente" %}
             <div class="text-end">
                 <a class="btn btn-sm" href="{% url 'excluir_avaliacao' avaliacao.id produto.id %}" role="button">Excluir</a>
             </div>

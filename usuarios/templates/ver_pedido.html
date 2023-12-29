@@ -42,6 +42,10 @@
           <td>{{pedido.id}}</td>
         </tr>
         <tr>
+          <td class="fw-bold">Usuario</td>
+          <td>{{pedido.usuario.nome}}</td>
+        </tr>
+        <tr>
           <td class="fw-bold">Data da Compra</td>
           <td>{{pedido.data_pedido|date:"d/m/Y"}} às {{pedido.data_pedido|time:"H:i"}}</td>
         </tr>
