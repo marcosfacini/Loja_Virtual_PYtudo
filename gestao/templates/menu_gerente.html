@@ -1,0 +1,32 @@
+<nav class="sidebar bg-dark">
+    <div class="p-4">
+      <h1 class="m-0 text-white">Menu</h1>
+      <hr class="mt-0 mb-4 text-white">
+        <ul class="list-unstyled mb-2">
+            <li class="my-3">
+                <a href="{% url 'adm_estoque' %}"><span class="fa fa-building mr-3"></span> Estoque </a>
+            </li>
+            <li class="my-3">
+                <a href="#"><span class="fa fa-envelope mr-3"></span> Pedidos </a>
+            </li>
+            <li class="my-3">
+                <a href="{% url 'cadastrar_produto' %}"><span class="fa fa-folder-open mr-3"></span> Cadastrar Produto </a>
+            </li>
+            <li class="my-3">
+                <a href="{% url 'listar_categorias' %}"><span class="fa fa-tasks mr-3"></span> Categorias </a>
+            </li>
+            <li class="my-3">
+                <a href="{% url 'listar_usuarios' %}"><span class="fa fa-user mr-3"></span> Usuarios </a>
+            </li>
+            <li class="my-3">
+                <a href="{% url 'produtos_home' %}"><span class="fa fa-home mr-3"></span> Produtos da Homepage </a>
+            </li>
+            <li class="my-3">
+                <a href="{% url 'gerenciar_banners' %}"><span class="fa fa-laptop mr-3"></span> Banners </a>
+            </li>
+            <li class="my-3">
+                <a href="{% url 'gerenciar_cupons' %}"><span class="fa fa-tags mr-3"></span> Cupons </a>
+            </li>
+        </ul>
+    </div>
+</nav>

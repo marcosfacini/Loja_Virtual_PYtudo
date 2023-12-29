@@ -1,29 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load filtros %}
 
 {% block 'title' %}PYTudo{% endblock %}
 
 {% block 'head' %} 
-    <link href="{% static 'produtos/css/listar_produtos.css' %}" rel="stylesheet">
+    <link href="{% static 'usuarios/css/perfil_usuario.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block 'body' %}
 
-<a class="btn btn-primary" href="{% url 'adm_estoque' %}" role="button">Gerenciar estoque</a>
-<a class="btn btn-primary" href="{% url 'cadastrar_produto' %}" role="button">Cadastrar Produtos</a>
-<a class="btn btn-primary" href="{% url 'listar_categorias' %}" role="button">Categorias</a>
-<a class="btn btn-primary" href="{% url 'listar_usuarios' %}" role="button">Usuarios</a>
-<a class="btn btn-primary" href="{% url 'produtos_home' %}" role="button">Produtos da homepage</a>
-<a class="btn btn-primary" href="{% url 'gerenciar_banners' %}" role="button">Banners</a>
-<a class="btn btn-primary" href="{% url 'gerenciar_cupons' %}" role="button">Gerenciar Cupons</a>
-<a class="btn btn-primary" href="{% url 'info_adicional_usuario' %}" role="button">Cadastrar usuario</a>
+<div class="container-fluid d-sm-flex align-items-stretch px-0">
+    {% include "menu_gerente.html" %}
+  
+    <div class="container px-5 py-4">
+        <div class="text-center mt-1">
+            <h2>Painel de Controle</h2>
+        </div>
+    </div>
 
-relatorios
-    
-    
-{% endblock %}
+</div>
 
-{% block scripts %}
-    
-{% endblock %}
+
+{% endblock %} 
