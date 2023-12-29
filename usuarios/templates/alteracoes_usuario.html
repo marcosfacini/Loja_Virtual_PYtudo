@@ -10,29 +10,7 @@
 {% block 'body' %}
 
 <div class="container-fluid d-sm-flex align-items-stretch px-0">
-  <nav class="sidebar bg-dark">
-  <div class="p-4">
-    <h1 class="m-0 text-white">Menu</h1>
-    <hr class="mt-0 mb-4 text-white">
-    <ul class="list-unstyled mb-2">
-    <li class="my-3">
-    <a href="{% url 'perfil_usuario' %}"><span class="fa fa-user mr-3"></span> Perfil</a>
-    </li>
-    <li class="my-3">
-    <a href="{% url 'meus_pedidos' %}"><span class="fa fa-envelope mr-3"></span> Meus pedidos</a>
-    </li>
-    <li class="my-3">
-    <a href="{% url 'usuario_atualiza_cadastro' %}"><span class="fa fa-spinner mr-3"></span> Atualizar Cadastro</a>
-    </li>
-    <li class="my-3">
-    <a href="{% url 'alteracoes_usuario' %}"><span class="fa fa-history mr-3"></span> Histórico de Alterações</a>
-    </li>
-    <li class="my-3">
-    <a href="{% url 'account_logout' %}"><span class="fa fa-power-off mr-3"></span> Sair</a>
-    </li>
-    </ul>
-  </div>
-  </nav>
+  {% include "menu_usuario.html" %}
   
   <div class="container p-4">
     <div class="text-center mt-1">
