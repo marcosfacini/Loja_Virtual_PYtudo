@@ -4,73 +4,72 @@
 {% block 'title' %}PYTudo{% endblock %}
 
 {% block 'head' %} 
-    <link href="{% static 'vendas/css/carrinho.css' %}" rel="stylesheet">
+    <link href="{% static 'vendas/css/lista_desejo.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block 'body' %}
+<div class="container-fluid d-sm-flex align-items-stretch px-0">
+  {% include "menu_usuario.html" %}
 
-{% if lista.produtos.all %}
-<section class="h-100">
-  <div class="container h-100 py-5">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col" class="h5 text-center">Lista de Desejo</th>
-                <th scope="col" class="text-center">Nome</th>
-                <th scope="col" class="text-center">Preço</th>
-                <th scope="col" class="text-center">Comprar</th>
-                <th scope="col" class="text-center">Remover</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for produto in lista.produtos.all %}
-              <tr>
-                <th scope="row">
-                  <div class="imagem_carrinho d-flex justify-content-center align-items-center"> 
-                      {% if produto.imagem_principal %}
-                            <img src="{{produto.imagem_principal.url}}" alt="Imagem_produto">
-                        {% else %}
-                            <img src="{% static 'produtos\img\sem foto.jpg' %}" alt="Imagem_produto">
-                        {% endif %}
-                  </div>
-                </th>
+  {% if lista.produtos.all %}
+  <div class="container p-4">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" class="h5 text-center">Lista de Desejo</th>
+            <th scope="col" class="text-center">Nome</th>
+            <th scope="col" class="text-center">Preço</th>
+            <th scope="col" class="text-center">Comprar</th>
+            <th scope="col" class="text-center">Remover</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for produto in lista.produtos.all %}
+          <tr>
+            <th scope="row">
+              <div class="imagem_carrinho d-flex justify-content-center align-items-center"> 
+                  {% if produto.imagem_principal %}
+                        <img src="{{produto.imagem_principal.url}}" alt="Imagem_produto">
+                    {% else %}
+                        <img src="{% static 'produtos\img\sem foto.jpg' %}" alt="Imagem_produto">
+                    {% endif %}
+              </div>
+            </th>
 
-                <td class="align-middle text-center">
-                  <div class="flex-column">
-                      <p>{{ produto.nome }}</p>
-                    </div>
-                </td>
-                
-                <td class="align-middle text-center">
-                  <p class="mb-0" style="font-weight: 500;">{{produto.preco}}</p>
-                </td>
+            <td class="align-middle text-center">
+              <div class="flex-column">
+                  <p>{{ produto.nome }}</p>
+                </div>
+            </td>
+            
+            <td class="align-middle text-center">
+              <p class="mb-0" style="font-weight: 500;">{{produto.preco}}</p>
+            </td>
 
-                <td class="align-middle text-center">
-                    <a href="{% url 'adicionar_ao_carrinho' produto.id %}" class="lixeira"><i class="fa fa-check fa-lg"></i></a>
-                </td>
+            <td class="align-middle text-center">
+                <a href="{% url 'adicionar_ao_carrinho' produto.id %}" class="lixeira"><i class="fa fa-check fa-lg"></i></a>
+            </td>
 
-                <td class="align-middle text-center">
-                  <a href="{% url 'excluir_item_da_lista' produto.id %}" class="lixeira"><i class="fas fa-trash fa-lg"></i></a>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-      </div>
+            <td class="align-middle text-center">
+              <a href="{% url 'excluir_item_da_lista' produto.id %}" class="lixeira"><i class="fas fa-trash fa-lg"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex justify-content-center">
+      <a class="btn mt-3" href="{% url 'esvaziar_lista_desejo' %}" role="button">Esvaziar Lista</a>
     </div>
   </div>
-  <div class="d-flex justify-content-center">
-    <a class="btn mt-3" href="{% url 'esvaziar_lista_desejo' %}" role="button">Esvaziar Lista</a>
-  </div>
-</section>
+</div>
     
 {% else %}
   <div class="container d-flex justify-content-center mt-5 mb-5">
     A lista de desejo está vazia.
   </div>
+</div>
 {% endif %}
 
 {% endblock %} 

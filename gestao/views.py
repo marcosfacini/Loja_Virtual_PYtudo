@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from decimal import Decimal
 from .models import Banner
 from vendas.models import CupomDesconto
+from checkout.models import Pedido
 from django.contrib.auth.decorators import login_required
 
 @login_required
@@ -274,7 +275,17 @@ def alterar_cupons(request):
 
     return redirect('/gestao/gerenciar_cupons')
 
-
+@has_role_decorator('gerente')
+def consultar_pedidos(request):
+    pedidos = Pedido.objects.all()
+    numero_filtrar = request.GET.get('numero')
+    if numero_filtrar:
+        pedidos = pedidos.filter(id=numero_filtrar)
+    pedidos_ordenados = pedidos.order_by('-id')
+    paginacao = Paginator(pedidos_ordenados, 10)
+    page = request.GET.get('page')
+    pedidos = paginacao.get_page(page)
+    return render(request, 'consultar_pedidos.html', {'pedidos': pedidos})
 
 
 

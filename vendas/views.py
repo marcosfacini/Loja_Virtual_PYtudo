@@ -22,6 +22,7 @@ def adicionar_na_lista_desejo(request, id):
         lista.produtos.add(produto)
         return redirect(reverse('ver_lista_desejo'))
 
+@login_required
 def ver_lista_desejo(request):
     lista = ListaDesejo.objects.filter(usuario_id=request.user.id).first()
     num_lista_desejo = 0
@@ -29,12 +30,14 @@ def ver_lista_desejo(request):
         num_lista_desejo = lista.produtos.count()
     return render(request, 'ver_lista_desejo.html', {'lista': lista, 'num_lista_desejo': num_lista_desejo})
 
+@login_required
 def excluir_item_da_lista(request, id_produto):
     lista = ListaDesejo.objects.get(usuario_id=request.user.id)
     produto = Produtos.objects.get(id=id_produto)
     lista.produtos.remove(produto)
     return redirect('ver_lista_desejo')
 
+@login_required
 def esvaziar_lista_desejo(request):
     try:
         lista = ListaDesejo.objects.get(usuario=request.user.id)
@@ -42,7 +45,6 @@ def esvaziar_lista_desejo(request):
     except:
         messages.add_message(request, constants.ERROR, 'Erro ao deletar ou a lista já está vazia')
     return redirect(reverse('ver_lista_desejo'))
-
 
 def adicionar_ao_carrinho(request, produto_id):
     if 'carrinho' not in request.session:

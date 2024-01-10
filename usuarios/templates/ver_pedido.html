@@ -11,7 +11,9 @@
 {% block 'body' %}
 
 <div class="container-fluid d-sm-flex align-items-stretch px-0">
-  {% if request.user|has_role:"gerente" == False %}
+  {% if request.user|has_role:"gerente" %}
+    {% include "menu_gerente.html" %}
+  {% else %}
     {% include "menu_usuario.html" %}
   {% endif %}
   

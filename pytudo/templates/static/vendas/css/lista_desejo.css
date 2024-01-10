@@ -1,0 +1,28 @@
+.lixeira {
+    color: #dc3545;
+}
+
+.lixeira:hover{
+    color: #000;
+}
+
+.imagem_carrinho img {
+    height: 120px;
+    width: auto;
+}
+
+.sidebar a {
+    text-decoration: none; 
+    color: #fff;
+}
+
+.sidebar a:hover {
+    color: var(--pink); 
+}
+
+/* media queries */
+@media (max-width: 576px) {
+    .sidebar {
+        text-align: center;
+    }
+}

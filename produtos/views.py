@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from .models import Produtos, Categoria, Avaliacao, Imagens
 from django.contrib import messages
 from django.contrib.messages import constants 
-from rolepermissions.decorators import has_permission_decorator, has_role_decorator
+from rolepermissions.decorators import has_role_decorator
 from decimal import Decimal
 from django.core.paginator import Paginator
 from .forms import CadastrarProduto, AtualizarEspecificacao
@@ -64,7 +63,7 @@ def listar_produtos(request):
                                              'total_produtos': total_produtos,
                                              'categorias': categorias})
 
-@has_permission_decorator('alterar_produto')
+@has_role_decorator('gerente') 
 def cadastrar_produto(request):
     if request.method == 'POST':
         form = CadastrarProduto(request.POST, request.FILES)
@@ -126,7 +125,7 @@ def ver_produto(request, id):
                                                 'media_estrelas': media_estrelas,
                                                 'produtos_relacionados': produtos_relacionados})
 
-@has_permission_decorator('alterar_produto')
+@has_role_decorator('gerente')
 def excluir_produto(request, id):
     produto = Produtos.objects.get(id=id)
     produto.delete()
@@ -138,14 +137,13 @@ def listar_categorias(request):
     nome_filtrar = request.GET.get('nome')
     if nome_filtrar:
         categorias = categorias.filter(nome__icontains=nome_filtrar)
-    print (categorias)
     categorias_ordenadas = categorias.order_by('nome')
     paginacao = Paginator(categorias_ordenadas, 5)
     page = request.GET.get('page')
     categorias = paginacao.get_page(page)
     return render(request, 'listar_categorias.html', {'categorias': categorias})
 
-@has_permission_decorator('alterar_produto')
+@has_role_decorator('gerente')
 def cadastrar_categoria(request):
     nome = request.POST.get('nome')
     categoria = Categoria(nome=nome)
@@ -153,14 +151,14 @@ def cadastrar_categoria(request):
     messages.add_message(request, constants.SUCCESS, 'Categoria salva com sucesso.')
     return redirect('/produtos/listar_categorias')
 
-@has_permission_decorator('alterar_produto')
+@has_role_decorator('gerente')
 def excluir_categoria(request, id):
     categoria = Categoria.objects.get(id=id)
     categoria.delete()
     messages.add_message(request, constants.SUCCESS, 'Categoria excluída com sucesso.')
     return redirect('/produtos/listar_categorias')
 
-@has_permission_decorator('alterar_produto')
+@has_role_decorator('gerente')
 def alterar_produto(request, id):
     if request.method == 'GET':
         produto = Produtos.objects.get(id=id)
@@ -218,12 +216,13 @@ def salvar_avaliacao(request, id_produto):
     avalicao.save()
     return redirect(f'/produtos/ver_produto/{id_produto}')
 
+@has_role_decorator('gerente')
 def excluir_avaliacao(request, id_avaliacao, id_produto):
     avaliacao = Avaliacao.objects.get(id=id_avaliacao)
     avaliacao.delete()
     return redirect(f'/produtos/ver_produto/{id_produto}')
 
-
+@has_role_decorator('gerente')
 def alterar_imagem_principal(request, id_produto):
     imagem = request.FILES.get('imagem_principal')
     produto = Produtos.objects.get(id=id_produto)
@@ -232,7 +231,7 @@ def alterar_imagem_principal(request, id_produto):
     messages.add_message(request, constants.SUCCESS, 'Imagem alterada com sucesso.')
     return redirect(f'/produtos/alterar_produto/{id_produto}')
 
-
+@has_role_decorator('gerente')
 def incluir_imagens(request, id_produto):
     imagens = request.FILES.getlist('imagens')
     for img in imagens:
@@ -241,18 +240,21 @@ def incluir_imagens(request, id_produto):
     messages.add_message(request, constants.SUCCESS, 'Imagem incluída com sucesso.')
     return redirect(f'/produtos/alterar_produto/{id_produto}')
 
+@has_role_decorator('gerente')
 def excluir_imagem(request, id_imagem, id_produto):
     imagem = Imagens.objects.get(id=id_imagem)
     imagem.delete()
     messages.add_message(request, constants.SUCCESS, 'Imagem excluída com sucesso.')
     return redirect(f'/produtos/alterar_produto/{id_produto}')
 
+@has_role_decorator('gerente')
 def excluir_imagem_principal(request, id_produto):
     produto = Produtos.objects.get(id=id_produto)
     produto.imagem_principal.delete()
     messages.add_message(request, constants.SUCCESS, 'Imagem excluída com sucesso.')
     return redirect(f'/produtos/alterar_produto/{id_produto}')
 
+@has_role_decorator('gerente')
 def atualizar_especificacao(request, id):
     produto = Produtos.objects.get(id=id)
     especificacao = request.POST.get('especificacao')

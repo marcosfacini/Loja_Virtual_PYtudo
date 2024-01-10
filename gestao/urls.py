@@ -16,6 +16,7 @@ urlpatterns = [
     path('tirar_banner_home/<int:id_banner>', views.tirar_banner_home, name='tirar_banner_home'),
     path('gerenciar_cupons/', views.gerenciar_cupons, name='gerenciar_cupons'),
     path('alterar_cupons/', views.alterar_cupons, name='alterar_cupons'),
+    path('consultar_pedidos/', views.consultar_pedidos, name='consultar_pedidos'),
     
    
 ]
