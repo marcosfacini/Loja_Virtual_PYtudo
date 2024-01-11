@@ -103,8 +103,6 @@ def cadastrar_produto(request):
         form = CadastrarProduto()
     return render(request, 'cadastrar_produto.html', {'form': form})
 
-
-
 def ver_produto(request, id):
     produto = Produtos.objects.get(id=id)
     avaliacoes = Avaliacao.objects.filter(produto=id)
@@ -132,6 +130,7 @@ def excluir_produto(request, id):
     messages.add_message(request, constants.SUCCESS, 'Produto excluído com sucesso.')
     return redirect('/gestao/adm_estoque')
 
+@has_role_decorator('gerente') 
 def listar_categorias(request):
     categorias = Categoria.objects.all()
     nome_filtrar = request.GET.get('nome')

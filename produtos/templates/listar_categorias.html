@@ -9,81 +9,87 @@
 {% endblock %}
 
 {% block 'body' %}
+    <div class="container-fluid d-sm-flex align-items-stretch px-0">
+        {% include "menu_gerente.html" %}
+      
+        <div class="container px-5 py-4">
+            <div class="text-center mt-1">
+                <h2>Categorias</h2>
+            </div>
 
-    <h2 class="titulo">Categorias</h2>
+            <div class="m-3 d-flex justify-content-center">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#cadastroModal">Cadastrar +</button>
+            </div>
+            <div class="modal fade" id="cadastroModal" tabindex="-1" aria-labelledby="cadastroModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="cadastroModalLabel">Cadastrar nova categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                    <form action="{% url 'cadastrar_categoria' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" class="form-control" name="nome" maxlength="40">
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" value="SALVAR" class="btn my-2">
+                        </div>
+                    </form>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="my-3 d-flex justify-content-center">
+                <form class="input-group" action="#" method="GET" style="width:70%"> {% csrf_token %} 
+                    <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+                    <button class = "btn"  type = "submit"><i class = "fa fa-search"></i></button>
+                </form>
+            </div>
     
-    <form action="#" method="GET"> {% csrf_token %} 
-        <div class="row">
-            
-        <div class="col-md-5">
-            <input type="text" placeholder="Busque pelo nome" class="form-control" name="nome">
+            <div class="table-responsive">
+                <table class="table table-striped border">
+                <thead>
+                    <tr>
+                    <th scope="col">Nome</th>
+                    <th class="pe-2 text-end" scope="col">Excluir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for categoria in categorias %}
+                        <tr> 
+                        <td>{{categoria.nome}}</td> 
+                        <td class="pe-3 text-end"><a href="{% url 'excluir_categoria' categoria.id %}" class="lixeira"><i class="fas fa-trash fa-lg"></i></a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+    
+            <div class="pagination">
+                {% if categorias.has_previous %}
+                <a class="pagination-action" href="?{% param_replace page=1 %}">
+                    <i class='fa fa-angle-double-left' aria-hidden="true"></i> </a>
+                <a class="pagination-action" href="?{% param_replace page=categorias.previous_page_number %}">
+                    <i class='fa fa-arrow-left' aria-hidden="true"></i>
+                </a>
+                {% endif %}
+                {% for num in categorias.paginator.page_range %}
+                    {% if categorias.number == num %}
+                        <span class="pagination-number pagination-current">{{ num }}</span>
+                    {% elif num > categorias.number|add:'-3' and num < categorias.number|add:'3' %}
+                        <a class="pagination-number" href="?{% param_replace page=num %}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if categorias.has_next %}
+                    <a class="pagination-action" href="?{% param_replace page=categorias.next_page_number %}">
+                        <i class='fa fa-arrow-right' aria-hidden="true"></i>
+                    </a>
+                    <a class="pagination-action" href="?{% param_replace page=categorias.paginator.num_pages %}" >        
+                        <i class='fa fa-angle-double-right' aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+            </div>
         </div>
-    
-        <div class="col-md-3">
-            <input type="submit" value="FILTRAR" class="btn btn-primary">
-        </div>
-        </div>
-    </form>
-
-    <br>
-    <br>
-
-    <form action="{% url 'cadastrar_categoria' %}" method="POST"> {% csrf_token %} 
-        <div class="row">
-            
-        <div class="col-md-5">
-            <label>Cadastrar nova categoria</label>
-            <input type="text" class="form-control" name="nome" maxlength="40">
-        </div>
-    
-        <div class="col-md-3">
-            <input type="submit" value="SALVAR" class="btn btn-primary">
-        </div>
-        </div>
-    </form>
-    
-    <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">Excluir</th>
-          </tr>
-        </thead>
-    
-        <tbody>
-            {% for categoria in categorias %}
-                <tr> 
-                    <td>{{categoria.nome}}</td> 
-                    <td><a href="{% url 'excluir_categoria' categoria.id %}">Excluir</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <br>
-    <br>
-    <div class="pagination">
-        {% if categorias.has_previous %}
-            <a href="?{% param_replace page=1 %}">First</a>
-            {% if categorias.previous_page_number != 1 %}
-                <a href="?{% param_replace page=categorias.previous_page_number %}">Previous</a>
-            {% endif %}
-        {% endif %}
-
-        Page {{ categorias.number }} of {{ paginator.num_pages }} 
-
-        {% if categorias.has_next %}
-            {% if categorias.next_page_number != paginator.num_pages %}
-                <a href="?{% param_replace page=categorias.next_page_number %}">Next</a>
-            {% endif %}
-            <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
-        {% endif %}
-
-        <p>Objects {{ categorias.start_index }}—{{ categorias.end_index }}</p>
-        
-    </div> 
-
-    
-    
-
+    </div>
 {% endblock %}
