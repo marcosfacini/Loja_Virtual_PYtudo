@@ -4,22 +4,36 @@
 {% block 'title' %}PYTudo{% endblock %}
 
 {% block 'head' %} 
-    <link href="{% static 'usuarios/css/criar_gerente.css' %}" rel="stylesheet">
+    <link href="{% static 'gestao/css/criar_gerente.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block 'body' %}
 
-    <form action="{%url 'salvar_gerente'%}" method="POST" > {%csrf_token%}
-        <label>Email:</label>
-        <input type="email" class="form-control" name="email">
+<div class="container-fluid d-sm-flex align-items-stretch px-0">
+    {% include "menu_gerente.html" %}
+  
+    <div class="container px-5 py-4">
+        <div class="text-center mt-1">
+            <h2>Criar Gerente</h2>
+        </div>
 
-        <label>Senha provisória:</label>
-        <input type="text" class="form-control" name="senha_provisoria" placeholder="Digite a senha provisória">
+        <div class="d-flex justify-content-center">
+            <form action="{% url 'salvar_gerente' %}" method="POST" class="form-control w-50"> {%csrf_token%}
+                <label>Email:</label>
+                <input type="email" class="form-control mb-2" name="email">
+        
+                <label>Senha provisória:</label>
+                <input type="password" class="form-control mb-2" name="senha_provisoria" placeholder="Digite a senha provisória">
+        
+                <label>Repita a senha novamente:</label>
+                <input type="password" class="form-control mb-2" name="senha_provisoria2" placeholder="Digite a senha provisória">
+                <div class="d-flex justify-content-center">
+                    <input type="submit" value="CADASTRAR" class="btn">
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <input type="submit" value="CADASTRAR" class="btn btn-success">
-
-    </form>
-
-
+</div>
 
 {% endblock %}

@@ -11,6 +11,9 @@ from .models import Banner
 from vendas.models import CupomDesconto
 from checkout.models import Pedido
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
+from django.contrib.auth.password_validation import validate_password
 
 @login_required
 def criar_gerente(request):
@@ -20,18 +23,22 @@ def criar_gerente(request):
         messages.add_message(request, constants.ERROR, 'Você não tem permissão para executar essa função.')
         return redirect('home')
 
-
 @login_required
 def salvar_gerente(request):
     if request.user.is_superuser:
         email = request.POST.get('email')
         senha_provisoria = request.POST.get('senha_provisoria')
-        gerente = User.objects.create_user(username=email,
-                                    email=email,
-                                    password=senha_provisoria)
-        assign_role(gerente, 'gerente')
-        messages.add_message(request, constants.SUCCESS, 'Gerente cadastrado com sucesso')
-        return redirect('home')
+        senha_provisoria2 = request.POST.get('senha_provisoria2')
+
+        if validar_formulario_gerente(request, email, senha_provisoria, senha_provisoria2):
+            gerente = User.objects.create_user(username=email,
+                                        email=email,
+                                        password=senha_provisoria)
+            assign_role(gerente, 'gerente')
+            messages.add_message(request, constants.SUCCESS, 'Gerente cadastrado com sucesso')
+            return redirect('home')
+        else:
+            return redirect('criar_gerente')
     else:
         messages.add_message(request, constants.ERROR, 'Você não tem permissão para executar essa função.')
         return redirect('home')
@@ -287,5 +294,22 @@ def consultar_pedidos(request):
     pedidos = paginacao.get_page(page)
     return render(request, 'consultar_pedidos.html', {'pedidos': pedidos})
 
+def validar_formulario_gerente(request, email, senha1, senha2):
+   try:
+       EmailValidator()(email)
+   except ValidationError as error:
+        messages.add_message(request, constants.ERROR, f'{error}')
+        return False
 
+   if senha1 != senha2:
+        messages.add_message(request, constants.ERROR, 'As senhas precisam ser iguais.')
+        return False
+   
+   try:
+       validate_password(senha1)
+   except ValidationError as error:
+        messages.add_message(request, constants.ERROR, f'{error}')
+        return False
+
+   return True
 

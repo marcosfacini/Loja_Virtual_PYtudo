@@ -1,0 +1,15 @@
+.sidebar a {
+    text-decoration: none; 
+    color: #fff;
+}
+
+.sidebar a:hover {
+    color: var(--pink); 
+}
+
+/* media queries */
+@media (max-width: 576px) {
+    .sidebar {
+        text-align: center;
+    }
+}

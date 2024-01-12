@@ -4,6 +4,9 @@
       <hr class="mt-0 mb-4 text-white">
         <ul class="list-unstyled mb-2">
             <li class="my-3">
+                <a href="{% url 'painel_controle' %}"><span class="fa fa-eye mr-3"></span> Painel de Controle </a>
+            </li>
+            <li class="my-3">
                 <a href="{% url 'adm_estoque' %}"><span class="fa fa-building mr-3"></span> Estoque </a>
             </li>
             <li class="my-3">
@@ -27,6 +30,11 @@
             <li class="my-3">
                 <a href="{% url 'gerenciar_cupons' %}"><span class="fa fa-tags mr-3"></span> Cupons </a>
             </li>
+            {% if request.user.is_superuser %}
+            <li class="my-3">
+                <a href="{% url 'criar_gerente' %}"><span class="fa fa-address-card mr-3"></span> Criar Gerente </a>
+            </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
