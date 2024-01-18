@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 import json, requests
 from django.contrib import messages
 from django.contrib.messages import constants
@@ -9,6 +9,9 @@ from produtos.models import Produtos
 from .models import Pedido, ItensPedido
 from decimal import Decimal
 from datetime import datetime, timedelta
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import PedidoSerializer
 
 
 @login_required
@@ -137,6 +140,9 @@ def pagamento_credito(request):
     if erro:
         messages.add_message(request, constants.ERROR, string_do_erro)
         return redirect(f'/checkout/checkout')
+    pedido.status = reqs.json()['charges'][0]['status']
+    pedido.save()
+    deletar_session(request)
     return redirect(f'/usuarios/ver_pedido/{pedido.id}')
 
 def pagamento_boleto(request):
@@ -235,6 +241,7 @@ def pagamento_boleto(request):
         return redirect(f'/checkout/checkout')
     pedido.link_pagamento = reqs.json()["charges"][0]['links'][0]['href']
     pedido.save()
+    deletar_session(request)
     return redirect(f'/usuarios/ver_pedido/{pedido.id}')
 
 def pagamento_pix(request):
@@ -306,6 +313,7 @@ def pagamento_pix(request):
         return redirect(f'/checkout/checkout')
     pedido.link_pagamento = reqs.json()['qr_codes'][0]['links'][0]['href']
     pedido.save()
+    deletar_session(request)
     return redirect(f'/usuarios/ver_pedido/{pedido.id}')
 
 def itens_carrinho(request):
@@ -362,13 +370,6 @@ def itens_pedidos(request, pedido):
         ItensPedido.objects.create(pedido=pedido, produto_id=int(produto_id), quantidade=quantidade)
     return pedido
 
-def subtrair_produto_estoque(request, id):
-    produto = Produtos.objects.get(id=id)
-    unidades_vendidas = int(request.POST.get('quantidade'))
-    produto.quantidade  = produto.quantidade - unidades_vendidas
-    produto.save()
-    return produto.quantidade
-
 def data_vencimento(dias):
     data_atual = datetime.now()
     data_vencimento = data_atual + timedelta(days=dias)
@@ -393,3 +394,34 @@ def validar_erro_pedido(response_do_pedido, id_pedido):
             string_do_erro = 'Erro ao realizar o pedido. Por favor revise os dados e tente novamente.'
         return True, string_do_erro
     return False, string_do_erro
+
+def deletar_session(request):
+    del request.session['carrinho']
+    request.session.modified = True
+    if 'cupom' in request.session:
+        del request.session['cupom']
+        request.session.modified = True
+    return None
+
+@api_view(['POST'])
+def notificacao_pagseguro(request):
+    mensagem_de_status = request.data['charges'][0]['status']
+    if mensagem_de_status:
+        print(mensagem_de_status)
+        id_pedido = request.data['charges'][0]['reference_id']
+        print(id_pedido)
+        pedido = Pedido.objects.get(id=id_pedido)
+        pedido.mensagem_de_erro = mensagem_de_status
+        pedido.save()
+        if mensagem_de_status == 'PAID':
+            pass
+        return Response({'message': 'Mensagem recebida e status atualizado.'})
+    else:
+        return Response({'message': 'Erro.'})
+    
+def subtrair_produto_estoque(request, id):
+    produto = Produtos.objects.get(id=id)
+    unidades_vendidas = int(request.POST.get('quantidade'))
+    produto.quantidade  = produto.quantidade - unidades_vendidas
+    produto.save()
+    return produto.quantidade
