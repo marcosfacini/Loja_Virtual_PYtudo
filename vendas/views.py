@@ -4,6 +4,7 @@ from vendas.models import ListaDesejo
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.messages import constants 
+from rolepermissions.decorators import has_role_decorator
 from django.contrib.auth.decorators import login_required
 from .forms import FormCupomDesconto
 from .models import CupomDesconto 
@@ -119,6 +120,7 @@ def excluir_do_carrinho(request, id_produto):
     request.session.modified = True
     return redirect('carrinho')
 
+@has_role_decorator('gerente')
 def criar_cupom(request):
     if request.method == 'POST':
         form = FormCupomDesconto(request.POST)
@@ -155,7 +157,7 @@ def validar_cupom(request):
     
     request.session['cupom'] = {}
     desconto = request.session['cupom']
-    desconto['desconto'] = [cupom.desconto, cupom.tipo_desconto]
+    desconto['desconto'] = [cupom.desconto, cupom.tipo_desconto, cupom.id]
     request.session.modified = True
     
     messages.add_message(request, constants.SUCCESS, f'Cupom {cupom.codigo} adicionado.')
