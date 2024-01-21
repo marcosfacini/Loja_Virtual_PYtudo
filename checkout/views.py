@@ -6,12 +6,12 @@ from usuarios.models import Usuarios
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from produtos.models import Produtos
+from vendas.models import CupomDesconto
 from .models import Pedido, ItensPedido
 from decimal import Decimal
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import PedidoSerializer
 
 
 @login_required
@@ -23,6 +23,8 @@ def checkout(request):
         return redirect(f'/usuarios/info_adicional_usuario')
     #chave_publica = {}
     #chave_publica['publicKey'] = get_chave_publica()
+    if verificar_estoque(request) == False:
+        return redirect(f'/vendas/carrinho')
     chave_publica = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr+ZqgD892U9/HXsa7XqBZUayPquAfh9xx4iwUbTSUAvTlmiXFQNTp0Bvt/5vK2FhMj39qSv1zi2OuBjvW38q1E374nzx6NNBL5JosV0+SDINTlCG0cmigHuBOyWzYmjgca+mtQu4WczCaApNaSuVqgb8u7Bd9GCOL4YJotvV5+81frlSwQXralhwRzGhj/A57CGPgGKiuPT+AOGmykIGEZsSD9RKkyoKIoc0OS8CPIzdBOtTQCIwrLn2FxI83Clcg55W8gkFSOS6rWNbG5qFZWMll6yl02HtunalHmUlRUL66YeGXdMDC2PuRcmZbGO5a/2tbVppW6mfSWG3NPRpgwIDAQAB'
     return render(request, 'checkout.html', {'chave_publica': chave_publica})
 
@@ -67,6 +69,8 @@ def pagamento_credito(request):
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para finalizar a compra.')
         return redirect(f'/usuarios/info_adicional_usuario')
     
+    if verificar_estoque(request) == False:
+        return redirect(f'/vendas/carrinho')
     pedido = criar_pedido(request, usuario.id)
     itens_pedidos(request, pedido)
     
@@ -142,6 +146,7 @@ def pagamento_credito(request):
         return redirect(f'/checkout/checkout')
     pedido.status = reqs.json()['charges'][0]['status']
     pedido.save()
+    subtrair_do_estoque(request)
     deletar_session(request)
     return redirect(f'/usuarios/ver_pedido/{pedido.id}')
 
@@ -155,6 +160,8 @@ def pagamento_boleto(request):
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para finalizar a compra.')
         return redirect(f'/usuarios/info_adicional_usuario')
     
+    if verificar_estoque(request) == False:
+        return redirect(f'/vendas/carrinho')
     pedido = criar_pedido(request, usuario.id)
     itens_pedidos(request, pedido)
     
@@ -241,6 +248,7 @@ def pagamento_boleto(request):
         return redirect(f'/checkout/checkout')
     pedido.link_pagamento = reqs.json()["charges"][0]['links'][0]['href']
     pedido.save()
+    subtrair_do_estoque(request)
     deletar_session(request)
     return redirect(f'/usuarios/ver_pedido/{pedido.id}')
 
@@ -254,6 +262,8 @@ def pagamento_pix(request):
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para finalizar a compra.')
         return redirect(f'/usuarios/info_adicional_usuario')
     
+    if verificar_estoque(request) == False:
+        return redirect(f'/vendas/carrinho')
     pedido = criar_pedido(request, usuario.id)
     itens_pedidos(request, pedido)
 
@@ -313,6 +323,7 @@ def pagamento_pix(request):
         return redirect(f'/checkout/checkout')
     pedido.link_pagamento = reqs.json()['qr_codes'][0]['links'][0]['href']
     pedido.save()
+    subtrair_do_estoque(request)
     deletar_session(request)
     return redirect(f'/usuarios/ver_pedido/{pedido.id}')
 
@@ -399,29 +410,43 @@ def deletar_session(request):
     del request.session['carrinho']
     request.session.modified = True
     if 'cupom' in request.session:
+        cupom = request.session['cupom']
+        id_cupom = int(cupom['desconto'][2])
+        cupom = CupomDesconto.objects.get(id=id_cupom)
+        cupom.quantidade = cupom.quantidade - 1
+        cupom.save()
         del request.session['cupom']
         request.session.modified = True
-    return None
+    return True
 
 @api_view(['POST'])
 def notificacao_pagseguro(request):
-    mensagem_de_status = request.data['charges'][0]['status']
-    if mensagem_de_status:
-        print(mensagem_de_status)
+    try:
+        alteracao_de_status = request.data['charges'][0]['status']
         id_pedido = request.data['charges'][0]['reference_id']
-        print(id_pedido)
         pedido = Pedido.objects.get(id=id_pedido)
-        pedido.mensagem_de_erro = mensagem_de_status
+        pedido.status = alteracao_de_status
         pedido.save()
-        if mensagem_de_status == 'PAID':
-            pass
         return Response({'message': 'Mensagem recebida e status atualizado.'})
-    else:
+    except: 
         return Response({'message': 'Erro.'})
     
-def subtrair_produto_estoque(request, id):
-    produto = Produtos.objects.get(id=id)
-    unidades_vendidas = int(request.POST.get('quantidade'))
-    produto.quantidade  = produto.quantidade - unidades_vendidas
-    produto.save()
-    return produto.quantidade
+def verificar_estoque(request):
+    produtos_ids = list(request.session['carrinho'].keys())
+    quantidades_pedidas = list(request.session['carrinho'].values())
+    produtos = Produtos.objects.filter(id__in=produtos_ids)
+    for produto, quantidade_pedida in zip(produtos, quantidades_pedidas):
+        if produto.quantidade < quantidade_pedida:
+            messages.add_message(request, constants.ERROR, f'Você pediu {quantidade_pedida} unidades. Atualmene o produto {produto.nome} tem somente {produto.quantidade} em estoque. Desculpe o incoveniente.')
+            return False
+    return True
+
+def subtrair_do_estoque(request):
+    produtos_ids = list(request.session['carrinho'].keys())
+    quantidades = list(request.session['carrinho'].values())
+    for p, q in zip(produtos_ids, quantidades):
+        produto = Produtos.objects.get(id=p)
+        produto.quantidade  = produto.quantidade - q
+        produto.save()
+    return True
+    
