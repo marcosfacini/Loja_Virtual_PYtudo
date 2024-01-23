@@ -434,10 +434,10 @@ def notificacao_pagseguro(request):
 def verificar_estoque(request):
     produtos_ids = list(request.session['carrinho'].keys())
     quantidades_pedidas = list(request.session['carrinho'].values())
-    produtos = Produtos.objects.filter(id__in=produtos_ids)
-    for produto, quantidade_pedida in zip(produtos, quantidades_pedidas):
-        if produto.quantidade < quantidade_pedida:
-            messages.add_message(request, constants.ERROR, f'Você pediu {quantidade_pedida} unidades. Atualmene o produto {produto.nome} tem somente {produto.quantidade} em estoque. Desculpe o incoveniente.')
+    for p, q in zip(produtos_ids, quantidades_pedidas):
+        produto = Produtos.objects.get(id=int(p))
+        if produto.quantidade < q:
+            messages.add_message(request, constants.ERROR, f'Você pediu {q} unidades. Atualmene o produto {produto.nome} tem somente {produto.quantidade} em estoque. Desculpe o incoveniente.')
             return False
     return True
 
