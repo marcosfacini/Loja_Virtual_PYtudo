@@ -40,12 +40,12 @@
 
           <p> 
             <label for="preco_de_custo">Preço de Custo:</label>
-            <input style="width: 40%;" class="form-control" id="preco_de_custo" type="texte"  value="{{produto.preco_de_custo}}" name="preco_de_custo">
+            <input style="width: 40%;" class="form-control" id="preco_de_custo" type="text"  value="{{produto.preco_de_custo}}" name="preco_de_custo">
           </p>
   
           <p> 
             <label>Preço:</label>
-            <input style="width: 40%;" class="form-control" id="preco" type="texte"  value="{{produto.preco}}" name="preco">
+            <input style="width: 40%;" class="form-control" id="preco" type="text"  value="{{produto.preco}}" name="preco">
           </p>
   
           <label>Categoria:</label>
@@ -59,24 +59,56 @@
                 <option value="{{categoria.id}}">{{categoria}}</option>
               {% endif %}
             {% endfor %}
-            
           </select>
         <br>
 
         <p> 
           <label>Marca:</label>
-          <input style="width: 40%;" class="form-control" type="texte"  value="{{produto.marca}}" name="marca" maxlength="50">
+          <input style="width: 40%;" class="form-control" type="text"  value="{{produto.marca}}" name="marca" maxlength="50">
         </p>
 
         <p> 
           <label>Cor:</label>
-          <input style="width: 40%;" class="form-control" type="texte"  value="{{produto.cor}}" name="cor" maxlength="30">
+          <input style="width: 40%;" class="form-control" type="text"  value="{{produto.cor}}" name="cor" maxlength="30">
         </p>
 
         <p> 
           <label>Quantidade:</label>
           <input style="width: 40%;" class="form-control" type="number"  value="{{produto.quantidade}}" name="quantidade">
         </p>
+
+        <label>Frete Grátis:</label>
+          <select style="width: 20%;" class="form-control" name="frete_gratis">
+            {% if produto.frete_gratis %}
+              <option value="sim" selected>Sim</option>
+              <option value="nao">Não</option>
+            {% else %}
+              <option value="nao" selected>Não</option>
+              <option value="sim">Sim</option>
+            {% endif %}
+          </select>
+        <br>
+
+        <p> 
+          <label>Altura:</label>
+          <input style="width: 40%;" class="form-control" id="altura" type="text"  value="{{produto.altura}}" name="altura">
+        </p>
+
+        <p> 
+          <label>Largura:</label>
+          <input style="width: 40%;" class="form-control" id="largura" type="text"  value="{{produto.largura}}" name="largura">
+        </p>
+
+        <p> 
+          <label>Profundidade:</label>
+          <input style="width: 40%;" class="form-control" id="profundidade" type="text"  value="{{produto.profundidade}}" name="profundidade">
+        </p>
+
+        <p> 
+          <label>Peso:</label>
+          <input style="width: 40%;" class="form-control" id="peso" type="text"  value="{{produto.peso}}" name="peso">
+        </p>
+
 
         <input type="submit" class="btn btn-success btn-lg" value="Alterar">
 
@@ -169,6 +201,10 @@
         $(document).ready(function(){
           $('#preco_de_custo').mask('000000,00', {reverse: true});
           $('#preco').mask('000000,00', {reverse: true});
+          $('#altura').mask('000,00', {reverse: true});
+          $('#largura').mask('000,00', {reverse: true});
+          $('#profundidade').mask('000,00', {reverse: true});
+          $('#peso').mask('000,00', {reverse: true});
 
         });
 

@@ -1,10 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from cpf_field.models import CPFField
 from django.utils import timezone
-from datetime import date
 
 class Usuarios(models.Model):
     ESTADOS_BRASILEIROS = (

@@ -13,6 +13,20 @@
       <table>
         {{form.media}}
         {{form.as_table}}
+        {% if form.errors %}
+          {% for field in form %}
+              {% for error in field.errors %}
+                  <div class="alert alert-danger">
+                      <strong>{{ error|escape }}</strong>
+                  </div>
+              {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+              <div class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+              </div>
+          {% endfor %}
+        {% endif %}
       </table>
       
       <input class="btn btn-success" type="submit" value="Enviar">
@@ -27,6 +41,10 @@
         $(document).ready(function(){
           $('#id_preco_de_custo').mask('000000,00', {reverse: true});
           $('#id_preco').mask('000000,00', {reverse: true});
+          $('#id_altura').mask('000,00', {reverse: true});
+          $('#id_largura').mask('000,00', {reverse: true});
+          $('#id_profundidade').mask('000,00', {reverse: true});
+          $('#id_peso').mask('000,00', {reverse: true});
 
         });
 

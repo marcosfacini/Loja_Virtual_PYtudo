@@ -142,7 +142,16 @@
                     <div class="buttons d-flex flex-row mt-5 gap-3">	
                         <button id="comprarButton" class="btn btn-outline-dark" data-href="{% url 'adicionar_ao_carrinho' produto.id %}">Comprar</button>
                         <button id="listaDesejoButton" class="btn btn-dark" data-href="{% url 'adicionar_na_lista_desejo' produto.id %}">Lista de desejo</button>
-                    </div>	
+                    </div>
+                    {% if produto.frete_gratis %}
+                    <div class="div_cep mt-5">
+                        <form method="POST" action="{% url 'calcular_frete_produto' produto.id %}" class="input-group" id="form_cep">
+                            {% csrf_token %}
+                            <input type="text" class="form-control" name="cep" id="cep" placeholder="Digite o CEP">
+                            <button type="submit" class="btn">Calcular</button>
+                        </form>
+                    </div>
+                    {% endif %}
                 </div>	
             </div>	
         </div>	
@@ -354,41 +363,10 @@
 	
 </div>
 
-        <script>
-            function changeImage(element) {
-        
-                var main_prodcut_image = document.getElementById('main_product_image');
-                main_prodcut_image.src = element.src;
-                
-          }
+{% endblock %}
 
-          
-            document.addEventListener('DOMContentLoaded', function() {
-                // Obtenha os botões pelo ID
-                var comprarButton = document.getElementById('comprarButton');
-                var listaDesejoButton = document.getElementById('listaDesejoButton');
-            
-                // Adicione um ouvinte de evento de clique aos botões
-                comprarButton.addEventListener('click', function() {
-                    var href = comprarButton.getAttribute('data-href');
-                    if (href) {
-                        window.location.href = href; // Redirecione para o URL do botão 'Comprar'
-                    }
-                });
-            
-                listaDesejoButton.addEventListener('click', function() {
-                    var href = listaDesejoButton.getAttribute('data-href');
-                    if (href) {
-                        window.location.href = href; // Redirecione para o URL do botão 'Lista de Desejo'
-                    }
-                });
-            });
-        
-            
-
-            </script>
-        
-
-   
-
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="{% static 'produtos/js/ver_produto.js' %}"></script>
 {% endblock %}

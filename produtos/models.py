@@ -14,7 +14,7 @@ class Categoria(models.Model):
 
 class Produtos(models.Model):
     nome = models.CharField(max_length=40)
-    descricao = models.TextField()
+    descricao = models.TextField(blank=True, null=True)
     preco_de_custo = models.DecimalField(max_digits=8, decimal_places=2)
     preco = models.DecimalField(max_digits=8, decimal_places=2)
     categoria = models.ForeignKey(Categoria, blank=True, null=True, on_delete=models.SET_NULL)
@@ -25,6 +25,11 @@ class Produtos(models.Model):
     data_atualizacao = models.DateTimeField(auto_now=True, null=True)
     imagem_principal = models.ImageField(upload_to ='produtos/', blank=True, null=True)
     especificacao = RichTextUploadingField(blank=True, null=True)
+    frete_gratis = models.BooleanField(default=False)
+    altura = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    largura = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    profundidade = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    peso = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
 
     def __str__(self):

@@ -67,38 +67,32 @@ def listar_produtos(request):
 def cadastrar_produto(request):
     if request.method == 'POST':
         form = CadastrarProduto(request.POST, request.FILES)
-        nome = request.POST.get('nome')
-        descricao = request.POST.get('descricao')
-        preco_de_custo = request.POST.get('preco_de_custo')
-        preco_de_custo_in_decimal = Decimal(preco_de_custo.replace(',','.'))
-        preco = request.POST.get('preco')
-        preco_in_decimal = Decimal(preco.replace(',','.'))
-        categoria = request.POST.get('categoria')
-        marca = request.POST.get('marca')
-        cor = request.POST.get('cor')
-        quantidade = request.POST.get('quantidade')
-        imagem_principal = request.FILES.get('imagem_principal')
-        especificacao = request.POST.get('especificacao')
+        if form.is_valid():
+            produto = Produtos(nome=request.POST.get('nome'), 
+                            descricao=request.POST.get('descricao'), 
+                            preco_de_custo=convercao_decimal_or_none(request.POST.get('preco_de_custo')), 
+                            preco=convercao_decimal_or_none(request.POST.get('preco')), 
+                            categoria_id=request.POST.get('categoria'), 
+                            marca=request.POST.get('marca'), 
+                            cor=request.POST.get('cor'), 
+                            quantidade=request.POST.get('quantidade'),
+                            imagem_principal=request.FILES.get('imagem_principal'),
+                            especificacao=request.POST.get('especificacao'),
+                            frete_gratis=form.cleaned_data['frete_gratis'],
+                            altura=convercao_decimal_or_none(request.POST.get('altura')),
+                            largura=convercao_decimal_or_none(request.POST.get('largura')),
+                            profundidade=convercao_decimal_or_none(request.POST.get('profundidade')),
+                            peso=convercao_decimal_or_none(request.POST.get('peso'))
+                            )
+            produto.save()
 
-        produto = Produtos(nome=nome, 
-                           descricao=descricao, 
-                           preco_de_custo=preco_de_custo_in_decimal, 
-                           preco=preco_in_decimal, 
-                           categoria_id=categoria, 
-                           marca=marca, 
-                           cor=cor, 
-                           quantidade=quantidade,
-                           imagem_principal=imagem_principal,
-                           especificacao=especificacao)
-        produto.save()
-
-        imagens = request.FILES.getlist('outras_imagens')
-        if imagens:
-            for img in imagens:
-                imagem = Imagens(produto=produto, foto=img)
-                imagem.save()
-        messages.add_message(request, constants.SUCCESS, 'Produto salvo com sucesso.')
-        return redirect('/gestao/adm_estoque')
+            imagens = request.FILES.getlist('outras_imagens')
+            if imagens:
+                for img in imagens:
+                    imagem = Imagens(produto=produto, foto=img)
+                    imagem.save()
+            messages.add_message(request, constants.SUCCESS, 'Produto salvo com sucesso.')
+            return redirect('/gestao/adm_estoque')
     else:
         form = CadastrarProduto()
     return render(request, 'cadastrar_produto.html', {'form': form})
@@ -170,16 +164,10 @@ def alterar_produto(request, id):
                                                         'form_especificacao': form_especificacao})
     elif request.method == 'POST':
         produto = Produtos.objects.get(id=id)
-        nome = request.POST.get('nome')
-        produto.nome = nome
-        descricao = request.POST.get('descricao')
-        produto.descricao = descricao
-        preco_de_custo = request.POST.get('preco_de_custo')
-        preco_de_custo_in_decimal = Decimal(preco_de_custo.replace(',','.'))
-        produto.preco_de_custo = preco_de_custo_in_decimal
-        preco = request.POST.get('preco')
-        preco_in_decimal = Decimal(preco.replace(',','.'))
-        produto.preco = preco_in_decimal
+        produto.nome = request.POST.get('nome')
+        produto.descricao = request.POST.get('descricao')
+        produto.preco_de_custo = convercao_decimal_or_none(request.POST.get('preco_de_custo'))
+        produto.preco = convercao_decimal_or_none(request.POST.get('preco'))
 
         categoria = request.POST.get('categoria')
         if categoria == '':
@@ -189,12 +177,19 @@ def alterar_produto(request, id):
             categoria_by_id = Categoria.objects.get(id=categoria)
             produto.categoria = categoria_by_id
         
-        marca = request.POST.get('marca')
-        produto.marca = marca
-        cor = request.POST.get('cor')
-        produto.cor = cor
-        quantidade = request.POST.get('quantidade')
-        produto.quantidade = quantidade
+        produto.marca = request.POST.get('marca')
+        produto.cor = request.POST.get('cor')
+        produto.quantidade = request.POST.get('quantidade')
+        if request.POST.get('frete_gratis') == 'sim':
+            frete_gratis = True
+        else:
+            frete_gratis = False
+        produto.frete_gratis = frete_gratis
+        produto.altura = convercao_decimal_or_none(request.POST.get('altura'))
+        produto.largura = convercao_decimal_or_none(request.POST.get('largura'))
+        produto.profundidade = convercao_decimal_or_none(request.POST.get('profundidade'))
+        produto.peso = convercao_decimal_or_none(request.POST.get('peso'))
+        
         produto.save()
         messages.add_message(request, constants.SUCCESS, 'Produto atualizado com sucesso.')
         return redirect(f'/produtos/alterar_produto/{id}')
@@ -261,6 +256,29 @@ def atualizar_especificacao(request, id):
     produto.save()
     messages.add_message(request, constants.SUCCESS, 'Especificação atualizada com sucesso.')
     return redirect(f'/produtos/alterar_produto/{id}')
+
+def convercao_decimal_or_none(campo_do_form):
+    if campo_do_form == '':
+        campo_do_form = None
+    else:
+        campo_do_form = Decimal(campo_do_form.replace(',','.'))
+    return campo_do_form
+
+def calcular_frete_produto(request, id_produto):
+    cep = validar_cep(request.POST.get('cep'))
+    if cep:
+        produto = Produtos.objects.get(id=id_produto)
+        return redirect(f'/produtos/ver_produto/{id_produto}')
+    else:
+        messages.add_message(request, constants.ERROR, 'CPF INVÁLIDO.')
+        return redirect(f'/produtos/ver_produto/{id_produto}')
+
+def validar_cep(cep):
+    cep = cep.replace('-', '')
+    if cep.isdigit() and len(cep) == 8:
+        return cep
+    else:
+        return None
 
 def teste(request):
     categorias = Categoria.objects.all()

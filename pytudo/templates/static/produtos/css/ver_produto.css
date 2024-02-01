@@ -139,6 +139,10 @@
             transform: scale(1.2);
 }
 
+#form_cep {
+    width: 80%;
+}
+
 /* media queries */
 @media (max-width: 768px) {
     .main_image{
@@ -153,6 +157,14 @@
         width: auto;
     }
 }
+
+@media (max-width: 440px) {
+    .div_cep {
+        display: flex;
+        justify-content: center;
+    }
+}
+
 
 
 

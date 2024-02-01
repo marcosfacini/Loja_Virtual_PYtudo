@@ -17,5 +17,6 @@ urlpatterns = [
     path('excluir_imagem_principal/<int:id_produto>', views.excluir_imagem_principal, name='excluir_imagem_principal'),
     path('excluir_avaliacao/<int:id_avaliacao>/<int:id_produto>', views.excluir_avaliacao, name='excluir_avaliacao'),
     path('atualizar_especificacao/<int:id>', views.atualizar_especificacao, name='atualizar_especificacao'),
+    path('calcular_frete_produto/<int:id_produto>', views.calcular_frete_produto, name='calcular_frete_produto'),
     path('teste/', views.teste, name='teste'),
 ]
