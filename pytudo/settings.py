@@ -93,12 +93,18 @@ if DEVELOPMENT_MODE is True:
             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
         }
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if os.getenv("DATABASE_URL", None) is None:
-        raise Exception("DATABASE_URL environment variable not defined")
+else:
     DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    'default': {
+        'ENGINE': os.getenv("DB_ENGINE", "django.db.backends.postgresql_psycopg2"),
+        'NAME': os.getenv("POSTGRES_DB", "pytudo_db"),
+        'USER': os.getenv("POSTGRES_USER", "pytudo_usuario"),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD", "pytudo_senha"),
+        'HOST': os.getenv("POSTGRES_HOST", "localhost"),
+        'PORT': os.getenv("POSTGRES_PORT", "5432"),
+        }
     }
+
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`

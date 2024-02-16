@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  djangoapp:
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/
+    env_file:
+      - .env
+    depends_on:
+      - postgres_prod_db
+
+  postgres_prod_db:
+    image: postgres:16.2-alpine3.18
+    container_name: postgres_prod_db
+    volumes:
+      - postgres_prod_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+
+
+volumes:
+  postgres_prod_data:
+  static-data:
+  media-data:
