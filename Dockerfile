@@ -11,6 +11,7 @@ ENV PYTHONUNBUFFERED 1
 
 # Copy the entire local project into the container
 COPY . .
+COPY scripts /scripts
 
 # Create and activate virtual environment
 RUN python -m venv /venv

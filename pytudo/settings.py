@@ -96,12 +96,12 @@ if DEVELOPMENT_MODE is True:
 else:
     DATABASES = {
     'default': {
-        'ENGINE': os.getenv("DB_ENGINE", "django.db.backends.postgresql_psycopg2"),
-        'NAME': os.getenv("POSTGRES_DB", "pytudo_db"),
-        'USER': os.getenv("POSTGRES_USER", "pytudo_usuario"),
-        'PASSWORD': os.getenv("POSTGRES_PASSWORD", "pytudo_senha"),
-        'HOST': os.getenv("POSTGRES_HOST", "localhost"),
-        'PORT': os.getenv("POSTGRES_PORT", "5432"),
+        'ENGINE': os.getenv("DB_ENGINE"),
+        'NAME': os.getenv("POSTGRES_DB"),
+        'USER': os.getenv("POSTGRES_USER"),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+        'HOST': os.getenv("POSTGRES_HOST"),
+        'PORT': os.getenv("POSTGRES_PORT"),
         }
     }
 

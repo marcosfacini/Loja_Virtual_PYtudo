@@ -2,7 +2,7 @@ __pycache__/*
 venv/
 db.sqlite3
 media/
-static/
+staticfiles/
 .gitignore
 README.md 
 TODO.txt
