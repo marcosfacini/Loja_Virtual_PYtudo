@@ -20,18 +20,11 @@ ENV PATH="/scripts:/venv/bin:$PATH"
 # Install dependencies
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt && \
-    adduser --disabled-password --no-create-home duser && \
     mkdir -p /staticfiles && \
     mkdir -p /media && \
-    chown -R duser:duser /venv && \
-    chown -R duser:duser /staticfiles && \
-    chown -R duser:duser /media && \
-    chmod -R 755 /staticfiles && \
-    chmod -R 755 /media && \
+    chmod -R 775 /staticfiles && \
+    chmod -R 775 /media && \
     chmod -R +x /scripts
-
-
-USER duser
 
 EXPOSE 8000
 
