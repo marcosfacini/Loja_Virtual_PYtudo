@@ -4,14 +4,25 @@ services:
   djangoapp:
     build:
       context: .
-    ports:
-      - 8000:8000
+    expose:
+      - 8000
     volumes:
-      - .:/pytudo_docker
+      - staticfiles:/staticfiles
+      - media:/media
     env_file:
       - .env
     depends_on:
       - postgres_prod_db
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - staticfiles:/staticfiles
+      - media:/media
+    ports:
+      - "80:80"
+    depends_on:
+      - djangoapp
 
   postgres_prod_db:
     image: postgres:16.2-alpine3.18
@@ -25,5 +36,5 @@ services:
 
 volumes:
   postgres_prod_data:
-  static-data:
-  media-data:
+  staticfiles:
+  media:
