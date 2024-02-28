@@ -13,4 +13,4 @@ echo "Postgres iniciado com sucesso ($POSTGRES_HOST $POSTGRES_PORT)"
 python manage.py collectstatic --noinput
 python manage.py makemigrations --noinput
 python manage.py migrate --noinput
-gunicorn pytudo_docker.wsgi:application --bind 0.0.0.0:8000
+gunicorn pytudo.wsgi:application --bind 0.0.0.0:8000
