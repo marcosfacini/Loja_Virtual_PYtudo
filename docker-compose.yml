@@ -7,8 +7,8 @@ services:
     expose:
       - 8000
     volumes:
-      - staticfiles:/staticfiles
-      - media:/media
+      - staticfiles:/pytudo_docker/staticfiles
+      - media:/pytudo_docker/media
     env_file:
       - .env
     depends_on:
@@ -17,8 +17,8 @@ services:
   nginx:
     build: ./nginx
     volumes:
-      - staticfiles:/staticfiles
-      - media:/media
+      - staticfiles:/pytudo_docker/staticfiles
+      - media:/pytudo_docker/media
     ports:
       - "80:80"
     depends_on:
