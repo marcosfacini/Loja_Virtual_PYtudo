@@ -2,8 +2,6 @@ from pathlib import Path
 import os 
 from django.contrib.messages import constants
 from django.core.management.utils import get_random_secret_key
-import sys
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,26 +82,17 @@ WSGI_APPLICATION = 'pytudo.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "True") == "True" 
 
-if DEVELOPMENT_MODE is True:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
+DATABASES = {
+'default': {
+    'ENGINE': os.getenv("DB_ENGINE"),
+    'NAME': os.getenv("POSTGRES_DB"),
+    'USER': os.getenv("POSTGRES_USER"),
+    'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+    'HOST': os.getenv("POSTGRES_HOST"),
+    'PORT': os.getenv("POSTGRES_PORT"),
     }
-else:
-    DATABASES = {
-    'default': {
-        'ENGINE': os.getenv("DB_ENGINE"),
-        'NAME': os.getenv("POSTGRES_DB"),
-        'USER': os.getenv("POSTGRES_USER"),
-        'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
-        'HOST': os.getenv("POSTGRES_HOST"),
-        'PORT': os.getenv("POSTGRES_PORT"),
-        }
-    }
+}
 
 
 AUTHENTICATION_BACKENDS = [
