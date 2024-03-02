@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'cpf_field',
     'ckeditor',
     'ckeditor_uploader',
-    'storages',
     'rest_framework',
 ]
 
