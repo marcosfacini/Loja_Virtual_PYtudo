@@ -181,18 +181,4 @@ PHONENUMBER_DEFAULT_REGION = 'BR'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/' 
 
-USE_SPACES = os.getenv('USE_SPACES', "False") == 'True'
-
-if USE_SPACES:
-    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = 'pytudo-media'
-    AWS_S3_ENDPOINT_URL = 'https://pytudo-media.nyc3.digitaloceanspaces.com'
-    AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',
-    }
-    AWS_DEFAULT_ACL = 'public-read'
-    AWS_S3_SIGNATURE_VERSION = 's3v4'
-    MEDIA_URL = f"https://{AWS_S3_ENDPOINT_URL}/{MEDIA_URL}/"
-    DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
     
