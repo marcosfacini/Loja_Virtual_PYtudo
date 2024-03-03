@@ -111,7 +111,7 @@ def pagamento_credito(request):
             }
         },
         "notification_urls": [
-            "https://meusite.com/notificacoes"
+            "http://www.pytudo.com.br/checkout/notificacao_pagseguro"
         ],
         "charges": [
             {
@@ -202,7 +202,7 @@ def pagamento_boleto(request):
                 }
             },
             "notification_urls": [
-                "https://meusite.com/notificacoes"
+                "http://www.pytudo.com.br/checkout/notificacao_pagseguro"
             ],
             "charges": [
                 {
@@ -312,7 +312,7 @@ def pagamento_pix(request):
           }
         },
         "notification_urls": [
-          "https://meusite.com/notificacoes"
+          "http://www.pytudo.com.br/checkout/notificacao_pagseguro"
         ]
     })
 
@@ -421,6 +421,7 @@ def deletar_session(request):
 
 @api_view(['POST'])
 def notificacao_pagseguro(request):
+    print(request)
     try:
         alteracao_de_status = request.data['charges'][0]['status']
         id_pedido = request.data['charges'][0]['reference_id']
