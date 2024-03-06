@@ -189,7 +189,7 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": "/logs/django/django.log",
+            "filename": "/pytudo_docker/logs/django/django.log",
             "formatter": "app",
         },
     },
