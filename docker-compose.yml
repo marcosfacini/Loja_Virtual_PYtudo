@@ -9,6 +9,7 @@ services:
     volumes:
       - staticfiles:/pytudo_docker/staticfiles
       - media:/pytudo_docker/media
+      - logs:/pytudo_docker/logs
     env_file:
       - .env
     depends_on:
@@ -19,6 +20,7 @@ services:
     volumes:
       - staticfiles:/pytudo_docker/staticfiles
       - media:/pytudo_docker/media
+      - nginx_logs:/pytudo_docker/nginx/logs
     ports:
       - "80:80"
     depends_on:
@@ -38,3 +40,5 @@ volumes:
   postgres_prod_data:
   staticfiles:
   media:
+  logs:
+  nginx_logs:
