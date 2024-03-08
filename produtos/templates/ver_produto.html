@@ -143,14 +143,18 @@
                         <button id="comprarButton" class="btn btn-outline-dark" data-href="{% url 'adicionar_ao_carrinho' produto.id %}">Comprar</button>
                         <button id="listaDesejoButton" class="btn btn-dark" data-href="{% url 'adicionar_na_lista_desejo' produto.id %}">Lista de desejo</button>
                     </div>
-                    {% if produto.frete_gratis %}
-                    <div class="div_cep mt-5">
-                        <form method="POST" action="{% url 'calcular_frete_produto' produto.id %}" class="input-group" id="form_cep">
-                            {% csrf_token %}
-                            <input type="text" class="form-control" name="cep" id="cep" placeholder="Digite o CEP">
-                            <button type="submit" class="btn">Calcular</button>
-                        </form>
-                    </div>
+                    {% if produto.frete_gratis  %}
+                        <div class="mt-4 ms-1">
+                            <h3>Frete Grátis!!!</h3>
+                        </div>
+                    {% else %}
+                        <div class="div_cep mt-5">
+                            <form method="POST" action="{% url 'calcular_frete_produto' produto.id %}" class="input-group" id="form_cep">
+                                {% csrf_token %}
+                                <input type="text" class="form-control" name="cep" id="cep" placeholder="Digite o CEP">
+                                <button type="submit" class="btn">Calcular</button>
+                            </form>
+                        </div>
                     {% endif %}
                 </div>	
             </div>	
@@ -165,18 +169,16 @@
 	</div>
     <hr class="mt-0">
     {% if produto.categoria %}
-        <p>Categoria: {{produto.categoria}}</p>
+        <p><b>Categoria:</b> {{produto.categoria}}</p>
     {% endif %} 
     {% if produto.marca %}
-        <p>Marca: {{produto.marca}}</p>
+        <p><b>Marca:</b> {{produto.marca}}</p>
     {% endif %}
     {% if produto.cor %}
-        <p>Cor: {{produto.cor}}</p>
+        <p><b>Cor:</b> {{produto.cor}}</p>
     {% endif %}
     {% if produto.especificacao %}
-        <div class="container">
-            {{produto.especificacao|safe}}
-        </div>
+        {{produto.especificacao|safe}}
     {% endif %}
 </div>
 
