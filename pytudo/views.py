@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.shortcuts import render
 from produtos.models import Categoria, DestacadosHome
 from gestao.models import Banner
 from vendas.models import ListaDesejo
