@@ -12,6 +12,7 @@ from decimal import Decimal
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import logging
 
 
 @login_required
@@ -421,7 +422,8 @@ def deletar_session(request):
 
 @api_view(['POST'])
 def notificacao_pagseguro(request):
-    print(request)
+    logger = logging.getLogger(__name__)
+    logger.info(request.data)
     try:
         alteracao_de_status = request.data['charges'][0]['status']
         id_pedido = request.data['charges'][0]['reference_id']
@@ -430,6 +432,7 @@ def notificacao_pagseguro(request):
         pedido.save()
         return Response({'message': 'Mensagem recebida e status atualizado.'})
     except: 
+        logger.warning('Não foi possivel salvar os dados da api webhook do pagseguro')
         return Response({'message': 'Erro.'})
     
 def verificar_estoque(request):
