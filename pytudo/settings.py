@@ -184,10 +184,10 @@ MEDIA_URL = '/media/'
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "root": {"level": "DEBUG", "handlers": ["file"]},
+    "root": {"level": "INFO", "handlers": ["file"]},
     "handlers": {
         "file": {
-            "level": "DEBUG",
+            "level": "INFO",
             "class": "logging.FileHandler",
             "filename": "/pytudo_docker/logs/django/django.log",
             "formatter": "app",
@@ -196,7 +196,7 @@ LOGGING = {
     "loggers": {
         "django": {
             "handlers": ["file"],
-            "level": "DEBUG",
+            "level": "INFO",
             "propagate": True
         },
     },
