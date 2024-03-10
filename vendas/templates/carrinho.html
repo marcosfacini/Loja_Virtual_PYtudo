@@ -10,8 +10,7 @@
 
 
 {% block 'body' %}     
-    
-{% with carrinho=carrinho %}
+
 {% if carrinho %}
 <section class="h-100">
   <div class="container h-100 py-5">
@@ -165,7 +164,6 @@
     <a class="btn mt-2" href="{% url 'home' %}" role="button">Começar as compras!</a>
   </div>
 {% endif %}
-{% endwith%}
 
 
 

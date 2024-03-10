@@ -64,17 +64,17 @@
 
                         <button class="btn position-relative" type="button">
                             <a href ="{% url 'ver_lista_desejo' %}"><i class ="fa fa-heart"></i></a>
-                            {% with num_lista_desejo=num_lista_desejo %}
-                                {% if num_lista_desejo %}
-                                    <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">{{num_lista_desejo}}</span>
-                                {% endif %}
-                            {% endwith %}
+                            {% if num_lista_desejo|default:None %}
+                                <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">{{num_lista_desejo}}</span>
+                            {% endif %}
                         </button>
                         <button class="btn position-relative" type="button">
                             <a href ="{% url 'carrinho' %}"><i class ="fa fa-shopping-cart"></i></a>
-                                {% if request.session.carrinho|default:None %}
-                                    <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">{{request.session.carrinho|total_itens}}</span>
+                            {% with carrinho_session=request.session.carrinho|default:None %}
+                                {% if carrinho_session %}
+                                    <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">{{carrinho_session|total_itens}}</span>
                                 {% endif %}
+                            {% endwith %}
                         </button>
                         <button class="btn position-relative dropdown-toggle" id="PainelDropdown" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-address-card" aria-hidden="true"></i>
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        {% with categorias=categorias %}
+        {% with categorias=categorias|default:None %}
         {% if categorias %}
             <div class="container-fluid d-flex justify-content-center" style="background: #e5345b;">
                 <div class="dropdown dropdown-center" style="width: 130px;">
