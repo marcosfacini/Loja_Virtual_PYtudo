@@ -110,7 +110,7 @@
                   </td>
                 </tr>
 
-                {% if request.session.cupom|default:None %}
+                {% if request.session.cupom|default:False %}
                   <tr>
                     <td class="align-middle">
                       <p class="mb-0" style="font-weight: 500;">Cupom de desconto 
@@ -138,7 +138,7 @@
                       <td class="align-middle">
                         <p class="mb-0" style="font-weight: 500;">TOTAL</p>
                       </td>
-                      {% if request.session.cupom|default:None %}
+                      {% if request.session.cupom|default:False %}
                         <td class="align-middle text-end">
                           <p class="mb-0" style="font-weight: 500;">R$ {{request.session.total_com_desconto}}</p>
                         </td>

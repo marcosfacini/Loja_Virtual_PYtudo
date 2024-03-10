@@ -64,13 +64,13 @@
 
                         <button class="btn position-relative" type="button">
                             <a href ="{% url 'ver_lista_desejo' %}"><i class ="fa fa-heart"></i></a>
-                            {% if num_lista_desejo|default:None %}
+                            {% if num_lista_desejo|default:False %}
                                 <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">{{num_lista_desejo}}</span>
                             {% endif %}
                         </button>
                         <button class="btn position-relative" type="button">
                             <a href ="{% url 'carrinho' %}"><i class ="fa fa-shopping-cart"></i></a>
-                            {% with carrinho_session=request.session.carrinho|default:None %}
+                            {% with carrinho_session=request.session.carrinho|default:False %}
                                 {% if carrinho_session %}
                                     <span class = "position-absolute top-0 start-100 translate-middle badge" style="background: #e5345b;">{{carrinho_session|total_itens}}</span>
                                 {% endif %}
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-        {% with categorias=categorias|default:None %}
+        {% with categorias=categorias|default:0 %}
         {% if categorias %}
             <div class="container-fluid d-flex justify-content-center" style="background: #e5345b;">
                 <div class="dropdown dropdown-center" style="width: 130px;">
