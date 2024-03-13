@@ -426,7 +426,7 @@ def deletar_session(request):
 @api_view(['POST'])
 def notificacao_pagseguro(request):
     serializer = NotificationSerializer(data=request.data)
-    logger.info(serializer.data)
+    logger.info(serializer.initial_data)
     if serializer.is_valid():
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
