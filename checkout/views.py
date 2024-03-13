@@ -12,8 +12,11 @@ from decimal import Decimal
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
+from .serializers import NotificationSerializer
 import logging
 
+logger = logging.getLogger(__name__)
 
 @login_required
 def checkout(request):
@@ -422,18 +425,13 @@ def deletar_session(request):
 
 @api_view(['POST'])
 def notificacao_pagseguro(request):
-    logger = logging.getLogger(__name__)
-    logger.info(request.data)
-    try:
-        alteracao_de_status = request.data['charges'][0]['status']
-        id_pedido = request.data['charges'][0]['reference_id']
-        pedido = Pedido.objects.get(id=id_pedido)
-        pedido.status = alteracao_de_status
-        pedido.save()
-        return Response({'message': 'Mensagem recebida e status atualizado.'})
-    except: 
-        logger.warning('Não foi possivel salvar os dados da api webhook do pagseguro')
-        return Response({'message': 'Erro.'})
+    serializer = NotificationSerializer(data=request.data)
+    logger.info(serializer.data)
+    if serializer.is_valid():
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        logger.warning(f'Não foi possivel salvar os dados da api webhook do pagseguro. ERRO:{serializer.errors}')
+        return Response(status=status.HTTP_400_BAD_REQUEST)     
     
 def verificar_estoque(request):
     produtos_ids = list(request.session['carrinho'].keys())
