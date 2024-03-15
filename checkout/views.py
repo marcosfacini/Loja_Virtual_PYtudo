@@ -425,13 +425,15 @@ def deletar_session(request):
 
 @api_view(['POST'])
 def notificacao_pagseguro(request):
+    logger.info(f'DADOS= {request.data}')
     serializer = NotificationSerializer(data=request.data)
-    logger.info(serializer.initial_data)
+    logger.info(f'DADOS SERIALIZADOS= {serializer.initial_data}')
     if serializer.is_valid():
+        logger.info(f'DADOS VALIDADOS CORRETAMENTE')
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         logger.warning(f'Não foi possivel salvar os dados da api webhook do pagseguro. ERRO:{serializer.errors}')
-        return Response(status=status.HTTP_400_BAD_REQUEST)     
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)     
     
 def verificar_estoque(request):
     produtos_ids = list(request.session['carrinho'].keys())
