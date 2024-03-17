@@ -11,6 +11,7 @@ from .models import Pedido, ItensPedido
 from decimal import Decimal
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import NotificationSerializer
@@ -424,6 +425,7 @@ def deletar_session(request):
     return True
 
 @api_view(['POST'])
+@csrf_exempt
 def notificacao_pagseguro(request):
     logger.info(f'DADOS= {request.data}')
     serializer = NotificationSerializer(data=request.data)
