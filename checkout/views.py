@@ -116,7 +116,7 @@ def pagamento_credito(request):
             }
         },
         "notification_urls": [
-            "http://www.pytudo.com.br/checkout/notificacao_pagseguro"
+            "http://www.pytudo.com.br/checkout/notificacao_pagseguro/"
         ],
         "charges": [
             {
@@ -207,7 +207,7 @@ def pagamento_boleto(request):
                 }
             },
             "notification_urls": [
-                "http://www.pytudo.com.br/checkout/notificacao_pagseguro"
+                "http://www.pytudo.com.br/checkout/notificacao_pagseguro/"
             ],
             "charges": [
                 {
@@ -317,7 +317,7 @@ def pagamento_pix(request):
           }
         },
         "notification_urls": [
-          "http://www.pytudo.com.br/checkout/notificacao_pagseguro"
+          "http://www.pytudo.com.br/checkout/notificacao_pagseguro/"
         ]
     })
 
