@@ -26,25 +26,10 @@ def checkout(request):
     except ObjectDoesNotExist:
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para comprar.')
         return redirect(f'/usuarios/info_adicional_usuario')
-    #chave_publica = {}
-    #chave_publica['publicKey'] = get_chave_publica()
     if verificar_estoque(request) == False:
         return redirect(f'/vendas/carrinho')
     chave_publica = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr+ZqgD892U9/HXsa7XqBZUayPquAfh9xx4iwUbTSUAvTlmiXFQNTp0Bvt/5vK2FhMj39qSv1zi2OuBjvW38q1E374nzx6NNBL5JosV0+SDINTlCG0cmigHuBOyWzYmjgca+mtQu4WczCaApNaSuVqgb8u7Bd9GCOL4YJotvV5+81frlSwQXralhwRzGhj/A57CGPgGKiuPT+AOGmykIGEZsSD9RKkyoKIoc0OS8CPIzdBOtTQCIwrLn2FxI83Clcg55W8gkFSOS6rWNbG5qFZWMll6yl02HtunalHmUlRUL66YeGXdMDC2PuRcmZbGO5a/2tbVppW6mfSWG3NPRpgwIDAQAB'
     return render(request, 'checkout.html', {'chave_publica': chave_publica})
-
-# preciso criar a chave publica apenas uma vez e depois criar uma nova funcao apenas para consultar a minha chave publica?
-def get_chave_publica():
-    url = 'https://sandbox.api.pagseguro.com/public-keys/'
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization' : 'E27D533A220041F689D7C53BE6A84D74'
-    }
-    body = json.dumps({
-        "type": "card"
-    })
-    reqs = requests.post(url,headers=headers,data=body)
-    return reqs.json()['public_key']
 
 @login_required
 def processar_metodo_pagamento(request):
