@@ -427,15 +427,15 @@ def deletar_session(request):
 @api_view(['POST'])
 @csrf_exempt
 def notificacao_pagseguro(request):
-    serializer = NotificationSerializer(data=request.data)
+    serializer = NotificationSerializer(data=request.data['charges'][0], many=False)
     logger.info(f'DADOS SERIALIZADOS= {serializer.initial_data}')
     if serializer.is_valid():
-        logger.info(f'DADOS VALIDADOS CORRETAMENTE')
-        alteracao_de_status = request.data['charges'][0]['status']
-        id_pedido = request.data['charges'][0]['reference_id']
+        id_pedido = serializer.validated_data['reference_id']
+        alteracao_de_status = serializer.validated_data['status']
         pedido = Pedido.objects.get(id=id_pedido)
         pedido.status = alteracao_de_status
         pedido.save()
+        logger.info(f'DADOS VALIDADOS CORRETAMENTE')
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         logger.warning(f'Não foi possivel salvar os dados da api webhook do pagseguro. ERRO:{serializer.errors}')
