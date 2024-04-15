@@ -11,6 +11,7 @@ from .models import Pedido, ItensPedido
 from decimal import Decimal
 from datetime import datetime, timedelta
 from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import NotificationSerializer
@@ -25,25 +26,10 @@ def checkout(request):
     except ObjectDoesNotExist:
         messages.add_message(request, constants.ERROR, 'Complete o cadastro primeiro para comprar.')
         return redirect(f'/usuarios/info_adicional_usuario')
-    #chave_publica = {}
-    #chave_publica['publicKey'] = get_chave_publica()
     if verificar_estoque(request) == False:
         return redirect(f'/vendas/carrinho')
     chave_publica = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr+ZqgD892U9/HXsa7XqBZUayPquAfh9xx4iwUbTSUAvTlmiXFQNTp0Bvt/5vK2FhMj39qSv1zi2OuBjvW38q1E374nzx6NNBL5JosV0+SDINTlCG0cmigHuBOyWzYmjgca+mtQu4WczCaApNaSuVqgb8u7Bd9GCOL4YJotvV5+81frlSwQXralhwRzGhj/A57CGPgGKiuPT+AOGmykIGEZsSD9RKkyoKIoc0OS8CPIzdBOtTQCIwrLn2FxI83Clcg55W8gkFSOS6rWNbG5qFZWMll6yl02HtunalHmUlRUL66YeGXdMDC2PuRcmZbGO5a/2tbVppW6mfSWG3NPRpgwIDAQAB'
     return render(request, 'checkout.html', {'chave_publica': chave_publica})
-
-# preciso criar a chave publica apenas uma vez e depois criar uma nova funcao apenas para consultar a minha chave publica?
-def get_chave_publica():
-    url = 'https://sandbox.api.pagseguro.com/public-keys/'
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization' : 'E27D533A220041F689D7C53BE6A84D74'
-    }
-    body = json.dumps({
-        "type": "card"
-    })
-    reqs = requests.post(url,headers=headers,data=body)
-    return reqs.json()['public_key']
 
 @login_required
 def processar_metodo_pagamento(request):
@@ -115,7 +101,7 @@ def pagamento_credito(request):
             }
         },
         "notification_urls": [
-            "http://www.pytudo.com.br/checkout/notificacao_pagseguro"
+            "http://www.pytudo.com.br/checkout/notificacao_pagseguro/"
         ],
         "charges": [
             {
@@ -206,7 +192,7 @@ def pagamento_boleto(request):
                 }
             },
             "notification_urls": [
-                "http://www.pytudo.com.br/checkout/notificacao_pagseguro"
+                "http://www.pytudo.com.br/checkout/notificacao_pagseguro/"
             ],
             "charges": [
                 {
@@ -316,7 +302,7 @@ def pagamento_pix(request):
           }
         },
         "notification_urls": [
-          "http://www.pytudo.com.br/checkout/notificacao_pagseguro"
+          "http://www.pytudo.com.br/checkout/notificacao_pagseguro/"
         ]
     })
 
@@ -424,14 +410,21 @@ def deletar_session(request):
     return True
 
 @api_view(['POST'])
+@csrf_exempt
 def notificacao_pagseguro(request):
-    serializer = NotificationSerializer(data=request.data)
-    logger.info(serializer.initial_data)
+    serializer = NotificationSerializer(data=request.data['charges'][0], many=False)
+    logger.info(f'DADOS SERIALIZADOS= {serializer.initial_data}')
     if serializer.is_valid():
+        id_pedido = serializer.validated_data['reference_id']
+        alteracao_de_status = serializer.validated_data['status']
+        pedido = Pedido.objects.get(id=id_pedido)
+        pedido.status = alteracao_de_status
+        pedido.save()
+        logger.info(f'DADOS VALIDADOS CORRETAMENTE')
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         logger.warning(f'Não foi possivel salvar os dados da api webhook do pagseguro. ERRO:{serializer.errors}')
-        return Response(status=status.HTTP_400_BAD_REQUEST)     
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)     
     
 def verificar_estoque(request):
     produtos_ids = list(request.session['carrinho'].keys())
